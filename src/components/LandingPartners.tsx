@@ -1,35 +1,6 @@
 import React from 'react'
 
-const partners = [
-	{
-		logo: '/assets/tracer-dao.svg',
-		label: 'Tracer Finance',
-	},
-	{
-		logo: '/assets/gmx.svg',
-		label: 'GMX.io',
-	},
-	{
-		logo: '/assets/impermax.png',
-		label: 'Impermax',
-	},
-	{
-		logo: '/assets/swapr.png',
-		label: 'Swapr',
-	},
-	{
-		logo: '/assets/socket.png',
-		label: 'Socket.tech',
-	},
-	{
-		logo: '/assets/banxa.svg',
-		label: 'Banxa',
-	},
-	{
-		logo: '/assets/dopex.svg',
-		label: 'Dopex',
-	},
-]
+import { PARTNERS } from '../constants'
 
 type PartnerLogoProps = {
   logo: string;
@@ -38,7 +9,7 @@ type PartnerLogoProps = {
 
 function PartnerLogo({ logo, label }: PartnerLogoProps) {
 	return (
-		<div className="flex items-center justify-center last:col-span-2">
+		<div className="flex items-center justify-center">
 			<span className="sr-only">{label}</span>
 			<img
 				src={logo}
@@ -55,8 +26,20 @@ export default function LandingPartners() {
 	const partnerDisplay = React.useMemo(() => {
 		return (
 			<>
-				{partners.map(({ label, logo }) => (
-					<PartnerLogo key={logo} label={label} logo={logo} />
+				{PARTNERS.map(({ label, logo, url }) => (
+					<div
+						key={logo}
+						className="flex items-center justify-center last:col-span-2"
+					>
+						<a
+							href={url}
+							target="_blank"
+							rel="noopener noreferrer"
+							className="hover:outline focus:outline"
+						>
+							<PartnerLogo label={label} logo={logo} />
+						</a>
+					</div>
 				))}
 			</>
 		)
