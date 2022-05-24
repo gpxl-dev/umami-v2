@@ -3,7 +3,11 @@ import { FaDiscord, FaTwitter, FaGithub, FaBook } from 'react-icons/fa'
 
 import { SOCIAL_LINKS } from '../constants'
 
-export default function SocialLinks() {
+type Props = {
+  className?: string;
+};
+
+export default function SocialLinks({ className }: Props) {
 	const getSocialIcon = React.useCallback((name: string) => {
 		switch (name) {
 		case 'github':
@@ -25,7 +29,7 @@ export default function SocialLinks() {
 		return (
 			<ul className="flex items-center justify-center w-full">
 				{SOCIAL_LINKS.map(({ name, url }) => (
-					<li key={name} className="text-lg mr-4 last:mr-0">
+					<li key={name} className={`text-lg mr-4 last:mr-0 ${className}`}>
 						<a href={url} target="_blank" rel="noopener noreferrer">
 							<span className="sr-only">Link to: {name}</span>
 							{getSocialIcon(name as string)}
@@ -34,5 +38,5 @@ export default function SocialLinks() {
 				))}
 			</ul>
 		)
-	}, [getSocialIcon])
+	}, [getSocialIcon, className])
 }

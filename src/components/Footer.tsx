@@ -83,7 +83,7 @@ export default function Footer() {
 				</div>
 			</div>
 
-			<div className="mt-8 text-sm text-center text-white">
+			<div className="mt-12 text-xs uppercase text-center text-white">
 				{currentYear} Umami Finance
 			</div>
 		</div>

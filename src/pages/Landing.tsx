@@ -1,21 +1,15 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 import Button from '../components/Button'
 import LandingPartners from '../components/LandingPartners'
 
 export default function Landing() {
-	const navigate = useNavigate()
-
-	const navigateToApp = React.useCallback(() => {
-		navigate('/app')
-	}, [navigate])
-
 	return (
 		<main>
 			<header>
 				<div className="flex flex-col w-full items-center justify-center py-8">
-					<h2 className="font-display text-center text-4xl md:text-6xl text-white tracking-[1rem] text-shadow-[1px_1px_rgb(0,0,0,1)] uppercase">
+					<h2 className="font-display text-center text-4xl md:text-6xl text-white tracking-[1rem] drop-shadow-[1px_1px_rgb(0,0,0,1)] uppercase">
             Umami
 					</h2>
 
@@ -23,9 +17,12 @@ export default function Landing() {
             Market-Hedged Arbitrum Yields
 					</h1>
 
-					<Button onClick={navigateToApp} className="text-3xl mt-12">
-            Enter App
-					</Button>
+					<Link
+						to="/app"
+						className="flex items-center justify-center max-w-xs w-full"
+					>
+						<Button className="text-3xl mt-12">Enter App</Button>
+					</Link>
 				</div>
 			</header>
 
