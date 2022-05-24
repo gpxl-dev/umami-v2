@@ -9,6 +9,9 @@ function App() {
 		<Routes>
 			<Route path="/" element={<Layout />}>
 				<Route index element={<Landing />} />
+				<Route path="app">
+					<Route path="marinate" />
+				</Route>
 			</Route>
 		</Routes>
 	)

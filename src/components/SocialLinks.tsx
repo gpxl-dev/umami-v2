@@ -5,7 +5,6 @@ import { SOCIAL_LINKS } from '../constants'
 
 export default function SocialLinks() {
 	const getSocialIcon = React.useCallback((name: string) => {
-		console.log(name)
 		switch (name) {
 		case 'github':
 			return <FaGithub />
