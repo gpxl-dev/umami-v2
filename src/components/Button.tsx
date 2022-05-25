@@ -19,7 +19,7 @@ export default function Button({
 		<button
 			type={type}
 			onClick={onClick}
-			className={`p-[1px] bg-gradient-to-b from-umami-pink to-umami-purple duration-100 font-bold max-w-xs rounded-md text-white w-full uppercase hover:cursor-pointer hover:text-umami-yellow hover:translate-y-1 ${className}`}
+			className={`p-[1px] bg-gradient-to-b from-umami-pink to-umami-purple duration-100 font-bold max-w-xs rounded-md text-white w-full uppercase hover:cursor-pointer hover:text-umami-yellow hover:translate-y-[2px] ${className}`}
 		>
 			<div className="bg-black flex items-center justify-center rounded-md py-2">
 				{children}

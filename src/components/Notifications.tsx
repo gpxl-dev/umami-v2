@@ -17,8 +17,10 @@ export default function Notifications() {
 
 		setUpNotifications({
 			defaultProps: {
-				position: 'top-right',
+				position: 'top-center',
 				dismissable: true,
+				showDismissButton: true,
+				dismissAfter: 5000,
 			},
 		})
 

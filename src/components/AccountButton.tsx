@@ -1,6 +1,7 @@
 import React from 'react'
 import { useAccount, useConnect, useDisconnect } from 'wagmi'
 import { FaExternalLinkAlt } from 'react-icons/fa'
+import { useNotifications } from 'reapop'
 
 import Button from './Button'
 import Modal from './Modal'
@@ -9,6 +10,7 @@ export default function AccountButton() {
 	const { connect, connectors: wagmiConnectors } = useConnect()
 	const { disconnect } = useDisconnect()
 	const { data: account } = useAccount()
+	const { notify } = useNotifications()
 
 	const triggerButton = React.useMemo(() => {
 		return (
@@ -46,6 +48,14 @@ export default function AccountButton() {
 		}
 	}, [])
 
+	const handleConnect = React.useCallback(
+		(connector: typeof connectors[0]) => {
+			connect(connector)
+			notify('Wallet connected', 'success')
+		},
+		[connect, notify]
+	)
+
 	const connectOptions = React.useMemo(() => {
 		return (
 			<ul>
@@ -54,7 +64,7 @@ export default function AccountButton() {
 						<button
 							type="button"
 							className="w-full py-4 flex items-center justify-center bg-white bg-opacity-5 rounded-md duration-200 hover:bg-opacity-10"
-							onClick={() => connect(conn)}
+							onClick={() => handleConnect(conn)}
 						>
 							{getConnectorLogo(conn.name) ? (
 								<img
@@ -69,7 +79,7 @@ export default function AccountButton() {
 				))}
 			</ul>
 		)
-	}, [connectors, getConnectorLogo])
+	}, [connectors, getConnectorLogo, handleConnect])
 
 	const accountDisplay = React.useMemo(() => {
 		return (
