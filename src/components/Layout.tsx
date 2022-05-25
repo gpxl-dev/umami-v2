@@ -2,6 +2,8 @@ import React from 'react'
 import { createGlobalStyle } from 'styled-components'
 import { useLocation, Outlet } from 'react-router-dom'
 
+import WagmiProvider from './WagmiProvider'
+import Notifications from './Notifications'
 import Navigation from './Navigation'
 import Footer from './Footer'
 
@@ -33,13 +35,16 @@ export default function Layout() {
 	return (
 		<>
 			<GlobalStyle />
-			<div className="fixed inset-0 bg-black bg-opacity-[75%] overflow-y-auto">
-				{appNav}
-				<div className="min-h-[69vh]">
-					<Outlet />
+			<WagmiProvider>
+				<Notifications />
+				<div className="fixed inset-0 bg-black bg-opacity-[75%] overflow-y-auto">
+					{appNav}
+					<div className="min-h-[69vh]">
+						<Outlet />
+					</div>
+					<Footer />
 				</div>
-				<Footer />
-			</div>
+			</WagmiProvider>
 		</>
 	)
 }

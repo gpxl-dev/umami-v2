@@ -6,6 +6,7 @@ import { FiMenu } from 'react-icons/fi'
 
 import Button from './Button'
 import SocialLinks from './SocialLinks'
+import AccountButton from './AccountButton'
 import { NAV_LINKS } from '../constants'
 
 const MobileNavigationContainer = styled.div`
@@ -150,9 +151,17 @@ export default function MobileNavigation() {
 								<SocialLinks className="text-3xl mr-6" />
 							</div>
 
-							<Button type="button" onClick={closeNavigation}>
-                  Close Menu
-							</Button>
+							<div className="flex flex-col items-center justify-center w-full">
+								<AccountButton />
+
+								<Button
+									type="button"
+									className="mt-4"
+									onClick={closeNavigation}
+								>
+                    Close Menu
+								</Button>
+							</div>
 						</div>
 					</div>
 				</MobileNavigationContainer>,

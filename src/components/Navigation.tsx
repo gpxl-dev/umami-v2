@@ -1,7 +1,9 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
+import ClickAwayListener from 'react-click-away-listener'
 
 import MobileNavigation from './MobileNavigation'
+import AccountButton from './AccountButton'
 import { NAV_LINKS } from '../constants'
 
 export default function Navigation() {
@@ -24,26 +26,28 @@ export default function Navigation() {
 
 	const earnLinks = React.useMemo(() => {
 		return isEarnOpen ? (
-			<div className="absolute left-[-50%] top-[100%] bg-gradient-to-b from-umami-pink to-umami-purple p-[1px] mt-2 rounded-md">
-				<div className="bg-black rounded-md py-2 px-4 text-lg">
-					<ul className="text-center">
-						{NAV_LINKS.earn.map(({ label, path }) => (
-							<li key={path}>
-								<NavLink
-									to={path}
-									className={(isActive) =>
-										`${isActive ? activeLinkClasses : ''} hover:underline`
-									}
-								>
-									{label}
-								</NavLink>
-							</li>
-						))}
-					</ul>
+			<ClickAwayListener onClickAway={closeEarn}>
+				<div className="absolute left-[-50%] top-[100%] bg-gradient-to-b from-umami-pink to-umami-purple p-[1px] mt-2 rounded-md">
+					<div className="bg-black rounded-md py-2 px-4 text-lg">
+						<ul className="text-center">
+							{NAV_LINKS.earn.map(({ label, path }) => (
+								<li key={path}>
+									<NavLink
+										to={path}
+										className={(isActive) =>
+											`${isActive ? activeLinkClasses : ''} hover:underline`
+										}
+									>
+										{label}
+									</NavLink>
+								</li>
+							))}
+						</ul>
+					</div>
 				</div>
-			</div>
+			</ClickAwayListener>
 		) : null
-	}, [isEarnOpen])
+	}, [isEarnOpen, closeEarn])
 
 	return (
 		<div className="w-full px-4">
@@ -56,9 +60,9 @@ export default function Navigation() {
 					<MobileNavigation />
 				</div>
 
-				<div className="hidden md:block">
-					<nav>
-						<ul className="flex font-display text-2xl uppercase">
+				<div className="hidden md:flex-1 md:flex md:items-center md:justify-end md:w-full">
+					<nav className="flex-1 pt-2 flex items-center justify-end h-full mr-4">
+						<ul className="flex items-center font-display text-2xl uppercase">
 							<li className="mr-4">
 								<NavLink
 									to="/app"
@@ -70,7 +74,7 @@ export default function Navigation() {
 								</NavLink>
 							</li>
 
-							<li>
+							<li className="mr-4">
 								<div className="relative">
 									<button
 										type="button"
@@ -86,6 +90,8 @@ export default function Navigation() {
 							</li>
 						</ul>
 					</nav>
+
+					<AccountButton />
 				</div>
 			</div>
 		</div>
