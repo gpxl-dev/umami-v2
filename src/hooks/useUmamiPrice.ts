@@ -2,13 +2,11 @@ import React from 'react'
 import { ethers } from 'ethers'
 import { Pool } from '@uniswap/v3-sdk'
 import { Token } from '@uniswap/sdk-core'
-import * as IUniswapV3Pool from '@uniswap/v3-core/artifacts/contracts/interfaces/IUniswapV3Pool.sol/IUniswapV3Pool.json'
+import IUniswapV3PoolABI from '../abis/IUniswapV3Pool.abi'
 import { useQuery, useQueryClient } from 'react-query'
 import { useNotifications } from 'reapop'
 
 import { POOL_ADDRESSES, ARBITRUM_ID, INFURA_RPC_URL } from '../constants'
-
-const { abi: IUniswapV3PoolABI } = IUniswapV3Pool
 
 const rpcUrl = INFURA_RPC_URL
 const arbitrumId = ARBITRUM_ID
