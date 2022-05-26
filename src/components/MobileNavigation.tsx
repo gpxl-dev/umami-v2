@@ -1,9 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
 import { createPortal } from 'react-dom'
-import { NavLink, useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import { FiMenu } from 'react-icons/fi'
 
+import NavLink from './NavLink'
 import Button from './Button'
 import SocialLinks from './SocialLinks'
 import AccountButton from './AccountButton'
@@ -90,13 +91,7 @@ export default function MobileNavigation() {
           <li key={path} className="mt-4">
             <NavLink
               to={path}
-              className={(isActive) =>
-                `${
-                  isActive
-                    ? 'bg-gradient-to-b from-umami-pink to-umami-purple bg-clip-text text-transparent'
-                    : ''
-                }`
-              }
+              activeClassName="bg-gradient-to-b from-umami-pink to-umami-purple bg-clip-text text-transparent"
             >
               {label}
             </NavLink>
@@ -125,11 +120,7 @@ export default function MobileNavigation() {
                     <li>
                       <NavLink
                         to="/app"
-                        className={(isActive) =>
-                          isActive
-                            ? 'bg-gradient-to-b from-umami-pink to-umami-purple bg-clip-text text-transparent'
-                            : ''
-                        }
+                        activeClassName="bg-gradient-to-b from-umami-pink to-umami-purple bg-clip-text text-transparent"
                       >
                         Home
                       </NavLink>
@@ -137,7 +128,11 @@ export default function MobileNavigation() {
                     <li className="mt-4">
                       <button
                         type="button"
-                        className="uppercase"
+                        className={`uppercase ${
+                          pathname.includes('/app/')
+                            ? 'bg-gradient-to-b from-umami-pink to-umami-purple bg-clip-text text-transparent'
+                            : ''
+                        }`}
                         onClick={isEarnOpen ? closeEarn : openEarn}
                       >
                         Earn
@@ -168,7 +163,15 @@ export default function MobileNavigation() {
           document.querySelector('body') as Element
         )
       : null
-  }, [isOpen, openEarn, closeEarn, earnOptions, closeNavigation, isEarnOpen])
+  }, [
+    isOpen,
+    openEarn,
+    closeEarn,
+    earnOptions,
+    closeNavigation,
+    isEarnOpen,
+    pathname,
+  ])
 
   return (
     <>

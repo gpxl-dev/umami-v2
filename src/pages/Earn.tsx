@@ -20,7 +20,7 @@ export default function Earn() {
     const apr = 0.39731
     const estRevenue = (Number(apiData?.tvl) * apr) / 12
 
-    return Intl.NumberFormat('en-US').format(Number(estRevenue.toFixed(2)))
+    return Intl.NumberFormat('en-US').format(Math.floor(estRevenue))
   }, [apiData, isApiError])
 
   const marinateAPY = React.useMemo(() => {
