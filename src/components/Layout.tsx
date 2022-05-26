@@ -22,29 +22,29 @@ const GlobalStyle = createGlobalStyle`
 `
 
 export default function Layout() {
-	const appLocation = useLocation()
+  const appLocation = useLocation()
 
-	const isLandingPage = React.useMemo(() => {
-		return appLocation.pathname === '/'
-	}, [appLocation.pathname])
+  const isLandingPage = React.useMemo(() => {
+    return appLocation.pathname === '/'
+  }, [appLocation.pathname])
 
-	const appNav = React.useMemo(() => {
-		return !isLandingPage ? <Navigation /> : null
-	}, [isLandingPage])
+  const appNav = React.useMemo(() => {
+    return !isLandingPage ? <Navigation /> : null
+  }, [isLandingPage])
 
-	return (
-		<>
-			<GlobalStyle />
-			<WagmiProvider>
-				<Notifications />
-				<div className="fixed inset-0 bg-black bg-opacity-[75%] overflow-y-auto">
-					{appNav}
-					<div className="min-h-[69vh]">
-						<Outlet />
-					</div>
-					<Footer />
-				</div>
-			</WagmiProvider>
-		</>
-	)
+  return (
+    <>
+      <GlobalStyle />
+      <WagmiProvider>
+        <Notifications />
+        <div className="fixed inset-0 bg-black bg-opacity-[75%] overflow-y-auto">
+          {appNav}
+          <div className="min-h-[69vh]">
+            <Outlet />
+          </div>
+          <Footer />
+        </div>
+      </WagmiProvider>
+    </>
+  )
 }
