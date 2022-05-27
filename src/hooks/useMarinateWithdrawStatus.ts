@@ -3,11 +3,14 @@ import { useQuery, useQueryClient } from 'react-query'
 import { useNotifications } from 'reapop'
 
 import { useContracts } from './useContracts'
+import { useIsArbitrum } from './useIsArbitrum'
 
 export function useMarinateWithdrawStatus() {
   const { notify } = useNotifications()
   const queryClient = useQueryClient()
+
   const contracts = useContracts()
+  const isArbitrum = useIsArbitrum()
 
   const initialData = React.useMemo(() => ({ withdrawEnabled: false }), [])
 
@@ -27,5 +30,7 @@ export function useMarinateWithdrawStatus() {
   return useQuery('marinateWithdrawEnabled', getWithdrawStatus, {
     initialData:
       queryClient.getQueryData('marinateWithdrawEnabled') ?? initialData,
+    enabled: isArbitrum,
+    refetchInterval: 300000,
   })
 }

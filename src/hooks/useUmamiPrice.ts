@@ -135,7 +135,5 @@ export function useUmamiPrice() {
 
   return useQuery('umamiPrice', getUmamiUsdPrice, {
     initialData: queryClient.getQueryData('umamiPrice') ?? null,
-    refetchInterval: 60000,
-    retry: 3,
   })
 }

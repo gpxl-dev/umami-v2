@@ -25,7 +25,7 @@ export function useAllowances() {
 
   const fetchAllowances = React.useCallback(async () => {
     try {
-      if (contracts.providerType === 'infura' || !isArbitrum || !account) {
+      if (contracts.providerType === 'arb1' || !isArbitrum || !account) {
         return initialData
       }
 
@@ -59,6 +59,7 @@ export function useAllowances() {
 
   return useQuery('allowances', fetchAllowances, {
     initialData: queryClient.getQueryData('allowances') ?? initialData,
-    refetchInterval: 10000,
+    refetchInterval: 40000,
+    enabled: !!account && isArbitrum,
   })
 }

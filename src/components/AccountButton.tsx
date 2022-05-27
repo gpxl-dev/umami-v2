@@ -5,6 +5,7 @@ import { useNotifications } from 'reapop'
 
 import Button from './Button'
 import Modal from './Modal'
+import { useIsArbitrum } from '../hooks/useIsArbitrum'
 import { ARBITRUM_ID } from '../constants'
 
 export default function AccountButton() {
@@ -17,20 +18,18 @@ export default function AccountButton() {
     },
     onError() {
       notify('Error connecting to wallet', 'error')
-    }
+    },
   })
   const { disconnect } = useDisconnect({
     onSuccess() {
       notify('Disconnected from wallet', 'success')
-    }
+    },
   })
   const { data: account } = useAccount()
-  const { activeChain } = useNetwork()
+  const { switchNetwork } = useNetwork()
   const { notify } = useNotifications()
 
-  const isArbitrum = React.useMemo(() => {
-    return account && activeChain && activeChain?.id === ARBITRUM_ID
-  }, [activeChain, account])
+  const isArbitrum = useIsArbitrum()
 
   const triggerButton = React.useMemo(() => {
     if (account && !isArbitrum) {
@@ -133,6 +132,11 @@ export default function AccountButton() {
       <strong className="block text-center text-lg w-full">{modalTitle}</strong>
       {account ? accountDisplay : connectOptions}
       {disconnectButton}
+      {!isArbitrum ? (
+        <Button className="mt-4" onClick={() => switchNetwork?.(ARBITRUM_ID)}>
+          Switch to Arbitrum
+        </Button>
+      ) : null}
     </Modal>
   )
 }

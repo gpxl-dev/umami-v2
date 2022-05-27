@@ -5,6 +5,7 @@ import { useQuery, useQueryClient } from 'react-query'
 import { useNotifications } from 'reapop'
 
 import { useContracts } from './useContracts'
+import { useIsArbitrum } from './useIsArbitrum'
 
 export function useRewards() {
   const { data: account } = useAccount()
@@ -13,6 +14,7 @@ export function useRewards() {
   const queryClient = useQueryClient()
 
   const contracts = useContracts()
+  const isArbitrum = useIsArbitrum()
 
   const initialMarinateRewards = React.useMemo(() => {
     return [
@@ -29,7 +31,7 @@ export function useRewards() {
 
   const getMarinateRewards = React.useCallback(async () => {
     try {
-      if (!account || !signer) {
+      if (!account || !signer || !isArbitrum) {
         return initialMarinateRewards
       }
       const [rewardToken1, rewardToken2] = await Promise.all([
@@ -77,7 +79,7 @@ export function useRewards() {
       console.log(err)
       notify('Unable to fetch available Marinate rewards', 'error')
     }
-  }, [account, initialMarinateRewards, contracts, notify, signer])
+  }, [account, isArbitrum, initialMarinateRewards, contracts, notify, signer])
 
   const getAllRewards = React.useCallback(async () => {
     const mumami = await getMarinateRewards()
@@ -90,7 +92,6 @@ export function useRewards() {
       mumami: initialMarinateRewards,
     },
     refetchInterval: 60000,
-    retry: 3,
-    enabled: !!account,
+    enabled: !!account && isArbitrum,
   })
 }

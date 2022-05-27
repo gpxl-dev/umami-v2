@@ -9,7 +9,13 @@ import Landing from './pages/Landing'
 import Earn from './pages/Earn'
 import Marinate from './pages/Marinate'
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 3,
+    }
+  },
+})
 
 function App() {
   return (
