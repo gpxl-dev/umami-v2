@@ -6,17 +6,22 @@ import IUniswapV3PoolABI from '../abis/IUniswapV3Pool.abi'
 import { useQuery, useQueryClient } from 'react-query'
 import { useNotifications } from 'reapop'
 
-import { POOL_ADDRESSES, ARBITRUM_ID, INFURA_RPC_URL } from '../constants'
+import { useInfuraProvider } from './useInfuraProvider'
+import { POOL_ADDRESSES, ARBITRUM_ID } from '../constants'
 
-const rpcUrl = INFURA_RPC_URL
 const arbitrumId = ARBITRUM_ID
-const provider = new ethers.providers.JsonRpcProvider(rpcUrl)
 
 export function useUmamiPrice() {
   const { notify } = useNotifications()
 
+  const provider = useInfuraProvider()
+
   const getUmamiEthPrice = React.useCallback(async () => {
     try {
+      if (!provider) {
+        throw new Error('No provider')
+      }
+
       const poolContract = new ethers.Contract(
         POOL_ADDRESSES.umamiEth,
         IUniswapV3PoolABI,
@@ -50,10 +55,14 @@ export function useUmamiPrice() {
       console.log(err)
       notify('Problem fetching UMAMI/ETH pool info', 'error')
     }
-  }, [notify])
+  }, [notify, provider])
 
   const getEthUsdcPrice = React.useCallback(async () => {
     try {
+      if (!provider) {
+        throw new Error('No provider')
+      }
+
       const poolContract = new ethers.Contract(
         POOL_ADDRESSES.ethUsdc,
         IUniswapV3PoolABI,
@@ -87,7 +96,7 @@ export function useUmamiPrice() {
       console.log(err)
       notify('Problem fetching UMAMI/ETH pool info', 'error')
     }
-  }, [notify])
+  }, [notify, provider])
 
   const getUmamiUsdPrice = React.useCallback(async () => {
     try {

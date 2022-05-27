@@ -8,8 +8,22 @@ import Modal from './Modal'
 import { ARBITRUM_ID } from '../constants'
 
 export default function AccountButton() {
-  const { connect, connectors: wagmiConnectors } = useConnect()
-  const { disconnect } = useDisconnect()
+  const { connect, connectors: wagmiConnectors } = useConnect({
+    onBeforeConnect() {
+      notify('Connecting to wallet', 'info')
+    },
+    onConnect() {
+      notify('Connected to wallet', 'success')
+    },
+    onError() {
+      notify('Error connecting to wallet', 'error')
+    }
+  })
+  const { disconnect } = useDisconnect({
+    onSuccess() {
+      notify('Disconnected from wallet', 'success')
+    }
+  })
   const { data: account } = useAccount()
   const { activeChain } = useNetwork()
   const { notify } = useNotifications()
@@ -19,7 +33,7 @@ export default function AccountButton() {
   }, [activeChain, account])
 
   const triggerButton = React.useMemo(() => {
-    if (!isArbitrum) {
+    if (account && !isArbitrum) {
       return (
         <Button className="md:text-sm md:max-w-[10rem] text-red-600">
           Wrong Network!
@@ -62,14 +76,6 @@ export default function AccountButton() {
     }
   }, [])
 
-  const handleConnect = React.useCallback(
-    (connector: typeof connectors[0]) => {
-      connect(connector)
-      notify('Wallet connected', 'success')
-    },
-    [connect, notify]
-  )
-
   const connectOptions = React.useMemo(() => {
     return (
       <ul>
@@ -78,7 +84,7 @@ export default function AccountButton() {
             <button
               type="button"
               className="w-full py-4 flex items-center justify-center bg-white bg-opacity-5 rounded-md duration-200 hover:bg-opacity-10"
-              onClick={() => handleConnect(conn)}
+              onClick={() => connect(conn)}
             >
               {getConnectorLogo(conn.name) ? (
                 <img
@@ -93,7 +99,7 @@ export default function AccountButton() {
         ))}
       </ul>
     )
-  }, [connectors, getConnectorLogo, handleConnect])
+  }, [connectors, getConnectorLogo, connect])
 
   const accountDisplay = React.useMemo(() => {
     return (

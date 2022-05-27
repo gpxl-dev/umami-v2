@@ -109,14 +109,14 @@ export default function MobileNavigation() {
             aria-modal={true}
             className="fixed inset-0"
           >
-            <div className="flex h-full min-h-[100vh] w-screen bg-black bg-opacity-[75%]">
+            <div className="flex h-full h-screen w-screen bg-black bg-opacity-[75%] overflow-y-auto">
               <div className="flex flex-1 flex-col items-center justify-between p-4">
                 <strong className="text-white font-display text-6xl drop-shaodw-[1px_1px_rgb(0,0,0,1)] tracking-[1.5rem] uppercase">
                   Umami
                 </strong>
 
                 <nav>
-                  <ul className="font-display min-h-[300px] text-5xl text-shadow-[1px_1px_rgb(0,0,0,1)] text-white uppercase text-center">
+                  <ul className="font-display text-5xl text-shadow-[1px_1px_rgb(0,0,0,1)] text-white uppercase text-center">
                     <li>
                       <NavLink
                         to="/app"
@@ -142,11 +142,11 @@ export default function MobileNavigation() {
                   </ul>
                 </nav>
 
-                <div className="text-white">
+                <div className="text-white mt-4">
                   <SocialLinks className="text-3xl mr-6" />
                 </div>
 
-                <div className="flex flex-col items-center justify-center w-full">
+                <div className="flex flex-col items-center justify-center w-full mt-4">
                   <AccountButton />
 
                   <Button

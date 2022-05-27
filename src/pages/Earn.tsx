@@ -56,12 +56,10 @@ export default function Earn() {
               <div className="text-lg">$8,120,000</div>
             </li>
           )}
-          {estMonthlyRevenue ? (
-            <li className="mt-6">
-              <div className="font-bold text-2xl">Est. Monthly Revenue</div>
-              <div className="text-lg">${estMonthlyRevenue}</div>
-            </li>
-          ) : null}
+          <li className="mt-6">
+            <div className="font-bold text-2xl">Est. Monthly Revenue</div>
+            <div className="text-lg">${estMonthlyRevenue ?? 'Typically $100,000+'}</div>
+          </li>
           <li className="mt-6">
             <div className="font-bold text-2xl">$UMAMI:</div>
             {isUmamiPriceError ? (
@@ -81,7 +79,7 @@ export default function Earn() {
 
       <section>
         <div className="mt-20 bg-white p-4 w-full">
-          <div className="w-full m-auto -translate-y-12 grid grid-rows-3 gap-4 md:max-w-6xl md:m-auto md:grid-cols-3 md:grid-rows-1">
+          <div className="w-full m-auto -translate-y-12 grid grid-rows-2 gap-4 md:max-w-4xl md:m-auto md:grid-cols-2 md:grid-rows-1">
             {/* Marinate Card */}
             <EarnCard
               footer={
@@ -120,7 +118,7 @@ export default function Earn() {
             <EarnCard
               footer={
                 <div className="p-4 text-white font-display text-center text-2xl uppercase">
-                  mUMAMI, ARBIS REWARDS
+                  mUMAMI REWARDS
                 </div>
               }
             >
@@ -133,8 +131,6 @@ export default function Earn() {
                   <p>
                     <span>Earn boosted rewards in</span>
                     <strong> mUMAMI </strong>
-                    <span>and</span>
-                    <strong> ARBIS </strong>
                     <span>and maximize your passive income</span>
                   </p>
 
@@ -142,39 +138,6 @@ export default function Earn() {
                     <Link to="/app/compound">
                       <Button className="text-2xl max-w-[100%]">
                         DEPOSIT mUMAMI
-                      </Button>
-                    </Link>
-                  </div>
-                </div>
-              </EarnCard.Content>
-            </EarnCard>
-
-            {/* Stake Card */}
-            <EarnCard
-              footer={
-                <div className="p-4 text-white font-display text-center text-xl uppercase">
-                  WETH, mUMAMI, ARBIS REWARDS
-                </div>
-              }
-            >
-              <EarnCard.Header text="Stake" />
-
-              <EarnCard.SubHeader>Earn % of Protocol Fees</EarnCard.SubHeader>
-
-              <EarnCard.Content>
-                <div className="flex flex-col justify-between min-h-[150px]">
-                  <p>
-                    <span>Stake</span>
-                    <strong> ARBIS </strong>
-                    <span>for</span>
-                    <strong> stARBIS </strong>
-                    <span>to receive 50% of all autocompounder fees</span>
-                  </p>
-
-                  <div className="mt-4">
-                    <Link to="/app/stake">
-                      <Button className="text-2xl max-w-[100%]">
-                        DEPOSIT ARBIS
                       </Button>
                     </Link>
                   </div>

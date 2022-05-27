@@ -14,10 +14,6 @@ export const NAV_LINKS = {
       label: 'Compound',
       path: '/app/compound',
     },
-    {
-      label: 'Stake',
-      path: '/app/stake',
-    },
   ],
 }
 
@@ -87,8 +83,19 @@ export const TOKEN_ADDRESSES = {
   weth: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
   umami: '0x1622bF67e6e5747b81866fE0b85178a93C7F86e3',
   usdc: '0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8',
+  mumami: '0x2AdAbD6E8Ce3e82f52d9998a7f64a90d294A92A4',
+  cmumami: '0x1922C36F3bc762Ca300b4a46bB2102F84B1684aB',
+  cmumamiBooster: '0x6A0F4AFB31e90c378FA2Aaa40371a652578F339B',
 }
 
 export const ARBITRUM_ID = 42161
 
 export const INFURA_RPC_URL = `https://arbitrum-mainnet.infura.io/v3/${process.env.REACT_APP_INFURA_ID}`
+
+export const TOKEN_DECIMALS = {
+  umami: 9,
+  mumami: 9,
+  cmumami: 9,
+  weth: 18,
+  usdc: 6,
+}
