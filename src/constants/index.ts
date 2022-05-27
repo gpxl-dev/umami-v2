@@ -92,6 +92,8 @@ export const ARBITRUM_ID = 42161
 
 export const INFURA_RPC_URL = `https://arbitrum-mainnet.infura.io/v3/${process.env.REACT_APP_INFURA_ID}`
 
+export const ARB1_RPC_URL = 'https://arb1.arbitrum.io/rpc'
+
 export const TOKEN_DECIMALS = {
   umami: 9,
   mumami: 9,

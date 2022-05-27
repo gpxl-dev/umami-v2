@@ -19,6 +19,8 @@ export function useAPI() {
   }, [notify])
 
   return useQuery('apiData', fetchData, {
-    initialData: queryClient.getQueryData('apiData') ?? null
+    initialData: queryClient.getQueryData('apiData') ?? null,
+    refetchInterval: 60000,
+    retry: 3,
   })
 }

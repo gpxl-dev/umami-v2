@@ -7,7 +7,7 @@ import { useUmamiPrice } from '../hooks/useUmamiPrice'
 import { useAPI } from '../hooks/useAPI'
 
 export default function Earn() {
-  const { data: umamiPrice, isError: isUmamiPriceError } = useUmamiPrice()
+  const { data: umamiPrice } = useUmamiPrice()
 
   const { data: apiData, isError: isApiError } = useAPI()
 
@@ -58,20 +58,22 @@ export default function Earn() {
           )}
           <li className="mt-6">
             <div className="font-bold text-2xl">Est. Monthly Revenue</div>
-            <div className="text-lg">${estMonthlyRevenue ?? 'Typically $100,000+'}</div>
+            <div className="text-lg">
+              ${estMonthlyRevenue ?? 'Typically $100,000+'}
+            </div>
           </li>
           <li className="mt-6">
             <div className="font-bold text-2xl">$UMAMI:</div>
-            {isUmamiPriceError ? (
-              <div className="text-lg">Unable to fetch price data</div>
-            ) : (
+            {umamiPrice ? (
               <div className="text-lg">${Number(umamiPrice).toFixed(2)}</div>
+            ) : (
+              <div className="text-lg">Unable to fetch price data</div>
             )}
           </li>
         </ul>
       </header>
     )
-  }, [umamiPrice, isUmamiPriceError, apiData, estMonthlyRevenue])
+  }, [umamiPrice, apiData, estMonthlyRevenue])
 
   return (
     <main>

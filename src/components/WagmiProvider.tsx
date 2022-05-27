@@ -10,7 +10,7 @@ const infuraId = process.env.REACT_APP_INFURA_ID
 
 const { chains, provider } = configureChains(
   [chain.arbitrum],
-  [infuraProvider({ infuraId }), publicProvider()]
+  [infuraProvider({ infuraId, priority: 1 }), publicProvider({ priority: 0 })]
 )
 
 const wagmiClient = createClient({

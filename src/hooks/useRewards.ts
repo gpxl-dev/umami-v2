@@ -47,7 +47,7 @@ export function useRewards() {
         signer
       )
 
-      const [token1Symbol, token2Symbol, token1Rewards, token2Rewards] =
+      const [token1Symbol, token2Symbol, token1Rewards, token2Rewards, token1Decimals, token2Decimals] =
         await Promise.all([
           token1Contract.symbol(),
           token2Contract.symbol(),
@@ -59,16 +59,18 @@ export function useRewards() {
             account?.address,
             rewardToken2
           ),
+          token1Contract.decimals(),
+          token2Contract.decimals(),
         ])
 
       return [
         {
           token: token1Symbol,
-          amount: Number(ethers.utils.formatUnits(token1Rewards, 9)),
+          amount: Number(ethers.utils.formatUnits(token1Rewards, token1Decimals)),
         },
         {
           token: token2Symbol,
-          amount: Number(ethers.utils.formatUnits(token2Rewards, 9)),
+          amount: Number(ethers.utils.formatUnits(token2Rewards, token2Decimals)),
         },
       ]
     } catch (err) {
@@ -87,6 +89,8 @@ export function useRewards() {
     initialData: queryClient.getQueryData('rewards') ?? {
       mumami: initialMarinateRewards,
     },
-    refetchInterval: 30000,
+    refetchInterval: 60000,
+    retry: 3,
+    enabled: !!account,
   })
 }

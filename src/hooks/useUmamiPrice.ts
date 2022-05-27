@@ -2,19 +2,24 @@ import React from 'react'
 import { ethers } from 'ethers'
 import { Pool } from '@uniswap/v3-sdk'
 import { Token } from '@uniswap/sdk-core'
-import IUniswapV3PoolABI from '../abis/IUniswapV3Pool.abi'
+import { useProvider } from 'wagmi'
 import { useQuery, useQueryClient } from 'react-query'
 import { useNotifications } from 'reapop'
 
-import { useInfuraProvider } from './useInfuraProvider'
+import IUniswapV3PoolABI from '../abis/IUniswapV3Pool.abi'
+import { useArb1Provider } from './useArb1Provider'
 import { POOL_ADDRESSES, ARBITRUM_ID } from '../constants'
 
 const arbitrumId = ARBITRUM_ID
 
 export function useUmamiPrice() {
   const { notify } = useNotifications()
+  const wagmiProvider = useProvider()
+  const arb1Provider = useArb1Provider()
 
-  const provider = useInfuraProvider()
+  const provider = React.useMemo(() => {
+    return wagmiProvider ?? arb1Provider
+  }, [arb1Provider, wagmiProvider])
 
   const getUmamiEthPrice = React.useCallback(async () => {
     try {
@@ -54,6 +59,7 @@ export function useUmamiPrice() {
     } catch (err) {
       console.log(err)
       notify('Problem fetching UMAMI/ETH pool info', 'error')
+      return null
     }
   }, [notify, provider])
 
@@ -95,6 +101,7 @@ export function useUmamiPrice() {
     } catch (err) {
       console.log(err)
       notify('Problem fetching UMAMI/ETH pool info', 'error')
+      return null
     }
   }, [notify, provider])
 
@@ -112,10 +119,15 @@ export function useUmamiPrice() {
       const price =
         Number(umamiPrice?.toFixed(9)) / Number(wethPrice?.toFixed(9))
 
+      if (Number.isNaN(price)) {
+        throw new Error('problem fetching token prices from uniswap')
+      }
+
       return price
     } catch (err) {
       console.log(err)
       notify('Problem computing UMAMI/USDC price', 'error')
+      return null
     }
   }, [getUmamiEthPrice, getEthUsdcPrice, notify])
 
@@ -123,5 +135,7 @@ export function useUmamiPrice() {
 
   return useQuery('umamiPrice', getUmamiUsdPrice, {
     initialData: queryClient.getQueryData('umamiPrice') ?? null,
+    refetchInterval: 60000,
+    retry: 3,
   })
 }

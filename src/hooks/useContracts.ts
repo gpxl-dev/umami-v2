@@ -2,7 +2,7 @@ import React from 'react'
 import { ethers } from 'ethers'
 import { useProvider, useSigner } from 'wagmi'
 
-import { useInfuraProvider } from './useInfuraProvider'
+import { useArb1Provider } from './useArb1Provider'
 
 import UmamiABI from '../abis/Umami.abi'
 import MarinateABI from '../abis/MarinatedUmami.abi'
@@ -10,12 +10,12 @@ import CMUmamiABI from '../abis/CompoundedMarinatedUmami.abi'
 import { TOKEN_ADDRESSES } from '../constants'
 
 export function useContracts() {
-  const infuraProvider = useInfuraProvider()
+  const arb1Provider = useArb1Provider()
   const wagmiProvider = useProvider()
   const { data: signer } = useSigner()
 
   return React.useMemo(() => {
-    const provider = wagmiProvider ?? infuraProvider
+    const provider = wagmiProvider ?? arb1Provider
 
     return {
       umami: new ethers.Contract(
@@ -33,8 +33,8 @@ export function useContracts() {
         CMUmamiABI,
         signer ?? provider
       ),
-      providerType: wagmiProvider ? 'wagmi' : 'infura',
+      providerType: wagmiProvider ? 'wagmi' : 'arb1',
       signer: Boolean(signer),
     }
-  }, [infuraProvider, wagmiProvider, signer])
+  }, [arb1Provider, wagmiProvider, signer])
 }

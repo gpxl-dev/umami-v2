@@ -25,7 +25,7 @@ export function useBalances() {
 
   const fetchBalances = React.useCallback(async () => {
     try {
-      if (contracts.providerType === 'infura' || !isArbitrum || !account) {
+      if (contracts.providerType === 'arb1' || !isArbitrum || !account) {
         return initialData
       }
 
@@ -50,5 +50,6 @@ export function useBalances() {
   return useQuery('balances', fetchBalances, {
     initialData: queryClient.getQueryData('balances') ?? initialData,
     refetchInterval: 10000,
+    enabled: !!account,
   })
 }
