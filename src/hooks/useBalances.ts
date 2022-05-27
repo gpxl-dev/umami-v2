@@ -44,12 +44,13 @@ export function useBalances() {
     } catch (err) {
       console.log(err)
       notify('Unable to fetch token balances', 'error')
+      return initialData
     }
   }, [contracts, isArbitrum, initialData, account, notify])
 
   return useQuery('balances', fetchBalances, {
     initialData: queryClient.getQueryData('balances') ?? initialData,
-    refetchInterval: 10000,
+    refetchInterval: 30000,
     enabled: !!account && isArbitrum,
   })
 }

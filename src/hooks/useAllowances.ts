@@ -25,7 +25,7 @@ export function useAllowances() {
 
   const fetchAllowances = React.useCallback(async () => {
     try {
-      if (contracts.providerType === 'arb1' || !isArbitrum || !account) {
+      if (!isArbitrum || !account) {
         return initialData
       }
 
@@ -54,12 +54,13 @@ export function useAllowances() {
     } catch (err) {
       console.log(err)
       notify('Unable to fetch token allowances', 'error')
+      return initialData
     }
   }, [contracts, isArbitrum, initialData, account, notify])
 
   return useQuery('allowances', fetchAllowances, {
     initialData: queryClient.getQueryData('allowances') ?? initialData,
-    refetchInterval: 40000,
+    refetchInterval: 30000,
     enabled: !!account && isArbitrum,
   })
 }

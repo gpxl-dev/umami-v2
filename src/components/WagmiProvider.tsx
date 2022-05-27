@@ -1,16 +1,16 @@
 import React from 'react'
 import { WagmiConfig, createClient, chain, configureChains } from 'wagmi'
-import { infuraProvider } from 'wagmi/providers/infura'
 import { publicProvider } from 'wagmi/providers/public'
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
 
-const infuraId = process.env.REACT_APP_INFURA_ID
+import { INFURA_RPC_URL } from '../constants'
 
 const { chains, provider } = configureChains(
   [chain.arbitrum],
-  [infuraProvider({ infuraId, priority: 1 }), publicProvider({ priority: 0 })]
+  [publicProvider()],
+  { stallTimeout: 30000 }
 )
 
 const wagmiClient = createClient({
@@ -21,7 +21,7 @@ const wagmiClient = createClient({
       chains,
       options: {
         appName: 'umami.finance',
-        jsonRpcUrl: `https://arbitrum-mainnet.infura.io/v3/${infuraId}`,
+        jsonRpcUrl: INFURA_RPC_URL,
       },
     }),
     new WalletConnectConnector({
@@ -29,7 +29,7 @@ const wagmiClient = createClient({
       options: {
         qrcode: true,
         rpc: {
-          1: `https://arbitrum-mainnet.infura.io/v3/${infuraId}`,
+          1: INFURA_RPC_URL,
         },
       },
     }),
