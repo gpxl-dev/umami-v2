@@ -33,9 +33,15 @@ export default function Marinate() {
   }, [apiData])
 
   const apyPill = React.useMemo(() => {
-    return marinateAPY ? (
-      <Pill className="mt-8 m-auto w-48 text-2xl">~{marinateAPY}% APY</Pill>
-    ) : null
+    return (
+      <Pill
+        className={`mt-8 m-auto text-2xl ${
+          marinateAPY ? 'w-48' : 'w-72 text-lg'
+        }`}
+      >
+        {marinateAPY ? `~${marinateAPY}% APY ` : 'Typically 10+% APY'}
+      </Pill>
+    )
   }, [marinateAPY])
 
   const formActionButton = React.useMemo(() => {

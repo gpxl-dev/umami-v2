@@ -25,7 +25,7 @@ export default function Earn() {
 
   const marinateAPY = React.useMemo(() => {
     if (!apiData?.marinate.apy) {
-      return '20+% APY Typically'
+      return '10+% APY Typically'
     }
 
     return `~${apiData?.marinate.apy}% APY`
@@ -33,7 +33,7 @@ export default function Earn() {
 
   const compoundAPY = React.useMemo(() => {
     if (!apiData?.cmUmamiBooster.totalApy) {
-      return '30+% APY Typically'
+      return '20+% APY Typically'
     }
 
     return `~${apiData?.cmUmamiBooster.totalApy}% APY`
