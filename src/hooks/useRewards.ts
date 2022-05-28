@@ -31,7 +31,9 @@ export function useRewards() {
 
   const getMarinateRewards = React.useCallback(async () => {
     try {
-      if (!account || !signer || !isArbitrum) {
+      if (!account || !signer) {
+        console.log({ account, signer })
+        console.log('return initial rewards')
         return initialMarinateRewards
       }
       const [rewardToken1, rewardToken2] = await Promise.all([
@@ -49,37 +51,48 @@ export function useRewards() {
         signer
       )
 
-      const [token1Symbol, token2Symbol, token1Rewards, token2Rewards, token1Decimals, token2Decimals] =
-        await Promise.all([
-          token1Contract.symbol(),
-          token2Contract.symbol(),
-          contracts.mumami.getAvailableTokenRewards(
-            account?.address,
-            rewardToken1
-          ),
-          contracts.mumami.getAvailableTokenRewards(
-            account?.address,
-            rewardToken2
-          ),
-          token1Contract.decimals(),
-          token2Contract.decimals(),
-        ])
+      const [
+        token1Symbol,
+        token2Symbol,
+        token1Rewards,
+        token2Rewards,
+        token1Decimals,
+        token2Decimals,
+      ] = await Promise.all([
+        token1Contract.symbol(),
+        token2Contract.symbol(),
+        contracts.mumami.getAvailableTokenRewards(
+          account?.address,
+          rewardToken1
+        ),
+        contracts.mumami.getAvailableTokenRewards(
+          account?.address,
+          rewardToken2
+        ),
+        token1Contract.decimals(),
+        token2Contract.decimals(),
+      ])
 
       return [
         {
           token: token1Symbol,
-          amount: Number(ethers.utils.formatUnits(token1Rewards, token1Decimals)),
+          amount: Number(
+            ethers.utils.formatUnits(token1Rewards, token1Decimals)
+          ),
         },
         {
           token: token2Symbol,
-          amount: Number(ethers.utils.formatUnits(token2Rewards, token2Decimals)),
+          amount: Number(
+            ethers.utils.formatUnits(token2Rewards, token2Decimals)
+          ),
         },
       ]
     } catch (err) {
       console.log(err)
       notify('Unable to fetch available Marinate rewards', 'error')
+      return initialMarinateRewards
     }
-  }, [account, isArbitrum, initialMarinateRewards, contracts, notify, signer])
+  }, [account, initialMarinateRewards, contracts, notify, signer])
 
   const getAllRewards = React.useCallback(async () => {
     const mumami = await getMarinateRewards()
@@ -91,7 +104,7 @@ export function useRewards() {
     initialData: queryClient.getQueryData('rewards') ?? {
       mumami: initialMarinateRewards,
     },
-    refetchInterval: 60000,
-    enabled: !!account && isArbitrum,
+    refetchInterval: 30000,
+    enabled: !!account && !!signer && isArbitrum,
   })
 }

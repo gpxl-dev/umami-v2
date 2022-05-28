@@ -31,7 +31,8 @@ export function useDeposits() {
         }
 
         const stakeValue = ethers.utils.parseUnits(amount, 9)
-        await contracts.mumami.stake(stakeValue)
+        const tx = await contracts.mumami.stake(stakeValue)
+        console.log(tx)
         notify('Staking transaction initiated', 'info')
       } catch (err) {
         console.log(err)

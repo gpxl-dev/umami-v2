@@ -11,6 +11,7 @@ import { useApprovals } from '../hooks/useApprovals'
 import { useAPI } from '../hooks/useAPI'
 import { useActions } from '../hooks/useActions'
 import { useBalances } from '../hooks/useBalances'
+import { useClaimRewards } from '../hooks/useClaimRewards'
 import { useDeposits } from '../hooks/useDeposits'
 import { useMarinateWithdrawStatus } from '../hooks/useMarinateWithdrawStatus'
 import { useRewards } from '../hooks/useRewards'
@@ -27,6 +28,7 @@ export default function Marinate() {
   const { approveUmami } = useApprovals()
   const { marinateUmami } = useDeposits()
   const { withdrawMarinatedUmami } = useWithdraws()
+  const { claimMarinateRewards } = useClaimRewards()
 
   const marinateAPY = React.useMemo(() => {
     return apiData?.marinate.apy ?? null
@@ -183,6 +185,7 @@ export default function Marinate() {
                               <Button
                                 className="mt-2 md:mt-0 text-xl"
                                 disabled={isClaimDisabled}
+                                onClick={claimMarinateRewards}
                               >
                                 Claim Rewards
                               </Button>
