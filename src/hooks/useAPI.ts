@@ -19,7 +19,10 @@ export function useAPI() {
   }, [notify])
 
   return useQuery('apiData', fetchData, {
-    initialData: queryClient.getQueryData('apiData') ?? null,
+    initialData: queryClient.getQueryData('apiData') ?? {
+      marinate: { apr: 0, apy: 0 },
+      tvl: 0,
+    },
     refetchInterval: 60000,
   })
 }

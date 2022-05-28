@@ -8,6 +8,7 @@ import NotFound from './pages/NotFound'
 import Landing from './pages/Landing'
 import Earn from './pages/Earn'
 import Marinate from './pages/Marinate'
+import Compound from './pages/Compound'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -32,6 +33,7 @@ function App() {
             <Route index element={<Landing />} />
             <Route path="app" element={<Earn />} />
             <Route path="app/marinate" element={<Marinate />} />
+            <Route path="app/compound" element={<Compound />} />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>

@@ -24,27 +24,27 @@ export default function Marinate() {
   const { data: balances } = useBalances()
   const { data: allowances } = useAllowances()
   const { data: rewards } = useRewards()
-  const { data: marinateWithdrawEnabled } = useMarinateWithdrawStatus()
+  const { data: marinateWithdrawStatus } = useMarinateWithdrawStatus()
   const { approveUmami } = useApprovals()
   const { marinateUmami } = useDeposits()
   const { withdrawMarinatedUmami } = useWithdraws()
   const { claimMarinateRewards } = useClaimRewards()
 
-  const marinateAPY = React.useMemo(() => {
-    return apiData?.marinate.apy ?? null
+  const marinateAPR = React.useMemo(() => {
+    return apiData?.marinate.apr ?? null
   }, [apiData])
 
   const apyPill = React.useMemo(() => {
     return (
       <Pill
         className={`mt-8 m-auto text-2xl ${
-          marinateAPY ? 'w-48' : 'w-72 text-lg'
+          marinateAPR ? 'w-48' : 'w-72 text-lg'
         }`}
       >
-        {marinateAPY ? `~${marinateAPY}% APY ` : 'Typically 10+% APY'}
+        {marinateAPR ? `~${marinateAPR}% APY ` : 'Typically 10+% APR'}
       </Pill>
     )
-  }, [marinateAPY])
+  }, [marinateAPR])
 
   const formActionButton = React.useMemo(() => {
     const className = 'md:mr-2 text-xl'
@@ -53,7 +53,9 @@ export default function Marinate() {
       <Button
         type="submit"
         className={className}
-        disabled={action === 'withdraw' && !marinateWithdrawEnabled}
+        disabled={
+          action === 'withdraw' && !marinateWithdrawStatus?.withdrawEnabled
+        }
       >
         {action === 'deposit' ? 'Marinate' : 'Withdraw'}
       </Button>
@@ -62,7 +64,7 @@ export default function Marinate() {
         Approve
       </Button>
     )
-  }, [allowances, approveUmami, action, marinateWithdrawEnabled])
+  }, [allowances, approveUmami, action, marinateWithdrawStatus])
 
   const isClaimDisabled = React.useMemo(() => {
     return (
@@ -117,9 +119,9 @@ export default function Marinate() {
             </div>
 
             <p className="mt-8 leading-loose">
-              Marinate to collect passive-income in ETH from Umami’s protocol
-              revenue or Autocompound ETH income into boosted UMAMI and ARBIS
-              rewards.
+              Stake your UMAMI for mUMAMI to earn your share of treasury yields.
+              Rewards are paid in wETH. You can collect your rewards at any
+              time, but you can only withdraw on the 1st of every month.
             </p>
 
             <p className="underline font-semibold mt-8">

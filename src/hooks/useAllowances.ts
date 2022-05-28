@@ -25,10 +25,6 @@ export function useAllowances() {
 
   const fetchAllowances = React.useCallback(async () => {
     try {
-      if (!isArbitrum || !account) {
-        return initialData
-      }
-
       const address = account?.address
       const [
         umamiBalance,
@@ -56,7 +52,7 @@ export function useAllowances() {
       notify('Unable to fetch token allowances', 'error')
       return initialData
     }
-  }, [contracts, isArbitrum, initialData, account, notify])
+  }, [contracts, initialData, account, notify])
 
   return useQuery('allowances', fetchAllowances, {
     initialData: queryClient.getQueryData('allowances') ?? initialData,

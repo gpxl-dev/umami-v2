@@ -25,10 +25,6 @@ export function useBalances() {
 
   const fetchBalances = React.useCallback(async () => {
     try {
-      if (contracts.providerType === 'arb1' || !isArbitrum || !account) {
-        return initialData
-      }
-
       const address = account?.address
       const [umamiBalance, mumamiBalance, cmumamiBalance] = await Promise.all([
         contracts.umami.balanceOf(address),
@@ -46,7 +42,7 @@ export function useBalances() {
       notify('Unable to fetch token balances', 'error')
       return initialData
     }
-  }, [contracts, isArbitrum, initialData, account, notify])
+  }, [contracts, initialData, account, notify])
 
   return useQuery('balances', fetchBalances, {
     initialData: queryClient.getQueryData('balances') ?? initialData,

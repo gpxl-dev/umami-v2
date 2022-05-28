@@ -11,27 +11,12 @@ import AccountButton from './AccountButton'
 import { NAV_LINKS } from '../constants'
 
 const MobileNavigationContainer = styled.div`
-  animation: 0.2s slide-down linear;
   background: #000000;
   background-image: url("/assets/umami-finance-neotokyo-bg.png");
   background-attachment: fixed;
   background-repeat: no-repeat;
   background-size: auto 100%;
   background-position: top left;
-
-  @media (min-width: 450px) {
-    background-size: cover;
-  }
-
-  @keyframes slide-down {
-    from {
-      transform: translateY(-100%);
-    }
-
-    to {
-      transform: translateY(0%);
-    }
-  }
 `
 
 export default function MobileNavigation() {

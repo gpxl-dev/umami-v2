@@ -4,6 +4,7 @@ import { useNotifications } from 'reapop'
 import { useQueryClient } from 'react-query'
 
 import { useContracts } from './useContracts'
+import { useIsArbitrum } from './useIsArbitrum'
 
 export function useClaimRewards() {
   const { data: signer } = useSigner()
@@ -11,11 +12,20 @@ export function useClaimRewards() {
   const queryClient = useQueryClient()
 
   const contracts = useContracts()
+  const isArbitrum = useIsArbitrum()
 
   const claimMarinateRewards = React.useCallback(async () => {
     try {
       if (!signer) {
         throw new Error('no signer')
+      }
+
+      if (!isArbitrum) {
+        notify(
+          'Please switch network to Arbitrum to claim your rewards',
+          'error'
+        )
+        throw new Error('wrong network')
       }
 
       const { wait } = await contracts.mumami.claimRewards()
@@ -26,7 +36,7 @@ export function useClaimRewards() {
     } catch (err) {
       notify('Error claiming Marinate rewards')
     }
-  }, [signer, contracts, notify, queryClient])
+  }, [signer, contracts, isArbitrum, notify, queryClient])
 
   return { claimMarinateRewards }
 }

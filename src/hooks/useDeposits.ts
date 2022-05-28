@@ -5,12 +5,15 @@ import { useNotifications } from 'reapop'
 import { useQueryClient } from 'react-query'
 
 import { useContracts } from './useContracts'
+import { useIsArbitrum } from './useIsArbitrum'
 
 export function useDeposits() {
   const { data: account } = useAccount()
   const { notify } = useNotifications()
-  const contracts = useContracts()
   const queryClient = useQueryClient()
+
+  const contracts = useContracts()
+  const isArbitrum = useIsArbitrum()
 
   const marinateUmami = React.useCallback(
     async (amount: string) => {
@@ -19,6 +22,15 @@ export function useDeposits() {
           notify('Please connect wallet to marinate your UMAMI', 'error')
           throw new Error('stake() needs a signer')
         }
+
+        if (!isArbitrum) {
+          notify(
+            'Please switch network to Arbitrum to marinate your UMAMI',
+            'error'
+          )
+          throw new Error('wrong network')
+        }
+
         const [stakeEnabled, totalStaked, depositLimit] = await Promise.all([
           contracts.mumami.stakeEnabled(),
           contracts.mumami.totalStaked(),
@@ -43,7 +55,7 @@ export function useDeposits() {
         notify('Unable to stake at this time', 'error')
       }
     },
-    [account, contracts, notify, queryClient]
+    [account, contracts, isArbitrum, notify, queryClient]
   )
 
   return { marinateUmami }

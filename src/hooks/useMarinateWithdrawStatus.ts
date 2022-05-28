@@ -16,11 +16,8 @@ export function useMarinateWithdrawStatus() {
 
   const getWithdrawStatus = React.useCallback(async () => {
     try {
-      if (!contracts?.mumami) {
-        return false
-      }
-
-      return await contracts?.mumami.withdrawEnabled()
+      const withdrawEnabled = await contracts?.mumami.withdrawEnabled()
+      return { withdrawEnabled }
     } catch (err) {
       console.log(err)
       notify('Unable to check if Marinate withdraw is enabled')
@@ -28,8 +25,9 @@ export function useMarinateWithdrawStatus() {
   }, [contracts, notify])
 
   return useQuery('marinateWithdrawEnabled', getWithdrawStatus, {
-    initialData:
-      queryClient.getQueryData('marinateWithdrawEnabled') ?? false,
-    enabled: !!account && isArbitrum,
+    initialData: queryClient.getQueryData('marinateWithdrawEnabled') ?? {
+      withdrawEnabled: false,
+    },
+    enabled: !!account && isArbitrum && !!contracts.mumami,
   })
 }

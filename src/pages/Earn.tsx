@@ -23,20 +23,20 @@ export default function Earn() {
     return Intl.NumberFormat('en-US').format(Math.floor(estRevenue))
   }, [apiData, isApiError])
 
-  const marinateAPY = React.useMemo(() => {
+  const marinateAPR = React.useMemo(() => {
+    if (!apiData?.marinate.apr) {
+      return '10+% APR Typically'
+    }
+
+    return `~${apiData?.marinate.apr}% APR`
+  }, [apiData])
+
+  const compoundAPY = React.useMemo(() => {
     if (!apiData?.marinate.apy) {
       return '10+% APY Typically'
     }
 
     return `~${apiData?.marinate.apy}% APY`
-  }, [apiData])
-
-  const compoundAPY = React.useMemo(() => {
-    if (!apiData?.cmUmamiBooster.totalApy) {
-      return '20+% APY Typically'
-    }
-
-    return `~${apiData?.cmUmamiBooster.totalApy}% APY`
   }, [apiData])
 
   const earnHeader = React.useMemo(() => {
@@ -92,7 +92,7 @@ export default function Earn() {
             >
               <EarnCard.Header text="Marinate" />
 
-              <EarnCard.SubHeader>{marinateAPY}</EarnCard.SubHeader>
+              <EarnCard.SubHeader>{marinateAPR}</EarnCard.SubHeader>
 
               <EarnCard.Content>
                 <div className="flex flex-col justify-between min-h-[150px]">

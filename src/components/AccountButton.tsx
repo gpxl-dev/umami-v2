@@ -127,16 +127,20 @@ export default function AccountButton() {
     ) : null
   }, [account, disconnect])
 
+  const switchNetworkButton = React.useMemo(() => {
+    return account && !isArbitrum ? (
+      <Button className="mt-4" onClick={() => switchNetwork?.(ARBITRUM_ID)}>
+        Switch to Arbitrum
+      </Button>
+    ) : null
+  }, [account, isArbitrum, switchNetwork])
+
   return (
     <Modal trigger={triggerButton}>
       <strong className="block text-center text-lg w-full">{modalTitle}</strong>
       {account ? accountDisplay : connectOptions}
       {disconnectButton}
-      {!isArbitrum ? (
-        <Button className="mt-4" onClick={() => switchNetwork?.(ARBITRUM_ID)}>
-          Switch to Arbitrum
-        </Button>
-      ) : null}
+      {switchNetworkButton}
     </Modal>
   )
 }
