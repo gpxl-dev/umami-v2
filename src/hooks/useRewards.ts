@@ -104,7 +104,6 @@ export function useRewards() {
     initialData: queryClient.getQueryData('rewards') ?? {
       mumami: initialMarinateRewards,
     },
-    refetchInterval: 30000,
     enabled: !!account && !!signer && isArbitrum,
   })
 }

@@ -31,6 +31,5 @@ export function useMarinateWithdrawStatus() {
     initialData:
       queryClient.getQueryData('marinateWithdrawEnabled') ?? false,
     enabled: !!account && isArbitrum,
-    refetchInterval: 300000,
   })
 }

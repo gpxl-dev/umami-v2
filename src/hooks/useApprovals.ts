@@ -2,6 +2,7 @@ import React from 'react'
 import { ethers } from 'ethers'
 import { useAccount } from 'wagmi'
 import { useNotifications } from 'reapop'
+import { useQueryClient } from 'react-query'
 
 import { useBalances } from './useBalances'
 import { useContracts } from './useContracts'
@@ -10,6 +11,7 @@ import { TOKEN_ADDRESSES } from '../constants'
 export function useApprovals() {
   const { data: account } = useAccount()
   const { notify } = useNotifications()
+  const queryClient = useQueryClient()
 
   const { data: balances } = useBalances()
   const contracts = useContracts()
@@ -23,11 +25,15 @@ export function useApprovals() {
         String(Number(balances?.umami) + 1),
         9
       )
-      await contracts.umami.approve(TOKEN_ADDRESSES.mumami, approvalAmount)
+      const { wait } = await contracts.umami.approve(TOKEN_ADDRESSES.mumami, approvalAmount)
+      notify('UMAMI Approval transaction initiated', 'info')
+      await wait()
+      queryClient.invalidateQueries('allowances')
+      notify('UMAMI spend approved', 'success')
     } catch (err) {
       notify('Error approving UMAMI, please try again', 'error')
     }
-  }, [account, notify, balances, contracts])
+  }, [account, notify, balances, contracts, queryClient])
 
   const approveMumami = React.useCallback(async () => {
     try {
@@ -38,12 +44,19 @@ export function useApprovals() {
         String(Number(balances?.mumami) + 1),
         9
       )
-      await contracts.mumami.approve(TOKEN_ADDRESSES.cmumami, approvalAmount)
+      const { wait } = await contracts.mumami.approve(
+        TOKEN_ADDRESSES.cmumami,
+        approvalAmount
+      )
+      notify('mUMAMI Approval transaction initiated', 'info')
+      await wait()
+      queryClient.invalidateQueries('allowances')
+      notify('mUMAMI spend approved', 'success')
     } catch (err) {
       console.log(err)
       notify('Error approving mUMAMI, please try again', 'error')
     }
-  }, [account, notify, balances, contracts])
+  }, [account, notify, balances, contracts, queryClient])
 
   const approveCmumami = React.useCallback(async () => {
     try {

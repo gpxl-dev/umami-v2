@@ -2,6 +2,7 @@ import React from 'react'
 import { ethers } from 'ethers'
 import { useAccount } from 'wagmi'
 import { useNotifications } from 'reapop'
+import { useQueryClient } from 'react-query'
 
 import { useContracts } from './useContracts'
 
@@ -9,6 +10,7 @@ export function useDeposits() {
   const { data: account } = useAccount()
   const { notify } = useNotifications()
   const contracts = useContracts()
+  const queryClient = useQueryClient()
 
   const marinateUmami = React.useCallback(
     async (amount: string) => {
@@ -31,15 +33,17 @@ export function useDeposits() {
         }
 
         const stakeValue = ethers.utils.parseUnits(amount, 9)
-        const tx = await contracts.mumami.stake(stakeValue)
-        console.log(tx)
+        const { wait } = await contracts.mumami.stake(stakeValue)
         notify('Staking transaction initiated', 'info')
+        await wait()
+        notify('Staked!', 'success')
+        queryClient.invalidateQueries('balances')
       } catch (err) {
         console.log(err)
         notify('Unable to stake at this time', 'error')
       }
     },
-    [account, contracts, notify]
+    [account, contracts, notify, queryClient]
   )
 
   return { marinateUmami }

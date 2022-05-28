@@ -50,7 +50,6 @@ export function useBalances() {
 
   return useQuery('balances', fetchBalances, {
     initialData: queryClient.getQueryData('balances') ?? initialData,
-    refetchInterval: 30000,
     enabled: !!account && isArbitrum,
   })
 }

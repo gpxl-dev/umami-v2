@@ -60,7 +60,6 @@ export function useAllowances() {
 
   return useQuery('allowances', fetchAllowances, {
     initialData: queryClient.getQueryData('allowances') ?? initialData,
-    refetchInterval: 30000,
     enabled: !!account && isArbitrum,
   })
 }

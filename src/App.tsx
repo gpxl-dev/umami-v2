@@ -14,6 +14,7 @@ const queryClient = new QueryClient({
     queries: {
       retry: 3,
       refetchOnWindowFocus: process.env.NODE_ENV === 'production',
+      refetchInterval: false,
       refetchOnReconnect: false,
       retryDelay(attempt) {
         return attempt * 5000

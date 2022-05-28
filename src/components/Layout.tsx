@@ -9,6 +9,7 @@ import Footer from './Footer'
 
 const GlobalStyle = createGlobalStyle`
   body {
+    background-color: #000000;
     background-image: url('/assets/umami-finance-neotokyo-bg.png');
     background-attachment: fixed;
     background-repeat: no-repeat;
