@@ -32,10 +32,9 @@ export function useRewards() {
   const getMarinateRewards = React.useCallback(async () => {
     try {
       if (!account || !signer) {
-        console.log({ account, signer })
-        console.log('return initial rewards')
-        return initialMarinateRewards
+        throw new Error('No signer or no account to check rewards for')
       }
+
       const [rewardToken1, rewardToken2] = await Promise.all([
         contracts.mumami.rewardTokens(0),
         contracts.mumami.rewardTokens(1),

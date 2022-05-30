@@ -1,8 +1,8 @@
 import React from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { NotificationsProvider } from 'reapop'
-import { QueryClient, QueryClientProvider } from 'react-query'
 
+import QueryProvider from './components/QueryProvider'
 import Layout from './components/Layout'
 import NotFound from './pages/NotFound'
 import Landing from './pages/Landing'
@@ -10,23 +10,9 @@ import Earn from './pages/Earn'
 import Marinate from './pages/Marinate'
 import Compound from './pages/Compound'
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: 3,
-      refetchOnWindowFocus: process.env.NODE_ENV === 'production',
-      refetchInterval: false,
-      refetchOnReconnect: false,
-      retryDelay(attempt) {
-        return attempt * 5000
-      },
-    },
-  },
-})
-
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
+    <QueryProvider>
       <NotificationsProvider>
         <Routes>
           <Route path="/" element={<Layout />}>
@@ -38,7 +24,7 @@ function App() {
           </Route>
         </Routes>
       </NotificationsProvider>
-    </QueryClientProvider>
+    </QueryProvider>
   )
 }
 

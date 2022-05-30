@@ -1,5 +1,6 @@
 import React from 'react'
 import { WagmiConfig, createClient, chain, configureChains } from 'wagmi'
+import { infuraProvider } from 'wagmi/providers/infura'
 import { publicProvider } from 'wagmi/providers/public'
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
@@ -9,7 +10,16 @@ import { INFURA_RPC_URL } from '../constants'
 
 const { chains, provider } = configureChains(
   [chain.arbitrum],
-  [publicProvider()],
+  [
+    publicProvider({ pollingInterval: 10000 }),
+    infuraProvider({
+      pollingInterval: 10000,
+    }),
+    infuraProvider({
+      infuraId: process.env.REACT_PUBLIC_INFURA_ID,
+      pollingInterval: 10000,
+    }),
+  ],
   { stallTimeout: 30000 }
 )
 

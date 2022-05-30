@@ -3,9 +3,11 @@ import { Link } from 'react-router-dom'
 import Pill from '../components/Pill'
 
 import { useAPI } from '../hooks/useAPI'
+import { useTotalCompoundingMumami } from '../hooks/useTotalCompoundingMumami'
 
 export default function Compound() {
   const { data: apiData } = useAPI()
+  const { data: totalCompoundingMumami } = useTotalCompoundingMumami()
 
   const compoundAPY = React.useMemo(() => {
     return apiData?.marinate.apy ?? null
@@ -13,15 +15,19 @@ export default function Compound() {
 
   const apyPill = React.useMemo(() => {
     return (
-      <Pill
-        className={`mt-8 m-auto text-2xl ${
-          compoundAPY ? 'w-48' : 'w-72 text-lg'
-        }`}
-      >
+      <Pill className="mt-8 m-auto text-xl">
         {compoundAPY ? `~${compoundAPY}% APY ` : 'Typically 10+% APY'}
       </Pill>
     )
   }, [compoundAPY])
+
+  const compoundingPill = React.useMemo(() => {
+    return typeof totalCompoundingMumami === 'string' ? (
+      <Pill className="mt-8 text-xl m-auto uppercase">
+        ~{Math.floor(Number(totalCompoundingMumami))} mUMAMI Deposited
+      </Pill>
+    ) : null
+  }, [totalCompoundingMumami])
 
   return (
     <main>
@@ -34,13 +40,17 @@ export default function Compound() {
           <strong> mUMAMI </strong>
           <span>and maximize your passive income</span>
         </p>
-
-        {apyPill}
       </header>
+
+      <div className="max-w-6xl px-4 m-auto text-center md:grid md:grid-cols-3 md:gap-4">
+        {apyPill}
+
+        {compoundingPill}
+      </div>
 
       <section>
         <div className="bg-white mt-8 py-8 w-full">
-          <div className="m-auto max-w-2xl px-4 w-full min-h-[500px]">
+          <div className="m-auto max-w-6xl px-4 w-full">
             <div className="font-semibold text-gray-600 uppercase">
               <Link to="/app" className="underline">
                 /app
@@ -48,10 +58,12 @@ export default function Compound() {
               /compound
             </div>
 
-            <p className="mt-8 leading-loose">
-              Autocompound your $mUMAMI your for higher APY. Deposit and
-              withdraw at any time.
-            </p>
+            <div className="mt-4 md:grid md:grid-cols-2 md:gap-4">
+              <p className="mt-8 leading-loose">
+                Autocompound your $mUMAMI your for higher APY. Deposit and
+                withdraw at any time.
+              </p>
+            </div>
           </div>
         </div>
       </section>

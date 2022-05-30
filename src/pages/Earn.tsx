@@ -5,23 +5,14 @@ import EarnCard from '../components/EarnCard'
 import Button from '../components/Button'
 import { useUmamiPrice } from '../hooks/useUmamiPrice'
 import { useAPI } from '../hooks/useAPI'
+import { useEstProtocolRevenue } from '../hooks/useEstProtocolRevenue'
 
 export default function Earn() {
   const { data: umamiPrice } = useUmamiPrice()
 
-  const { data: apiData, isError: isApiError } = useAPI()
+  const { data: apiData } = useAPI()
 
-  const estMonthlyRevenue = React.useMemo(() => {
-    if (!apiData || !apiData?.tvl || isApiError) {
-      return null
-    }
-
-    // total treasury APR
-    const apr = 0.39731
-    const estRevenue = (Number(apiData?.tvl) * apr) / 12
-
-    return Intl.NumberFormat('en-US').format(Math.floor(estRevenue))
-  }, [apiData, isApiError])
+  const estMonthlyRevenue = useEstProtocolRevenue()
 
   const marinateAPR = React.useMemo(() => {
     if (!apiData?.marinate.apr) {
@@ -101,8 +92,9 @@ export default function Earn() {
                       Deposit your <strong>UMAMI</strong> for
                     </span>
                     <strong> mUMAMI </strong>
-                    <span>and earn daily passive income in </span>
-                    <strong>ETH</strong>
+                    <span>and earn steady passive income in</span>
+                    <strong> ETH </strong>
+                    <span>from Umami's protocol revenue.</span>
                   </p>
 
                   <div className="mt-4">
@@ -131,9 +123,11 @@ export default function Earn() {
               <EarnCard.Content>
                 <div className="flex flex-col justify-between min-h-[150px]">
                   <p>
-                    <span>Earn boosted rewards in</span>
+                    <span>Compound</span>
+                    <strong> ETH </strong>
+                    <span>rewards for more</span>
                     <strong> mUMAMI </strong>
-                    <span>and maximize your passive income</span>
+                    <span>to maximize your passive income potential.</span>
                   </p>
 
                   <div className="mt-4">

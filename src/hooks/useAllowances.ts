@@ -29,23 +29,18 @@ export function useAllowances() {
       const [
         umamiBalance,
         mumamiBalance,
-        cmumamiBalance,
         umamiAllowance,
         mumamiAllowance,
-        cmumamiAllowance,
       ] = await Promise.all([
         contracts.umami.balanceOf(address),
         contracts.mumami.balanceOf(address),
-        contracts.cmumami.balanceOf(address),
         contracts.umami.allowance(address, TOKEN_ADDRESSES.mumami),
         contracts.mumami.allowance(address, TOKEN_ADDRESSES.cmumami),
-        contracts.cmumami.allowance(address, TOKEN_ADDRESSES.cmumamiBooster),
       ])
 
       return {
         umami: umamiAllowance.gt(0) && umamiAllowance.gt(umamiBalance),
         mumami: mumamiAllowance.gt(0) && mumamiAllowance.gt(mumamiBalance),
-        cmumami: cmumamiAllowance.gt(0) && cmumamiAllowance.gt(cmumamiBalance),
       }
     } catch (err) {
       console.log(err)
