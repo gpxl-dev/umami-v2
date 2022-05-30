@@ -28,15 +28,14 @@ export default function Landing() {
 
       <section>
         <div className="bg-white p-4 py-12">
-          <div className="flex flex-col items-center justify-center max-w-md m-auto">
+          <div className="flex flex-col items-center justify-center max-w-3xl m-auto">
             <p className="text-center text-lg">
               Umami’s expanding menu of strategy vaults and staking options
-              offers sustainable, risk-hedged passive-income in ETH sourced from
+              offers sustainable, risk-hedged passive income in ETH sourced from
               across Arbitrum’s DeFi ecosystem.
             </p>
-
-            <LandingPartners />
           </div>
+          <LandingPartners />
         </div>
       </section>
     </main>

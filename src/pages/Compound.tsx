@@ -51,7 +51,7 @@ export default function Compound() {
   const tokensPerSharePill = React.useMemo(() => {
     return tokensPerShare ? (
       <Pill className="mt-8 text-xl m-auto uppercase">
-        {Number(tokensPerShare).toFixed(2)} cMUMAMI : 1 UMAMI
+        {Number(tokensPerShare).toFixed(3)} cMUMAMI : 1 UMAMI
       </Pill>
     ) : null
   }, [tokensPerShare])
@@ -174,7 +174,16 @@ export default function Compound() {
                                     >
                                       Balance: {balances?.mumami.toFixed(2)}
                                     </button>
-                                  ) : null
+                                  ) : (
+                                    <span className="bg-gradient-to-b from-umami-purple to-umami-pink bg-clip-text text-transparent">
+                                      ~
+                                      {(
+                                        Number(tokensPerShare) *
+                                        Number(values.amount)
+                                      ).toFixed(3)}
+                                      <span> mUMAMI </span>
+                                    </span>
+                                  )
                                 }
                                 name="amount"
                               />

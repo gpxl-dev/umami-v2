@@ -114,7 +114,8 @@ export default function MobileNavigation() {
                       <button
                         type="button"
                         className={`uppercase ${
-                          pathname.includes('/app/')
+                          pathname.includes('marinate') ||
+                          pathname.includes('compound')
                             ? 'bg-gradient-to-b from-umami-pink to-umami-purple bg-clip-text text-transparent'
                             : 'text-white'
                         }`}

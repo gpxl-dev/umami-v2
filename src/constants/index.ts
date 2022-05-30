@@ -48,16 +48,6 @@ export const PARTNERS = [
     url: 'https://gmx.io',
   },
   {
-    logo: '/assets/impermax.png',
-    label: 'Impermax',
-    url: 'https://www.impermax.finance/',
-  },
-  {
-    logo: '/assets/swapr.png',
-    label: 'Swapr',
-    url: 'https://swapr.eth.link/#/swap?chainId=42161',
-  },
-  {
     logo: '/assets/socket.png',
     label: 'Socket.tech',
     url: 'https://socket.tech/',
@@ -66,6 +56,11 @@ export const PARTNERS = [
     logo: '/assets/banxa.svg',
     label: 'Banxa',
     url: 'https://banxa.com/',
+  },
+  {
+    logo: '/assets/jones.svg',
+    label: 'Jones DAO',
+    url: 'https://jonesdao.io',
   },
   {
     logo: '/assets/dopex.svg',
