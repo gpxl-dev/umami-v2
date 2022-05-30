@@ -1,4 +1,5 @@
 import React from 'react'
+import { ethers } from 'ethers'
 import { useNotifications } from 'reapop'
 import { useQueryClient } from 'react-query'
 
@@ -51,5 +52,36 @@ export function useWithdraws() {
     }
   }, [contracts, isArbitrum, marinateWithdrawStatus, notify, queryClient])
 
-  return { withdrawMarinatedUmami }
+  const withdrawCompoundingMumami = React.useCallback(
+    async (amount: string) => {
+      try {
+        if (!isArbitrum) {
+          notify('Please connect to Arbitrum to withdraw cmUMAMI', 'error')
+          throw new Error('wrong network')
+        }
+
+        if (!contracts.signer) {
+          notify('Please connect wallet to withdraw cmUMAMI', 'error')
+          throw new Error('No signer')
+        }
+
+        const decimals = await contracts.cmumami.decimals()
+        const withdrawAmount = ethers.utils.parseUnits(amount, decimals)
+        const { wait } = await contracts.cmumami.withdraw(withdrawAmount)
+        notify('Withdraw transaction initiated', 'info')
+        await wait()
+        notify('cmUMAMI Withdrawn!', 'success')
+        queryClient.invalidateQueries('balances')
+      } catch (err) {
+        console.log(err)
+        notify(
+          'Unable to withdraw cmUMAMI at this time. Please try again.',
+          'error'
+        )
+      }
+    },
+    [contracts, isArbitrum, notify, queryClient]
+  )
+
+  return { withdrawMarinatedUmami, withdrawCompoundingMumami }
 }

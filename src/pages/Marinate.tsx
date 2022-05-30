@@ -151,8 +151,8 @@ export default function Marinate() {
               /marinate
             </div>
 
-            <div className="mt-4 md:pr-4 md:grid md:grid-cols-2 md:gap-4">
-              <div className="leading-loose">
+            <div className="mt-4 md:grid md:grid-cols-2 md:gap-4">
+              <div className="leading-loose md:pr-4">
                 <p>
                   Stake your UMAMI for mUMAMI to earn your share of treasury
                   yields. Rewards are paid in wETH. You can collect your rewards
@@ -184,7 +184,7 @@ export default function Marinate() {
 
                 <Link
                   to="/app/compound"
-                  className="block font-semibold underline mt-4 duration-100 hover:text-umami-yellow"
+                  className="block font-semibold underline mt-4 duration-100 text-umami-pink hover:text-umami-yellow"
                 >
                   You can also COMPOUND your mUMAMI to maximize your passive
                   income potential!

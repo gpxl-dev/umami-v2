@@ -31,11 +31,13 @@ export function useDeposits() {
           throw new Error('wrong network')
         }
 
-        const [stakeEnabled, totalStaked, depositLimit] = await Promise.all([
-          contracts.mumami.stakeEnabled(),
-          contracts.mumami.totalStaked(),
-          contracts.mumami.depositLimit(),
-        ])
+        const [stakeEnabled, totalStaked, depositLimit, decimals] =
+          await Promise.all([
+            contracts.mumami.stakeEnabled(),
+            contracts.mumami.totalStaked(),
+            contracts.mumami.depositLimit(),
+            contracts.mumami.decimals(),
+          ])
 
         if (!stakeEnabled || totalStaked.gte(depositLimit)) {
           const message =
@@ -44,7 +46,7 @@ export function useDeposits() {
           throw new Error(message)
         }
 
-        const stakeValue = ethers.utils.parseUnits(amount, 9)
+        const stakeValue = ethers.utils.parseUnits(amount, decimals)
         const { wait } = await contracts.mumami.stake(stakeValue)
         notify('Staking transaction initiated', 'info')
         await wait()
@@ -52,11 +54,36 @@ export function useDeposits() {
         queryClient.invalidateQueries('balances')
       } catch (err) {
         console.log(err)
-        notify('Unable to stake at this time', 'error')
+        notify('Unable to stake UMAMI at this time', 'error')
       }
     },
     [account, contracts, isArbitrum, notify, queryClient]
   )
 
-  return { marinateUmami }
+  const compoundMumami = React.useCallback(
+    async (amount: string) => {
+      try {
+        if (!account || !isArbitrum) {
+          notify(
+            'Please connect wallet on Arbitrum to deposit mUMAMI',
+            'error'
+          )
+          throw new Error('No account or wrong network')
+        }
+        const decimals = await contracts.cmumami.decimals()
+        const depositAmount = ethers.utils.parseUnits(amount, decimals)
+        const { wait } = await contracts.cmumami.deposit(depositAmount)
+        notify('Deposit transaction initiated', 'info')
+        await wait()
+        notify('Deposited!', 'success')
+        queryClient.invalidateQueries('balances')
+      } catch (err) {
+        console.log(err)
+        notify('Unable to deposit mUMAMI at this time', 'error')
+      }
+    },
+    [account, contracts, isArbitrum, notify, queryClient]
+  )
+
+  return { marinateUmami, compoundMumami }
 }

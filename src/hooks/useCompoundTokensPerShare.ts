@@ -21,7 +21,7 @@ export function useCompoundTokensPerShare() {
         bigNumber1
       )
 
-      return ethers.utils.parseUnits(tokensPerShare, decimals)
+      return ethers.utils.formatUnits(tokensPerShare, decimals)
     } catch (err) {
       console.log(err)
       notify('Unable to fetch Compound tokens per share', 'error')

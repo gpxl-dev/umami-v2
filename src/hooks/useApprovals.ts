@@ -21,9 +21,10 @@ export function useApprovals() {
       if (!account) {
         notify('Please connect wallet to approve spend of UMAMI', 'error')
       }
+      const decimals = await contracts.umami.decimals()
       const approvalAmount = ethers.utils.parseUnits(
         String(Number(balances?.umami) + 1),
-        9
+        decimals
       )
       const { wait } = await contracts.umami.approve(TOKEN_ADDRESSES.mumami, approvalAmount)
       notify('UMAMI Approval transaction initiated', 'info')
@@ -40,9 +41,10 @@ export function useApprovals() {
       if (!account) {
         notify('Please connect wallet to approve spend of mUMAMI', 'error')
       }
+      const decimals = await contracts.mumami.decimals()
       const approvalAmount = ethers.utils.parseUnits(
         String(Number(balances?.mumami) + 1),
-        9
+        decimals
       )
       const { wait } = await contracts.mumami.approve(
         TOKEN_ADDRESSES.cmumami,

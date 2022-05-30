@@ -116,7 +116,7 @@ export default function MobileNavigation() {
                         className={`uppercase ${
                           pathname.includes('/app/')
                             ? 'bg-gradient-to-b from-umami-pink to-umami-purple bg-clip-text text-transparent'
-                            : ''
+                            : 'text-white'
                         }`}
                         onClick={isEarnOpen ? closeEarn : openEarn}
                       >
