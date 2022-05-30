@@ -133,7 +133,7 @@ export default function Marinate() {
         </p>
       </header>
 
-      <section className="max-w-6xl px-4 m-auto text-center md:grid md:grid-cols-3">
+      <section className="max-w-6xl px-4 m-auto text-center lg:grid lg:grid-cols-3">
         {aprPill}
 
         {marinatingPill}

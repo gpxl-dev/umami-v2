@@ -1,6 +1,7 @@
 import React from 'react'
-import { useLocation } from 'react-router-dom'
+import { FaExternalLinkAlt } from 'react-icons/fa'
 import ClickAwayListener from 'react-click-away-listener'
+import { useLocation } from 'react-router-dom'
 
 import NavLink from './NavLink'
 import MobileNavigation from './MobileNavigation'
@@ -79,7 +80,9 @@ export default function Navigation() {
                   <button
                     type="button"
                     className={`${
-                      isEarnOpen || appLocation.pathname.includes('/app/')
+                      isEarnOpen ||
+                      appLocation.pathname.includes('marinate') ||
+                      appLocation.pathname.includes('compound')
                         ? activeLinkClasses
                         : 'text-white'
                     } hover:underline uppercase`}
@@ -89,6 +92,40 @@ export default function Navigation() {
                   </button>
                   {earnLinks}
                 </div>
+              </li>
+
+              <li className="mr-4">
+                <NavLink
+                  to="/app/buy"
+                  activeClassName={activeLinkClasses}
+                  className="hover:underline"
+                >
+                  Buy
+                </NavLink>
+              </li>
+
+              <li className="mr-2">
+                <a
+                  href="https://app.uniswap.org/#/swap?chain=arbitrum&inputCurrency=eth&outputCurrency=0x1622bF67e6e5747b81866fE0b85178a93C7F86e3"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:underline"
+                >
+                  <span className="mr-2">Swap</span>
+                  <FaExternalLinkAlt className="inline pb-2" />
+                </a>
+              </li>
+
+              <li>
+                <a
+                  href="https://arbisfinance.gitbook.io/umami-finance/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:underline"
+                >
+                  <span className="mr-2">Docs</span>
+                  <FaExternalLinkAlt className="inline pb-2" />
+                </a>
               </li>
             </ul>
           </nav>

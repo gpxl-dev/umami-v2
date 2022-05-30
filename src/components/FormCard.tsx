@@ -25,6 +25,8 @@ type FormFieldProps = {
   label?: string;
   labelAccent?: ReactNode | string;
   disabled?: boolean;
+  onBlur?: () => void;
+  value?: string | number | boolean;
 };
 
 const ContentContainer = styled.div`
@@ -77,6 +79,7 @@ function FormField({
   label = '',
   labelAccent,
   disabled = false,
+  onBlur,
 }: FormFieldProps) {
   return (
     <label htmlFor={name}>
@@ -94,8 +97,9 @@ function FormField({
         name={name}
         type={type}
         placeholder={placeholder}
-        className="rounded border mt-2 p-2 text-lg font-bold bg-white text-black w-full disabled:cursor-not-allowed"
+        className="rounded border mt-2 px-2 h-10 text-lg font-bold bg-white text-black w-full disabled:cursor-not-allowed"
         disabled={disabled}
+        onBlur={onBlur}
       />
     </label>
   )

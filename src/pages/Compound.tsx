@@ -71,7 +71,7 @@ export default function Compound() {
         </p>
       </header>
 
-      <div className="max-w-6xl px-4 m-auto text-center md:grid md:grid-cols-3 md:gap-4">
+      <div className="max-w-6xl px-4 m-auto text-center lg:grid lg:grid-cols-3 lg:gap-4">
         {apyPill}
 
         {compoundingPill}

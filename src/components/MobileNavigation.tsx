@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { FaExternalLinkAlt } from 'react-icons/fa'
 import { createPortal } from 'react-dom'
 import { useLocation } from 'react-router-dom'
 import { FiMenu } from 'react-icons/fi'
@@ -17,6 +18,10 @@ const MobileNavigationContainer = styled.div`
   background-repeat: no-repeat;
   background-size: auto 100%;
   background-position: top left;
+
+  @media (min-width: 400px) {
+    background-size: cover;
+  }
 `
 
 export default function MobileNavigation() {
@@ -110,10 +115,12 @@ export default function MobileNavigation() {
                         Home
                       </NavLink>
                     </li>
+
                     <li className="mt-4">
                       <button
                         type="button"
                         className={`uppercase ${
+                          isEarnOpen ||
                           pathname.includes('marinate') ||
                           pathname.includes('compound')
                             ? 'bg-gradient-to-b from-umami-pink to-umami-purple bg-clip-text text-transparent'
@@ -124,6 +131,26 @@ export default function MobileNavigation() {
                         Earn
                       </button>
                       {earnOptions}
+                    </li>
+
+                    <li className="mt-4">
+                      <NavLink
+                        to="/app/buy"
+                        activeClassName="bg-gradient-to-b from-umami-pink to-umami-purple bg-clip-text text-transparent"
+                      >
+                        Buy
+                      </NavLink>
+                    </li>
+
+                    <li className="mt-4">
+                      <a
+                        href="https://app.uniswap.org/#/swap?chain=arbitrum&inputCurrency=eth&outputCurrency=0x1622bF67e6e5747b81866fE0b85178a93C7F86e3"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <span className="mr-2">Swap</span>
+                        <FaExternalLinkAlt className="inline pb-4" />
+                      </a>
                     </li>
                   </ul>
                 </nav>
