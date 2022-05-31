@@ -58,7 +58,7 @@ export default function Marinate() {
   const ethRewardedPill = React.useMemo(() => {
     return apiData?.marinate.totalWeth ? (
       <Pill className="mt-8 text-xl m-auto uppercase">
-        {apiData?.marinate?.totalHistoryWeth} ETH Rewarded
+        {apiData?.marinate?.totalHistoryWeth} WETH Rewarded
       </Pill>
     ) : null
   }, [apiData])
@@ -175,7 +175,7 @@ export default function Marinate() {
                 </a>
 
                 <p className="mt-4">
-                  Rewards are paid in wETH. You can collect your rewards at any
+                  Rewards are paid in WETH. You can collect your rewards at any
                   time, but you can only withdraw on the 1st of every month.
                 </p>
 

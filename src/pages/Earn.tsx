@@ -10,25 +10,29 @@ import { useEstProtocolRevenue } from '../hooks/useEstProtocolRevenue'
 export default function Earn() {
   const { data: umamiPrice } = useUmamiPrice()
 
-  const { data: apiData } = useAPI()
+  const { data: apiData, isLoading: isApiLoading } = useAPI()
 
   const estMonthlyRevenue = useEstProtocolRevenue()
 
   const marinateAPR = React.useMemo(() => {
-    if (!apiData?.marinate.apr) {
-      return '10+% APR Typically'
+    if (isApiLoading) {
+      return 'Fetching..'
     }
 
-    return `~${apiData?.marinate.apr}% APR`
-  }, [apiData])
+    return apiData?.marinate?.apr
+      ? `~${apiData?.marinate.apr}% APR`
+      : '10+% APR Typically'
+  }, [apiData, isApiLoading])
 
   const compoundAPY = React.useMemo(() => {
-    if (!apiData?.marinate.apy) {
-      return '10+% APY Typically'
+    if (isApiLoading) {
+      return 'Fetching..'
     }
 
-    return `~${apiData?.marinate.apy}% APY`
-  }, [apiData])
+    return apiData?.marinate?.apy
+      ? `~${apiData?.marinate.apy}% APY`
+      : '10+% APY Typically'
+  }, [apiData, isApiLoading])
 
   const earnHeader = React.useMemo(() => {
     return (
@@ -77,7 +81,7 @@ export default function Earn() {
             <EarnCard
               footer={
                 <div className="p-4 text-white font-display text-center text-2xl">
-                  ETH REWARDS
+                  WETH REWARDS
                 </div>
               }
             >
@@ -93,7 +97,7 @@ export default function Earn() {
                     </span>
                     <strong> mUMAMI </strong>
                     <span>and earn steady passive income in</span>
-                    <strong> ETH </strong>
+                    <strong> WETH </strong>
                     <span>from Umami's protocol revenue.</span>
                   </p>
 
@@ -124,7 +128,7 @@ export default function Earn() {
                 <div className="flex flex-col justify-between min-h-[150px]">
                   <p>
                     <span>Compound</span>
-                    <strong> ETH </strong>
+                    <strong> WETH </strong>
                     <span>rewards for more</span>
                     <strong> mUMAMI </strong>
                     <span>to maximize your passive income potential.</span>

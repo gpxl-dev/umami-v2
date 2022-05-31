@@ -25,7 +25,7 @@ export default function Footer() {
       </div>
 
       <div className="mt-12 text-xs uppercase text-center text-white">
-        {currentYear} Umami Finance
+        &copy; {currentYear} Umami DAO Foundation
       </div>
     </div>
   )

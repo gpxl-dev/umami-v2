@@ -87,7 +87,7 @@ export default function Compound() {
         </h1>
         <p className="max-w-xs text-white m-auto mt-8">
           <span>Compound</span>
-          <strong> ETH </strong>
+          <strong> WETH </strong>
           <span>rewards into more</span>
           <strong> mUMAMI </strong>
           <span>for maximum passive income potential.</span>
@@ -115,7 +115,7 @@ export default function Compound() {
             <div className="mt-4 md:grid md:grid-cols-2 md:gap-4">
               <div className="leading-loose md:pr-4">
                 <p>
-                  Automatically compound your mUMAMI ETH rewards into more
+                  Automatically compound your mUMAMI WETH rewards into more
                   mUMAMI to maximize your passive-income potential.
                 </p>
 

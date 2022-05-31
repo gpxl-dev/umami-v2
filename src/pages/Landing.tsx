@@ -31,7 +31,7 @@ export default function Landing() {
           <div className="flex flex-col items-center justify-center max-w-3xl m-auto">
             <p className="text-center text-lg">
               Umami’s expanding menu of strategy vaults and staking options
-              offers sustainable, risk-hedged passive income in ETH and USDC
+              offers sustainable, risk-hedged passive income in WETH and USDC
               sourced from across Arbitrum’s DeFi ecosystem.
             </p>
           </div>
