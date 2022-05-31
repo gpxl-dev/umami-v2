@@ -1,9 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
-import { FaExternalLinkAlt } from 'react-icons/fa'
 import { createPortal } from 'react-dom'
 import { useLocation } from 'react-router-dom'
 import { FiMenu } from 'react-icons/fi'
+import { FaChevronDown, FaChevronUp } from 'react-icons/fa'
 
 import NavLink from './NavLink'
 import Button from './Button'
@@ -116,21 +116,20 @@ export default function MobileNavigation() {
                       </NavLink>
                     </li>
 
-                    <li className="mt-4">
+                    <li className="mt-4 -mr-8">
                       <button
                         type="button"
-                        className={`uppercase text-white ${
-                          isEarnOpen ||
-                          pathname.includes('marinate') ||
-                          pathname.includes('compound')
-                            ? 'bg-gradient-to-b from-umami-pink to-umami-purple bg-clip-text text-transparent'
-                            : ''
-                        }`}
+                        className="flex items-center uppercase text-white"
                         onClick={isEarnOpen ? closeEarn : openEarn}
                       >
-                        Earn
+                        <span className="mr-4">Earn</span>
+                        {isEarnOpen ? (
+                          <FaChevronUp className="inline text-4xl pb-2" />
+                        ) : (
+                          <FaChevronDown className="inline text-4xl pb-2" />
+                        )}
                       </button>
-                      {earnOptions}
+                      <div className="-ml-8">{earnOptions}</div>
                     </li>
 
                     <li className="mt-4">
@@ -149,7 +148,6 @@ export default function MobileNavigation() {
                         rel="noopener noreferrer"
                       >
                         <span className="mr-2">Swap</span>
-                        <FaExternalLinkAlt className="inline pb-4" />
                       </a>
                     </li>
                   </ul>
@@ -176,15 +174,7 @@ export default function MobileNavigation() {
           document.querySelector('body') as Element
         )
       : null
-  }, [
-    isOpen,
-    openEarn,
-    closeEarn,
-    earnOptions,
-    closeNavigation,
-    isEarnOpen,
-    pathname,
-  ])
+  }, [isOpen, openEarn, closeEarn, earnOptions, closeNavigation, isEarnOpen])
 
   return (
     <>
