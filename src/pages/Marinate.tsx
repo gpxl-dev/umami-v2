@@ -119,6 +119,14 @@ export default function Marinate() {
     }).format(unlockDate)
   }, [])
 
+  const unlockDisplay = React.useMemo(() => {
+    return !marinateWithdrawStatus?.withdrawEnabled ? (
+      <p className="text-center mt-4 uppercase font-black">
+        Next unlock on {nextUnlockDate}
+      </p>
+    ) : null
+  }, [marinateWithdrawStatus, nextUnlockDate])
+
   return (
     <main>
       <header className="text-center w-full mt-8 p-4">
@@ -284,9 +292,7 @@ export default function Marinate() {
                   </FormCard.Content>
                 </FormCard>
 
-                <p className="text-center mt-4 uppercase font-black">
-                  Next unlock on {nextUnlockDate}
-                </p>
+                {unlockDisplay}
               </div>
             </div>
 
