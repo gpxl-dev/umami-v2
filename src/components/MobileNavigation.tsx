@@ -119,12 +119,12 @@ export default function MobileNavigation() {
                     <li className="mt-4">
                       <button
                         type="button"
-                        className={`uppercase ${
+                        className={`uppercase text-white ${
                           isEarnOpen ||
                           pathname.includes('marinate') ||
                           pathname.includes('compound')
                             ? 'bg-gradient-to-b from-umami-pink to-umami-purple bg-clip-text text-transparent'
-                            : 'text-white'
+                            : ''
                         }`}
                         onClick={isEarnOpen ? closeEarn : openEarn}
                       >

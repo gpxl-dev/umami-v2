@@ -1,5 +1,5 @@
 import React from 'react'
-import { FaDiscord, FaTwitter, FaGithub, FaBook } from 'react-icons/fa'
+import { FaDiscord, FaTwitter, FaGithub, FaBook, FaMedium } from 'react-icons/fa'
 
 import { SOCIAL_LINKS } from '../constants'
 
@@ -18,6 +18,8 @@ export default function SocialLinks({ className }: Props) {
 			return <FaDiscord />
 		case 'docs':
 			return <FaBook />
+    case 'medium':
+      return <FaMedium />
 		default:
 			throw new Error(
 				'Invalid social link name given as param to getSocialIcon'

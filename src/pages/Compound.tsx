@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { Formik, Form } from 'formik'
-import { FaExternalLinkAlt } from 'react-icons/fa'
+import { FaExternalLinkAlt, FaChevronCircleDown } from 'react-icons/fa'
 
 import Pill from '../components/Pill'
 import FormCard from '../components/FormCard'
@@ -28,8 +28,28 @@ export default function Compound() {
   const { compoundMumami } = useDeposits()
   const { withdrawCompoundingMumami } = useWithdraws()
 
+  const calcTokensFromShares = React.useCallback(
+    (amount: number | string) => {
+      return Number(amount) * Number(tokensPerShare)
+    },
+    [tokensPerShare]
+  )
+
+  const calcConvertedToken = React.useCallback(
+    (amount: number | string) => {
+      if (!amount || !tokensPerShare) {
+        return 0
+      }
+
+      return action === 'withdraw'
+        ? calcTokensFromShares(String(amount))
+        : Number(amount) / Number(tokensPerShare)
+    },
+    [tokensPerShare, action, calcTokensFromShares]
+  )
+
   const compoundAPY = React.useMemo(() => {
-    return apiData?.marinate.apy ?? null
+    return apiData?.marinate?.apy ?? null
   }, [apiData])
 
   const apyPill = React.useMemo(() => {
@@ -43,7 +63,10 @@ export default function Compound() {
   const compoundingPill = React.useMemo(() => {
     return typeof totalCompoundingMumami === 'string' ? (
       <Pill className="mt-8 text-xl m-auto uppercase">
-        ~{Math.floor(Number(totalCompoundingMumami))} mUMAMI Deposited
+        <span>mUMAMI Deposited: </span>
+        {Intl.NumberFormat('en-uS').format(
+          Math.floor(Number(totalCompoundingMumami))
+        )}
       </Pill>
     ) : null
   }, [totalCompoundingMumami])
@@ -51,7 +74,7 @@ export default function Compound() {
   const tokensPerSharePill = React.useMemo(() => {
     return tokensPerShare ? (
       <Pill className="mt-8 text-xl m-auto uppercase">
-        {Number(tokensPerShare).toFixed(3)} cMUMAMI : 1 UMAMI
+        1 UMAMI : {Number(tokensPerShare).toFixed(3)} cMUMAMI
       </Pill>
     ) : null
   }, [tokensPerShare])
@@ -97,7 +120,7 @@ export default function Compound() {
                 </p>
 
                 <a
-                  href="https://arbisfinance.gitbook.io/umami-finance/tokenomics"
+                  href="https://docs.umami.finance/umami-finance/tokenomics"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block mt-4 hover:underline"
@@ -172,21 +195,44 @@ export default function Compound() {
                                         )
                                       }
                                     >
-                                      Balance: {balances?.mumami.toFixed(2)}
+                                      Deposit max
                                     </button>
                                   ) : (
-                                    <span className="bg-gradient-to-b from-umami-purple to-umami-pink bg-clip-text text-transparent">
-                                      ~
-                                      {(
-                                        Number(tokensPerShare) *
-                                        Number(values.amount)
-                                      ).toFixed(3)}
-                                      <span> mUMAMI </span>
-                                    </span>
+                                    <button
+                                      type="button"
+                                      className="uppercase bg-gradient-to-b from-umami-purple to-umami-pink bg-clip-text text-transparent"
+                                      onClick={() =>
+                                        setFieldValue(
+                                          'amount',
+                                          balances?.cmumami
+                                        )
+                                      }
+                                    >
+                                      Withdraw max
+                                    </button>
                                   )
                                 }
                                 name="amount"
                               />
+
+                              <div className="mt-6 text-2xl flex items-center justify-center w-full">
+                                <FaChevronCircleDown />
+                              </div>
+
+                              <label htmlFor="receiveAmount">
+                                <div className="text-sm font-bold">
+                                  {action === 'deposit' ? 'cmUMAMI' : 'mUMAMI'}
+                                </div>
+                                <input
+                                  name="receiveAmount"
+                                  type="number"
+                                  className="rounded border mt-2 px-2 h-10 text-lg font-bold bg-white disabled:opacity-100 text-black w-full disabled:cursor-not-allowed"
+                                  disabled
+                                  value={calcConvertedToken(
+                                    String(values.amount)
+                                  )}
+                                />
+                              </label>
 
                               <div className="flex items-center py-4">
                                 {allowances?.mumami ? (
@@ -214,13 +260,21 @@ export default function Compound() {
                       )}
                     </Formik>
 
-                    <div className="mt-8 flex flex-col items-center justify-center text-center">
+                    <div className="mt-4 flex flex-col text-center items-center">
                       <div className="text-lg">
-                        <span className="font-bold uppercase mr-2">
+                        <span className="block md:inline font-bold uppercase mr-2">
                           Compounding Balance:
                         </span>
-                        <span>{balances?.cmumami.toFixed(6)}</span>
+                        <span>{balances?.cmumami.toFixed(5)}</span>
                         <span> cmUMAMI </span>
+                      </div>
+
+                      <div className="text-lg mt-2">
+                        <span className="block md:inline font-bold uppercase mr-2">
+                          Marinating Balance:
+                        </span>
+                        <span>{balances?.mumami.toFixed(5)}</span>
+                        <span> mUMAMI </span>
                       </div>
                     </div>
                   </FormCard.Content>

@@ -40,9 +40,7 @@ export default function Layout() {
         <Notifications />
         <div className="fixed inset-0 bg-black bg-opacity-[75%] overflow-y-auto">
           {appNav}
-          <div className="min-h-[69vh]">
-            <Outlet />
-          </div>
+          <Outlet />
           <Footer />
         </div>
       </WagmiProvider>

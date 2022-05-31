@@ -2,6 +2,7 @@ import React from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 import { Formik, Form } from 'formik'
+import { FaExternalLinkAlt } from 'react-icons/fa'
 
 import FormCard from '../components/FormCard'
 import Button from '../components/Button'
@@ -63,15 +64,9 @@ export default function Buy() {
 
   return (
     <main>
-      <header className="text-center w-full mt-8 p-4">
-        <h1 className="font-bold text-5xl text-white tracking-widest uppercase md:text-6xl">
-          Buy
-        </h1>
-      </header>
-
       <section>
-        <div className="bg-white mt-8 py-8 w-full">
-          <div className="m-auto max-w-6xl px-4 w-full">
+        <div className="bg-white mt-8 py-8 pb-16 w-full">
+          <div className="m-auto max-w-lg px-4 w-full">
             <div className="font-semibold text-gray-600 uppercase">
               <Link to="/app" className="underline">
                 /app
@@ -79,15 +74,27 @@ export default function Buy() {
               /buy
             </div>
 
-            <div className="mt-4 md:grid md:grid-cols-2 md:gap-4">
+            <div className="max-w-lg m-auto w-full">
               <div className="leading-loose md:pr-4">
                 <p>
                   Seamlessly onramp over 30 different fiat currencies directly
-                  to Arbitrum via Banxa and swap ETH for UMAMI on Uniswap v3.
+                  to Arbitrum via Banxa.
                 </p>
+
+                <a
+                  href="https://app.uniswap.org/#/swap?chain=arbitrum&inputCurrency=eth&outputCurrency=0x1622bF67e6e5747b81866fE0b85178a93C7F86e3"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block mt-4 max-w-sm hover:underline"
+                >
+                  <span className="mr-2">
+                    Swap ETH for UMAMI on Uniswap v3 here.
+                  </span>
+                  <FaExternalLinkAlt className="inline pb-1" />
+                </a>
               </div>
 
-              <div className="mt-4 md:mt-0">
+              <div className="mt-4">
                 <FormCard>
                   <FormCard.Header>
                     <div className="font-bold text-center text-2xl uppercase w-full">
@@ -118,7 +125,10 @@ export default function Buy() {
                                   />
                                 </div>
 
-                                <label htmlFor="inputCurrency" className="col-span-2 lg:col-span-1">
+                                <label
+                                  htmlFor="inputCurrency"
+                                  className="col-span-2 lg:col-span-1"
+                                >
                                   <div className="text-sm font-bold">
                                     Currency
                                   </div>

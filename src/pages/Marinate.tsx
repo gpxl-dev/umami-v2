@@ -47,7 +47,10 @@ export default function Marinate() {
   const marinatingPill = React.useMemo(() => {
     return typeof totalMarinatedUmami === 'string' ? (
       <Pill className="mt-8 text-xl m-auto uppercase">
-        ~{Math.floor(Number(totalMarinatedUmami))} UMAMI Staked
+        <span>UMAMI Staked: </span>
+        {Intl.NumberFormat('en-US').format(
+          Math.floor(Number(totalMarinatedUmami))
+        )}
       </Pill>
     ) : null
   }, [totalMarinatedUmami])
@@ -55,7 +58,7 @@ export default function Marinate() {
   const ethRewardedPill = React.useMemo(() => {
     return apiData?.marinate.totalWeth ? (
       <Pill className="mt-8 text-xl m-auto uppercase">
-        ~{apiData?.marinate.totalWeth} ETH Rewarded
+        {apiData?.marinate?.totalHistoryWeth} ETH Rewarded
       </Pill>
     ) : null
   }, [apiData])
@@ -96,9 +99,9 @@ export default function Marinate() {
     return applicableRewards?.length
       ? applicableRewards.map(
           ({ token, amount }: { token: string; amount: number }) => (
-            <div key={token} className="mr-2 last:mr-0">
-              {amount.toFixed(6)} {token}
-            </div>
+            <span key={token} className="mr-2 last:mr-0">
+              {amount.toFixed(5)} {token}
+            </span>
           )
         )
       : null
@@ -154,14 +157,12 @@ export default function Marinate() {
             <div className="mt-4 md:grid md:grid-cols-2 md:gap-4">
               <div className="leading-loose md:pr-4">
                 <p>
-                  Stake your UMAMI for mUMAMI to earn your share of treasury
-                  yields. Rewards are paid in wETH. You can collect your rewards
-                  at any time, but you can only withdraw on the 1st of every
-                  month.
+                  Stake your UMAMI for mUMAMI to earn your share of protocol
+                  revenue.
                 </p>
 
                 <a
-                  href="https://arbisfinance.gitbook.io/umami-finance/tokenomics"
+                  href="https://docs.umami.finance/umami-finance/tokenomics"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block mt-4 hover:underline"
@@ -263,17 +264,17 @@ export default function Marinate() {
                       )}
                     </Formik>
 
-                    <div className="mt-8 flex flex-col items-center justify-center text-center">
+                    <div className="mt-8 text-center">
                       <div className="text-lg">
                         <FaLock className="inline pb-1 mr-1" />
                         <span className="font-bold uppercase mr-2">
                           Balance:
                         </span>
-                        <span>{balances?.mumami.toFixed(6)}</span>
+                        <span>{balances?.mumami.toFixed(5)}</span>
                         <span> mUMAMI </span>
                       </div>
 
-                      <div className="flex text-lg">
+                      <div className="text-lg mt-2">
                         <strong className="font-bold uppercase mr-2">
                           Rewards:
                         </strong>
@@ -283,7 +284,7 @@ export default function Marinate() {
                   </FormCard.Content>
                 </FormCard>
 
-                <p className="text-center mt-4 underline uppercase font-semibold">
+                <p className="text-center mt-4 uppercase font-black">
                   Next unlock on {nextUnlockDate}
                 </p>
               </div>

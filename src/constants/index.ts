@@ -32,8 +32,12 @@ export const SOCIAL_LINKS = [
   },
   {
     name: 'docs',
-    url: 'https://arbisfinance.gitbook.io/umami-finance/',
+    url: 'https://docs.umami.finance/umami-finance/tokenomics',
   },
+  {
+    name: 'medium',
+    url: 'https://umamifinance.medium.com/'
+  }
 ]
 
 export const PARTNERS = [
