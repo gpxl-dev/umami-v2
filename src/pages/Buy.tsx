@@ -74,8 +74,8 @@ export default function Buy() {
               /buy
             </div>
 
-            <div className="max-w-lg m-auto w-full">
-              <div className="leading-loose md:pr-4">
+            <div className="max-w-3xl m-auto min-h-[500px] w-full mt-4">
+              <div className="leading-loose">
                 <p>
                   Seamlessly onramp over 30 different fiat currencies directly
                   to Arbitrum via Banxa.
@@ -94,7 +94,7 @@ export default function Buy() {
                 </a>
               </div>
 
-              <div className="mt-4">
+              <div className="mt-8">
                 <FormCard>
                   <FormCard.Header>
                     <div className="font-bold text-center text-2xl uppercase w-full">
@@ -114,11 +114,10 @@ export default function Buy() {
                           <Form method="post">
                             <div className="flex flex-col">
                               <div className="gap-4 grid grid-cols-5">
-                                <div className="col-span-3 lg:col-span-4">
+                                <div className="col-span-3">
                                   <FormCard.FormField
                                     label="Amount"
                                     name="fiatAmount"
-                                    disabled={!values.fiatAmount}
                                     onBlur={() =>
                                       getEthAmountFromFiatAmount(values)
                                     }
@@ -127,7 +126,7 @@ export default function Buy() {
 
                                 <label
                                   htmlFor="inputCurrency"
-                                  className="col-span-2 lg:col-span-1"
+                                  className="col-span-2"
                                 >
                                   <div className="text-sm font-bold">
                                     Currency
@@ -167,7 +166,7 @@ export default function Buy() {
                                     name="ethAmount"
                                     type="text"
                                     className="rounded border mt-2 px-2 h-10 text-lg font-bold bg-white text-black w-full disabled:cursor-not-allowed"
-                                    value={ethAmount}
+                                    value={`${ethAmount} ETH`}
                                     disabled
                                   />
                                 </label>

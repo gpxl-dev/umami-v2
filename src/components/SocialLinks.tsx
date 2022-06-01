@@ -31,7 +31,7 @@ export default function SocialLinks({ className }: Props) {
 		return (
 			<ul className="flex items-center justify-center w-full">
 				{SOCIAL_LINKS.map(({ name, url }) => (
-					<li key={name} className={`text-lg mr-4 last:mr-0 ${className}`}>
+					<li key={name} className={`text-2xl mr-8 last:mr-0 ${className}`}>
 						<a href={url} target="_blank" rel="noopener noreferrer">
 							<span className="sr-only">Link to: {name}</span>
 							{getSocialIcon(name as string)}
