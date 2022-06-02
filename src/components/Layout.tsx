@@ -6,6 +6,7 @@ import WagmiProvider from './WagmiProvider'
 import Notifications from './Notifications'
 import Navigation from './Navigation'
 import Footer from './Footer'
+import Disclaimer from './Disclaimer'
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -42,6 +43,7 @@ export default function Layout() {
           {appNav}
           <Outlet />
           <Footer />
+          <Disclaimer />
         </div>
       </WagmiProvider>
     </>
