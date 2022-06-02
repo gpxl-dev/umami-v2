@@ -31,7 +31,12 @@ export default function Layout() {
   }, [appLocation.pathname])
 
   const appNav = React.useMemo(() => {
-    return !isLandingPage ? <Navigation /> : null
+    return !isLandingPage ? (
+      <>
+        <Disclaimer />
+        <Navigation />
+      </>
+    ) : null
   }, [isLandingPage])
 
   return (
@@ -43,7 +48,6 @@ export default function Layout() {
           {appNav}
           <Outlet />
           <Footer />
-          <Disclaimer />
         </div>
       </WagmiProvider>
     </>
