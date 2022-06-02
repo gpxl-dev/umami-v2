@@ -100,3 +100,5 @@ export const TOKEN_DECIMALS = {
   weth: 18,
   usdc: 6,
 }
+
+export const LOCAL_STORAGE_KEY = 'umami_finance_disclaimer_agreement'

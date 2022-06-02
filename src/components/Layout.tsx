@@ -6,6 +6,7 @@ import WagmiProvider from './WagmiProvider'
 import Notifications from './Notifications'
 import Navigation from './Navigation'
 import Footer from './Footer'
+import Disclaimer from './Disclaimer'
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -30,7 +31,12 @@ export default function Layout() {
   }, [appLocation.pathname])
 
   const appNav = React.useMemo(() => {
-    return !isLandingPage ? <Navigation /> : null
+    return !isLandingPage ? (
+      <>
+        <Disclaimer />
+        <Navigation />
+      </>
+    ) : null
   }, [isLandingPage])
 
   return (

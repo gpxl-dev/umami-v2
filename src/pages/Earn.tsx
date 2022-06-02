@@ -42,7 +42,10 @@ export default function Earn() {
             <li className="mt-6">
               <div className="font-bold text-2xl">TVL:</div>
               <div className="text-lg">
-                ${Intl.NumberFormat('en-US').format(apiData?.tvl)}
+                $
+                {Intl.NumberFormat('en-US').format(
+                  apiData?.marinate?.marinateTVL
+                )}
               </div>
             </li>
           ) : (
