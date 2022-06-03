@@ -187,7 +187,7 @@ export default function Compound() {
                                   action === 'deposit' ? (
                                     <button
                                       type="button"
-                                      className="uppercase bg-gradient-to-b from-umami-purple to-umami-pink bg-clip-text text-transparent"
+                                      className="font-bold uppercase text-umami-pink hover:underline"
                                       onClick={() =>
                                         setFieldValue(
                                           'amount',
@@ -200,7 +200,7 @@ export default function Compound() {
                                   ) : (
                                     <button
                                       type="button"
-                                      className="uppercase bg-gradient-to-b from-umami-purple to-umami-pink bg-clip-text text-transparent"
+                                      className="font-bold uppercase text-umami-pink hover:underline"
                                       onClick={() =>
                                         setFieldValue(
                                           'amount',
@@ -287,7 +287,7 @@ export default function Compound() {
                 href={`https://arbiscan.io/address/${TOKEN_ADDRESSES.cmumami}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex text-sm"
+                className="flex text-sm hover:underline"
               >
                 <div className="mr-2">View contract on Arbiscan</div>
                 <FaExternalLinkAlt />

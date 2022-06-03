@@ -32,7 +32,7 @@ export const SOCIAL_LINKS = [
   },
   {
     name: 'docs',
-    url: 'https://docs.umami.finance/umami-finance/tokenomics',
+    url: 'https://docs.umami.finance/',
   },
   {
     name: 'medium',

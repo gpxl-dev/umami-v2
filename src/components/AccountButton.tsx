@@ -110,7 +110,10 @@ export default function AccountButton() {
       >
         <div className="flex items-center justify-center">
           <div className="mr-2">
-            <span>View {account?.address?.replace('0x', '').slice(0, 6)}</span>
+            <span>
+              View {account?.address?.replace('0x', '').slice(0, 6)}...
+              {account?.address?.slice(-4, account?.address?.length)}
+            </span>
             <span> on Arbiscan</span>
           </div>
           <FaExternalLinkAlt />
