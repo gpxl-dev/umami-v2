@@ -45,7 +45,7 @@ export function useBalances() {
   }, [contracts, initialData, account, notify])
 
   return useQuery('balances', fetchBalances, {
-    initialData: queryClient.getQueryData('balances') ?? initialData,
+    initialData,
     enabled: !!account && isArbitrum,
   })
 }

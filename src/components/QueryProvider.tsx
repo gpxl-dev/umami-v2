@@ -12,9 +12,7 @@ const queryClient = new QueryClient({
       retry: false,
       refetchOnWindowFocus: false,
       refetchInterval: false,
-      refetchOnReconnect: false,
       notifyOnChangeProps: ['data', 'error'],
-      staleTime: 30000,
     },
   },
 })
