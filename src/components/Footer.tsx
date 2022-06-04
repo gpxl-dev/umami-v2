@@ -17,7 +17,7 @@ export default function Footer() {
       <div className="m-auto max-w-4xl w-full px-4 mt-8 text-white">
         <div className="w-full flex justify-center">
           <Link to="/app" className="cursor-pointer">
-            <strong className="font-display tracking-[0.5rem] text-lg uppercase">
+            <strong className="font-display tracking-[0.5rem] text-lg uppercase hover:underline">
               Umami
             </strong>
           </Link>

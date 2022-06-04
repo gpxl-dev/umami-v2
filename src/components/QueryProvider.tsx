@@ -10,13 +10,11 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       retry: false,
-      refetchOnWindowFocus: process.env.NODE_ENV === 'production',
+      refetchOnWindowFocus: false,
       refetchInterval: false,
       refetchOnReconnect: false,
-      retryDelay(attempt) {
-        return attempt * 5000
-      },
-      notifyOnChangeProps: ['data'],
+      notifyOnChangeProps: ['data', 'error'],
+      staleTime: 30000,
     },
   },
 })
