@@ -133,8 +133,7 @@ export function useUmamiPrice() {
 
   const queryClient = useQueryClient()
 
-  return useQuery('umamiPrice', getUmamiUsdPrice, {
-    initialData: queryClient.getQueryData('umamiPrice') ?? null,
-    refetchInterval: 60000,
+  return useQuery('umamiPrice', () => queryClient.getQueryData('umamiPrice'), {
+    initialData: getUmamiUsdPrice(),
   })
 }
