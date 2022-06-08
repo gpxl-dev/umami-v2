@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { Formik, Form } from 'formik'
 import { FaExternalLinkAlt, FaChevronCircleDown } from 'react-icons/fa'
 
+import PageContent from '../components/PageContent'
 import Pill from '../components/Pill'
 import FormCard from '../components/FormCard'
 import Button from '../components/Button'
@@ -105,7 +106,7 @@ export default function Compound() {
       </div>
 
       <section>
-        <div className="bg-white mt-8 py-8 w-full">
+        <PageContent className="mt-8 py-8 w-full">
           <div className="m-auto max-w-6xl px-4 w-full">
             <div className="font-semibold text-gray-600 uppercase">
               <Link to="/app" className="underline">
@@ -296,7 +297,7 @@ export default function Compound() {
               </a>
             </div>
           </div>
-        </div>
+        </PageContent>
       </section>
     </main>
   )

@@ -3,6 +3,7 @@ import { createGlobalStyle } from 'styled-components'
 import { useLocation, Outlet } from 'react-router-dom'
 
 import WagmiProvider from './WagmiProvider'
+import ThemeProvider from './ThemeProvider'
 import Notifications from './Notifications'
 import Navigation from './Navigation'
 import Footer from './Footer'
@@ -13,6 +14,8 @@ const GlobalStyle = createGlobalStyle`
     --color-umami-pink: #C659D8;
     --color-umami-purple: #60489D;
     --color-umami-yellow: #FFC225;
+    --color-dark: #000;
+    --color-light: #ffffff;
   }
 
   body {
@@ -48,14 +51,16 @@ export default function Layout() {
   return (
     <>
       <GlobalStyle />
-      <WagmiProvider>
-        <Notifications />
-        <div className="fixed inset-0 bg-black bg-opacity-[75%] overflow-y-auto">
-          {appNav}
-          <Outlet />
-          <Footer />
-        </div>
-      </WagmiProvider>
+      <ThemeProvider>
+        <WagmiProvider>
+          <Notifications />
+          <div className="fixed inset-0 bg-black bg-opacity-[75%] overflow-y-auto">
+            {appNav}
+            <Outlet />
+            <Footer />
+          </div>
+        </WagmiProvider>
+      </ThemeProvider>
     </>
   )
 }

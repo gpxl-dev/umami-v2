@@ -102,3 +102,18 @@ export const TOKEN_DECIMALS = {
 }
 
 export const LOCAL_STORAGE_KEY = 'umami_finance_disclaimer_agreement'
+
+export const THEMES = {
+  light: {
+    color: 'var(--color-dark)',
+    backgroundColor: 'var(--color-light)',
+  },
+  dark: {
+    color: 'var(--color-light)',
+    backgroundColor: 'var(--color-dark)',
+  },
+}
+
+export const DEFAULT_THEME = THEMES.light
+
+export const THEME_KEY = 'umami_current_theme'

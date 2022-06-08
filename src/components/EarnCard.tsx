@@ -33,7 +33,7 @@ function Header({ text }: HeaderProps) {
 }
 
 function Content({ children }: ContentProps) {
-  return <div className="p-4 mt-4">{children}</div>
+  return <div className="text-black p-4 mt-4">{children}</div>
 }
 
 function SubHeader({ children }: ContentProps) {

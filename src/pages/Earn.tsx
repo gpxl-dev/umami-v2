@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
+import PageContent from '../components/PageContent'
 import EarnCard from '../components/EarnCard'
 import Button from '../components/Button'
 import LoadingBar from '../components/LoadingBar'
@@ -91,7 +92,7 @@ export default function Earn() {
       {earnHeader}
 
       <section>
-        <div className="mt-20 bg-white p-4 w-full">
+        <PageContent className="mt-20 bg-white p-4 w-full">
           <div className="w-full m-auto -translate-y-12 grid grid-rows-2 gap-4 md:max-w-4xl md:m-auto md:grid-cols-2 md:grid-rows-1">
             {/* Marinate Card */}
             <EarnCard
@@ -161,7 +162,7 @@ export default function Earn() {
               </EarnCard.Content>
             </EarnCard>
           </div>
-        </div>
+        </PageContent>
       </section>
     </main>
   )
