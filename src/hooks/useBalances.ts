@@ -1,5 +1,5 @@
 import React from 'react'
-import { useQuery, useQueryClient } from 'react-query'
+import { useQuery } from 'react-query'
 import { useAccount } from 'wagmi'
 import { useNotifications } from 'reapop'
 import { ethers } from 'ethers'
@@ -10,7 +10,6 @@ import { useContracts } from './useContracts'
 export function useBalances() {
   const { data: account } = useAccount()
   const { notify } = useNotifications()
-  const queryClient = useQueryClient()
 
   const contracts = useContracts()
   const isArbitrum = useIsArbitrum()

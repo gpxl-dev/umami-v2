@@ -3,36 +3,33 @@ import { Link } from 'react-router-dom'
 
 import EarnCard from '../components/EarnCard'
 import Button from '../components/Button'
+import LoadingBar from '../components/LoadingBar'
 import { useUmamiPrice } from '../hooks/useUmamiPrice'
 import { useAPI } from '../hooks/useAPI'
 import { useEstProtocolRevenue } from '../hooks/useEstProtocolRevenue'
 
 export default function Earn() {
-  const { data: umamiPrice, isError: isPriceError } = useUmamiPrice()
+  const { data: umamiPrice } = useUmamiPrice()
 
-  const { data: apiData, isLoading: isApiLoading } = useAPI()
+  const { data: apiData } = useAPI()
 
   const estMonthlyRevenue = useEstProtocolRevenue()
 
   const marinateAPR = React.useMemo(() => {
-    if (isApiLoading) {
-      return 'Fetching..'
-    }
-
-    return apiData?.marinate?.apr
-      ? `~${apiData?.marinate.apr}% APR`
-      : '10+% APR Typically'
-  }, [apiData, isApiLoading])
+    return apiData?.marinate?.apr ? (
+      `~${apiData?.marinate.apr}% APR`
+    ) : (
+      <LoadingBar className="max-w-[50%]" />
+    )
+  }, [apiData])
 
   const compoundAPY = React.useMemo(() => {
-    if (isApiLoading) {
-      return 'Fetching..'
-    }
-
-    return apiData?.marinate?.apy
-      ? `~${apiData?.marinate.apy}% APY`
-      : '10+% APY Typically'
-  }, [apiData, isApiLoading])
+    return apiData?.marinate?.apy ? (
+      `~${apiData?.marinate.apy}% APY`
+    ) : (
+      <LoadingBar />
+    )
+  }, [apiData])
 
   const earnHeader = React.useMemo(() => {
     return (
@@ -42,22 +39,38 @@ export default function Earn() {
             <li className="mt-6">
               <div className="font-bold text-2xl">TVL:</div>
               <div className="text-lg">
-                $
-                {Intl.NumberFormat('en-US').format(
-                  apiData?.marinate?.marinateTVL
+                {apiData?.marinate?.marinateTVL ? (
+                  <span>
+                    $
+                    {Intl.NumberFormat('en-US').format(
+                      apiData?.marinate?.marinateTVL
+                    )}
+                  </span>
+                ) : (
+                  <LoadingBar className="w-[12rem]" />
                 )}
               </div>
             </li>
           ) : (
             <li className="mt-6">
               <div className="font-bold text-2xl">Market Cap:</div>
-              <div className="text-lg">$8,120,000</div>
+              <div className="text-lg">
+                {Number(umamiPrice) > 0 ? (
+                  <span>{Number(umamiPrice) * 1000000}</span>
+                ) : (
+                  <LoadingBar className="w-[12rem]" />
+                )}
+              </div>
             </li>
           )}
           <li className="mt-6">
             <div className="font-bold text-2xl">Est. Monthly Revenue</div>
             <div className="text-lg">
-              ${estMonthlyRevenue ?? 'Typically $100,000+'}
+              {estMonthlyRevenue !== null ? (
+                <span>${estMonthlyRevenue}</span>
+              ) : (
+                <LoadingBar className="w-[12rem]" />
+              )}
             </div>
           </li>
           <li className="mt-6">
@@ -65,19 +78,13 @@ export default function Earn() {
             {typeof umamiPrice === 'number' ? (
               <div className="text-lg">${Number(umamiPrice).toFixed(2)}</div>
             ) : (
-              <>
-                {isPriceError ? (
-                  <div className="text-lg">Unable to fetch price data</div>
-                ) : (
-                  <div className="text-lg">...</div>
-                )}
-              </>
+              <LoadingBar className="w-[12rem]" />
             )}
           </li>
         </ul>
       </header>
     )
-  }, [umamiPrice, apiData, estMonthlyRevenue, isPriceError])
+  }, [umamiPrice, apiData, estMonthlyRevenue])
 
   return (
     <main>

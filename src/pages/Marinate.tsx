@@ -33,20 +33,18 @@ export default function Marinate() {
   const { claimMarinateRewards } = useClaimRewards()
 
   const marinateAPR = React.useMemo(() => {
-    return apiData?.marinate.apr ?? null
+    return apiData?.marinate?.apr ?? null
   }, [apiData])
 
   const aprPill = React.useMemo(() => {
-    return (
-      <Pill className="mt-8 m-auto text-xl">
-        {marinateAPR ? `~${marinateAPR}% APR ` : 'Typically 10+% APR'}
-      </Pill>
-    )
+    return marinateAPR ? (
+      <Pill className="mt-8 m-auto text-xl min-w-full">~${marinateAPR}% APR</Pill>
+    ) : null
   }, [marinateAPR])
 
   const marinatingPill = React.useMemo(() => {
     return typeof totalMarinatedUmami === 'string' ? (
-      <Pill className="mt-8 text-xl m-auto uppercase">
+      <Pill className="mt-8 text-xl m-auto uppercase min-w-full">
         <span>UMAMI Staked: </span>
         {Intl.NumberFormat('en-US').format(
           Math.floor(Number(totalMarinatedUmami))
@@ -57,7 +55,7 @@ export default function Marinate() {
 
   const ethRewardedPill = React.useMemo(() => {
     return apiData?.marinate.totalWeth ? (
-      <Pill className="mt-8 text-xl m-auto uppercase">
+      <Pill className="mt-8 text-xl m-auto uppercase min-w-full">
         {apiData?.marinate?.totalHistoryWeth} WETH Rewarded
       </Pill>
     ) : null
@@ -144,7 +142,7 @@ export default function Marinate() {
         </p>
       </header>
 
-      <section className="max-w-6xl px-4 m-auto text-center lg:grid lg:grid-cols-3">
+      <section className="max-w-md px-4 m-auto text-center lg:grid lg:grid-rows-3">
         {aprPill}
 
         {marinatingPill}

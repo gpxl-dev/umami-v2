@@ -9,6 +9,12 @@ import Footer from './Footer'
 import Disclaimer from './Disclaimer'
 
 const GlobalStyle = createGlobalStyle`
+  :root {
+    --color-umami-pink: #C659D8;
+    --color-umami-purple: #60489D;
+    --color-umami-yellow: #FFC225;
+  }
+
   body {
     background-color: #000000;
     background-image: url('/assets/umami-finance-neotokyo-bg.png');

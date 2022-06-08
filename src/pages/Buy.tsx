@@ -165,7 +165,7 @@ export default function Buy() {
                                   <input
                                     name="ethAmount"
                                     type="text"
-                                    className="rounded border mt-2 px-2 h-10 text-lg font-bold bg-white text-black w-full disabled:cursor-not-allowed"
+                                    className="rounded border mt-2 px-2 h-10 text-lg font-bold bg-white text-black w-full disabled:opacity-100 disabled:cursor-not-allowed"
                                     value={`${ethAmount} ETH`}
                                     disabled
                                   />

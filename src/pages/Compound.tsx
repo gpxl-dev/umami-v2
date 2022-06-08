@@ -54,15 +54,17 @@ export default function Compound() {
 
   const apyPill = React.useMemo(() => {
     return (
-      <Pill className="mt-8 m-auto text-xl">
-        {compoundAPY ? `~${compoundAPY}% APY ` : 'Typically 10+% APY'}
-      </Pill>
+      compoundAPY ? (
+        <Pill className="mt-8 m-auto text-xl min-w-[100%]">
+          ~${compoundAPY}% APY 
+        </Pill>
+      ) : null
     )
   }, [compoundAPY])
 
   const compoundingPill = React.useMemo(() => {
     return typeof totalCompoundingMumami === 'string' ? (
-      <Pill className="mt-8 text-xl m-auto uppercase">
+      <Pill className="mt-8 text-xl m-auto uppercase min-w-[100%]">
         <span>mUMAMI Deposited: </span>
         {Intl.NumberFormat('en-uS').format(
           Math.floor(Number(totalCompoundingMumami))
@@ -73,7 +75,7 @@ export default function Compound() {
 
   const tokensPerSharePill = React.useMemo(() => {
     return tokensPerShare ? (
-      <Pill className="mt-8 text-xl m-auto uppercase">
+      <Pill className="mt-8 text-xl m-auto uppercase min-w-[100%]">
         1 UMAMI : {Number(tokensPerShare).toFixed(3)} cMUMAMI
       </Pill>
     ) : null
@@ -94,7 +96,7 @@ export default function Compound() {
         </p>
       </header>
 
-      <div className="max-w-6xl px-4 m-auto text-center lg:grid lg:grid-cols-3 lg:gap-4">
+      <div className="max-w-md px-4 m-auto text-center lg:grid lg:grid-rows-3">
         {apyPill}
 
         {compoundingPill}

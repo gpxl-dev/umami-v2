@@ -11,7 +11,7 @@ export function useEstProtocolRevenue() {
     }
 
     // total treasury APR
-    const apr = 0.39731
+    const apr = 0.44314
     const estRevenue = (Number(apiData?.marinate?.marinateTVL) * apr) / 12
 
     return Intl.NumberFormat('en-US').format(Math.floor(estRevenue))
