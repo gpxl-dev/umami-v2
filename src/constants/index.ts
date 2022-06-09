@@ -116,6 +116,6 @@ export const THEMES = {
   },
 }
 
-export const DEFAULT_THEME = THEMES.light
+export const DEFAULT_THEME = THEMES.dark
 
 export const THEME_KEY = 'umami_current_theme'
