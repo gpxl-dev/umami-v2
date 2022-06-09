@@ -29,6 +29,11 @@ export function useDeposits() {
         throw new Error('wrong network')
       }
 
+      if (Number(amount) === 0) {
+        notify('Cannot marinate 0 UMAMI', 'error')
+        throw new Error('no amount')
+      }
+
       const [stakeEnabled, totalStaked, depositLimit, decimals] =
         await Promise.all([
           contracts.mumami.stakeEnabled(),

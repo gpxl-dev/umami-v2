@@ -20,7 +20,7 @@ export default function Earn() {
     return apiData?.marinate?.apr ? (
       `~${apiData?.marinate.apr}% APR`
     ) : (
-      <LoadingBar className="max-w-[50%]" />
+      <LoadingBar />
     )
   }, [apiData])
 

@@ -6,6 +6,7 @@ import styled, {
 import { FaSun, FaMoon } from 'react-icons/fa'
 import type { ReactNode } from 'react'
 
+import { useIsLandingPage } from '../hooks/useIsLandingPage'
 import { THEMES, DEFAULT_THEME, THEME_KEY } from '../constants'
 
 type Props = {
@@ -23,6 +24,8 @@ const ThemeSwitcherStyles = styled.aside`
 `
 
 export default function ThemeProvider({ children }: Props) {
+  const isLandingPage = useIsLandingPage()
+
   const savedThemeKey: string | undefined = Cookies.get(THEME_KEY)
 
   const initTheme = React.useMemo(() => {
@@ -54,22 +57,26 @@ export default function ThemeProvider({ children }: Props) {
     <StyledThemeProvider theme={theme}>
       {children}
 
-      <ThemeSwitcherStyles>
-        <div className="flex items-center">
-          <div className="mr-2 text-umami-yellow">{icon}</div>
-          <div
-            role="checkbox"
-            aria-checked={getTheme() === 'dark'}
-            tabIndex={0}
-            className={`p-1 border-gray-300 transition-all duration-500 hover:shadow cursor-pointer rounded-full flex w-12 ${
-              getTheme() === 'light' ? 'bg-gray-400' : 'justify-end bg-blue-500'
-            }`}
-            onClick={() => changeTheme()}
-          >
-            <div className="h-4 w-4 rounded-full bg-white" />
+      {!isLandingPage ? (
+        <ThemeSwitcherStyles>
+          <div className="flex items-center">
+            <div className="mr-2 text-umami-yellow">{icon}</div>
+            <div
+              role="checkbox"
+              aria-checked={getTheme() === 'dark'}
+              tabIndex={0}
+              className={`p-1 border-gray-300 transition-all duration-500 hover:shadow cursor-pointer rounded-full flex w-12 ${
+                getTheme() === 'light'
+                  ? 'bg-gray-400'
+                  : 'justify-end bg-blue-500'
+              }`}
+              onClick={() => changeTheme()}
+            >
+              <div className="h-4 w-4 rounded-full bg-white" />
+            </div>
           </div>
-        </div>
-      </ThemeSwitcherStyles>
+        </ThemeSwitcherStyles>
+      ) : null}
     </StyledThemeProvider>
   )
 }

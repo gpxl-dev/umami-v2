@@ -36,8 +36,8 @@ export const SOCIAL_LINKS = [
   },
   {
     name: 'medium',
-    url: 'https://umamifinance.medium.com/'
-  }
+    url: 'https://umamifinance.medium.com/',
+  },
 ]
 
 export const PARTNERS = [
@@ -107,10 +107,12 @@ export const THEMES = {
   light: {
     color: 'var(--color-dark)',
     backgroundColor: 'var(--color-light)',
+    backgroundAltColor: 'var(--color-light)',
   },
   dark: {
     color: 'var(--color-light)',
     backgroundColor: 'var(--color-dark)',
+    backgroundAltColor: 'var(--color-dark-alt)',
   },
 }
 

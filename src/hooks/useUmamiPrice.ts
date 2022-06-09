@@ -106,34 +106,31 @@ export function useUmamiPrice() {
   }, [notify, provider])
 
   const getUmamiUsdPrice = React.useCallback(async () => {
-    try {
-      const [umamiPrice, wethPrice] = await Promise.all([
-        getUmamiEthPrice(),
-        getEthUsdcPrice(),
-      ])
+    const [umamiPrice, wethPrice] = await Promise.all([
+      getUmamiEthPrice(),
+      getEthUsdcPrice(),
+    ])
 
-      if (!umamiPrice || !wethPrice) {
-        throw new Error('UMAMI/ETH price or ETH/USDC price not available')
-      }
-
-      const price =
-        Number(umamiPrice?.toFixed(9)) / Number(wethPrice?.toFixed(9))
-
-      if (Number.isNaN(price)) {
-        throw new Error('problem fetching token prices from uniswap')
-      }
-
-      return price
-    } catch (err) {
-      console.log(err)
-      notify('Problem computing UMAMI/USDC price', 'error')
-      return null
+    if (!umamiPrice || !wethPrice) {
+      throw new Error('UMAMI/ETH price or ETH/USDC price not available')
     }
-  }, [getUmamiEthPrice, getEthUsdcPrice, notify])
+
+    const price =
+      Number(umamiPrice?.toFixed(9)) / Number(wethPrice?.toFixed(9))
+
+    if (Number.isNaN(price)) {
+      throw new Error('problem fetching token prices from uniswap')
+    }
+
+    return price
+  }, [getUmamiEthPrice, getEthUsdcPrice])
 
   const queryClient = useQueryClient()
 
   return useQuery('umamiPrice', () => queryClient.getQueryData('umamiPrice'), {
     initialData: getUmamiUsdPrice(),
+    onError() {
+      notify('Problem computing UMAMI/USDC price', 'error')
+    },
   })
 }

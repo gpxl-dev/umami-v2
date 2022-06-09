@@ -39,7 +39,9 @@ export default function Marinate() {
 
   const aprPill = React.useMemo(() => {
     return marinateAPR ? (
-      <Pill className="mt-8 m-auto text-xl min-w-full">~${marinateAPR}% APR</Pill>
+      <Pill className="mt-8 m-auto text-xl min-w-full">
+        ~${marinateAPR}% APR
+      </Pill>
     ) : null
   }, [marinateAPR])
 
@@ -61,26 +63,6 @@ export default function Marinate() {
       </Pill>
     ) : null
   }, [apiData])
-
-  const formActionButton = React.useMemo(() => {
-    const className = 'md:mr-2 text-xl'
-
-    return allowances?.umami ? (
-      <Button
-        type="submit"
-        className={className}
-        disabled={
-          action === 'withdraw' && !marinateWithdrawStatus?.withdrawEnabled
-        }
-      >
-        {action === 'deposit' ? 'Marinate' : 'Withdraw'}
-      </Button>
-    ) : (
-      <Button className={className} onClick={approveUmami}>
-        Approve
-      </Button>
-    )
-  }, [allowances, approveUmami, action, marinateWithdrawStatus])
 
   const isClaimDisabled = React.useMemo(() => {
     return (
@@ -256,7 +238,29 @@ export default function Marinate() {
                               />
 
                               <div className="flex flex-col items-center mt-4 md:flex-row">
-                                {formActionButton}
+                                {allowances?.umami ? (
+                                  <Button
+                                    type="submit"
+                                    className="md:mr-2 text-xl"
+                                    disabled={
+                                      (action === 'withdraw' &&
+                                        !marinateWithdrawStatus?.withdrawEnabled) ||
+                                      (action === 'deposit' &&
+                                        values.amount === 0)
+                                    }
+                                  >
+                                    {action === 'deposit'
+                                      ? 'Marinate'
+                                      : 'Withdraw'}
+                                  </Button>
+                                ) : (
+                                  <Button
+                                    className="md:mr-2 text-xl"
+                                    onClick={approveUmami}
+                                  >
+                                    Approve
+                                  </Button>
+                                )}
                                 <Button
                                   className="mt-2 md:mt-0 text-xl"
                                   disabled={isClaimDisabled}
