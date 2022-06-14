@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { Formik, Form } from 'formik'
 import { FaExternalLinkAlt, FaLock } from 'react-icons/fa'
 
+import PageContent from '../components/PageContent'
 import Pill from '../components/Pill'
 import FormCard from '../components/FormCard'
 import Button from '../components/Button'
@@ -33,20 +34,20 @@ export default function Marinate() {
   const { claimMarinateRewards } = useClaimRewards()
 
   const marinateAPR = React.useMemo(() => {
-    return apiData?.marinate.apr ?? null
+    return apiData?.marinate?.apr ?? null
   }, [apiData])
 
   const aprPill = React.useMemo(() => {
-    return (
-      <Pill className="mt-8 m-auto text-xl">
-        {marinateAPR ? `~${marinateAPR}% APR ` : 'Typically 10+% APR'}
+    return marinateAPR ? (
+      <Pill className="mt-8 m-auto text-xl min-w-full">
+        ~${marinateAPR}% APR
       </Pill>
-    )
+    ) : null
   }, [marinateAPR])
 
   const marinatingPill = React.useMemo(() => {
     return typeof totalMarinatedUmami === 'string' ? (
-      <Pill className="mt-8 text-xl m-auto uppercase">
+      <Pill className="mt-8 text-xl m-auto uppercase min-w-full">
         <span>UMAMI Staked: </span>
         {Intl.NumberFormat('en-US').format(
           Math.floor(Number(totalMarinatedUmami))
@@ -57,31 +58,11 @@ export default function Marinate() {
 
   const ethRewardedPill = React.useMemo(() => {
     return apiData?.marinate.totalWeth ? (
-      <Pill className="mt-8 text-xl m-auto uppercase">
+      <Pill className="mt-8 text-xl m-auto uppercase min-w-full">
         {apiData?.marinate?.totalHistoryWeth} WETH Rewarded
       </Pill>
     ) : null
   }, [apiData])
-
-  const formActionButton = React.useMemo(() => {
-    const className = 'md:mr-2 text-xl'
-
-    return allowances?.umami ? (
-      <Button
-        type="submit"
-        className={className}
-        disabled={
-          action === 'withdraw' && !marinateWithdrawStatus?.withdrawEnabled
-        }
-      >
-        {action === 'deposit' ? 'Marinate' : 'Withdraw'}
-      </Button>
-    ) : (
-      <Button className={className} onClick={approveUmami}>
-        Approve
-      </Button>
-    )
-  }, [allowances, approveUmami, action, marinateWithdrawStatus])
 
   const isClaimDisabled = React.useMemo(() => {
     return (
@@ -144,7 +125,7 @@ export default function Marinate() {
         </p>
       </header>
 
-      <section className="max-w-6xl px-4 m-auto text-center lg:grid lg:grid-cols-3">
+      <section className="max-w-md px-4 m-auto text-center lg:grid lg:grid-rows-3">
         {aprPill}
 
         {marinatingPill}
@@ -153,7 +134,7 @@ export default function Marinate() {
       </section>
 
       <section>
-        <div className="bg-white mt-8 py-8 w-full">
+        <PageContent className="mt-8 py-8 w-full">
           <div className="m-auto max-w-6xl px-4 w-full">
             <div className="font-semibold text-gray-600 uppercase">
               <Link to="/app" className="underline">
@@ -257,7 +238,29 @@ export default function Marinate() {
                               />
 
                               <div className="flex flex-col items-center mt-4 md:flex-row">
-                                {formActionButton}
+                                {allowances?.umami ? (
+                                  <Button
+                                    type="submit"
+                                    className="md:mr-2 text-xl"
+                                    disabled={
+                                      (action === 'withdraw' &&
+                                        !marinateWithdrawStatus?.withdrawEnabled) ||
+                                      (action === 'deposit' &&
+                                        values.amount === 0)
+                                    }
+                                  >
+                                    {action === 'deposit'
+                                      ? 'Marinate'
+                                      : 'Withdraw'}
+                                  </Button>
+                                ) : (
+                                  <Button
+                                    className="md:mr-2 text-xl"
+                                    onClick={approveUmami}
+                                  >
+                                    Approve
+                                  </Button>
+                                )}
                                 <Button
                                   className="mt-2 md:mt-0 text-xl"
                                   disabled={isClaimDisabled}
@@ -308,7 +311,7 @@ export default function Marinate() {
               </a>
             </div>
           </div>
-        </div>
+        </PageContent>
       </section>
     </main>
   )

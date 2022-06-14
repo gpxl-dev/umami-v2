@@ -1,7 +1,6 @@
-import React from 'react'
 import { useSigner } from 'wagmi'
 import { useNotifications } from 'reapop'
-import { useQueryClient } from 'react-query'
+import { useMutation, useQueryClient } from 'react-query'
 
 import { useContracts } from './useContracts'
 import { useIsArbitrum } from './useIsArbitrum'
@@ -14,8 +13,8 @@ export function useClaimRewards() {
   const contracts = useContracts()
   const isArbitrum = useIsArbitrum()
 
-  const claimMarinateRewards = React.useCallback(async () => {
-    try {
+  const { mutate: claimMarinateRewards } = useMutation(
+    async () => {
       if (!signer) {
         throw new Error('no signer')
       }
@@ -29,14 +28,21 @@ export function useClaimRewards() {
       }
 
       const { wait } = await contracts.mumami.claimRewards()
-      notify('Claim rewards transaction initiated', 'info')
       await wait()
-      notify('Rewards claimed!')
-      queryClient.invalidateQueries('rewards')
-    } catch (err) {
-      notify('Error claiming Marinate rewards')
+    },
+    {
+      onMutate() {
+        notify('Claim rewards transaction initiated', 'info')
+      },
+      onSuccess() {
+        notify('Rewards claimed!', 'success')
+        queryClient.invalidateQueries('rewards')
+      },
+      onError() {
+        notify('Error claiming Marinate rewards')
+      },
     }
-  }, [signer, contracts, isArbitrum, notify, queryClient])
+  )
 
   return { claimMarinateRewards }
 }

@@ -1,5 +1,5 @@
 import React from 'react'
-import { useQuery, useQueryClient } from 'react-query'
+import { useQuery } from 'react-query'
 import { useAccount } from 'wagmi'
 import { useNotifications } from 'reapop'
 import { ethers } from 'ethers'
@@ -10,7 +10,6 @@ import { useContracts } from './useContracts'
 export function useBalances() {
   const { data: account } = useAccount()
   const { notify } = useNotifications()
-  const queryClient = useQueryClient()
 
   const contracts = useContracts()
   const isArbitrum = useIsArbitrum()
@@ -24,28 +23,37 @@ export function useBalances() {
   }, [])
 
   const fetchBalances = React.useCallback(async () => {
-    try {
-      const address = account?.address
-      const [umamiBalance, mumamiBalance, cmumamiBalance] = await Promise.all([
-        contracts.umami.balanceOf(address),
-        contracts.mumami.balanceOf(address),
-        contracts.cmumami.balanceOf(address),
-      ])
+    const address = account?.address
+    const [
+      umamiBalance,
+      mumamiBalance,
+      cmumamiBalance,
+      umamiDecimals,
+      mumamiDecimals,
+      cmumamiDecimals,
+    ] = await Promise.all([
+      contracts.umami.balanceOf(address),
+      contracts.mumami.balanceOf(address),
+      contracts.cmumami.balanceOf(address),
+      contracts.umami.decimals(),
+      contracts.mumami.decimals(),
+      contracts.cmumami.decimals(),
+    ])
 
-      return {
-        umami: Number(ethers.utils.formatUnits(umamiBalance, 9)),
-        mumami: Number(ethers.utils.formatUnits(mumamiBalance, 9)),
-        cmumami: Number(ethers.utils.formatUnits(cmumamiBalance, 9)),
-      }
-    } catch (err) {
-      console.log(err)
-      notify('Unable to fetch token balances', 'error')
-      return initialData
+    return {
+      umami: Number(ethers.utils.formatUnits(umamiBalance, umamiDecimals)),
+      mumami: Number(ethers.utils.formatUnits(mumamiBalance, mumamiDecimals)),
+      cmumami: Number(
+        ethers.utils.formatUnits(cmumamiBalance, cmumamiDecimals)
+      ),
     }
-  }, [contracts, initialData, account, notify])
+  }, [contracts, account])
 
   return useQuery('balances', fetchBalances, {
     initialData,
     enabled: !!account && isArbitrum,
+    onError() {
+      notify('Unable to fetch token balances', 'error')
+    },
   })
 }

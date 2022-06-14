@@ -22,6 +22,11 @@ const HeaderContainer = styled.div`
   background-position: bottom center;
 `
 
+const ContentContainer = styled.div`
+  background-color: ${(props) => props.theme.backgroundAltColor};
+  color: ${(props) => props.theme.color};
+`
+
 function Header({ text }: HeaderProps) {
   return (
     <HeaderContainer className="h-[150px]">
@@ -33,7 +38,7 @@ function Header({ text }: HeaderProps) {
 }
 
 function Content({ children }: ContentProps) {
-  return <div className="p-4 mt-4">{children}</div>
+  return <ContentContainer className="p-4 pt-8">{children}</ContentContainer>
 }
 
 function SubHeader({ children }: ContentProps) {
@@ -50,9 +55,7 @@ export default function EarnCard({ children, footer }: EarnCardProps) {
   return (
     <div className="bg-gradient-to-b from-umami-pink to-umami-purple p-[3px] hover:-translate-y-1 duration-200 rounded-md shadow max-w-md">
       <div
-        className={`bg-white rounded ${
-          footer ? 'rounded-br-none rounded-bl-none' : ''
-        }`}
+        className={`rounded ${footer ? 'rounded-br-none rounded-bl-none' : ''}`}
       >
         {children}
       </div>

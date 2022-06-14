@@ -1,11 +1,11 @@
-import React from 'react'
 import { ethers } from 'ethers'
 import { useAccount } from 'wagmi'
 import { useNotifications } from 'reapop'
-import { useQueryClient } from 'react-query'
+import { useMutation, useQueryClient } from 'react-query'
 
 import { useBalances } from './useBalances'
 import { useContracts } from './useContracts'
+import { useIsArbitrum } from './useIsArbitrum'
 import { TOKEN_ADDRESSES } from '../constants'
 
 export function useApprovals() {
@@ -15,31 +15,57 @@ export function useApprovals() {
 
   const { data: balances } = useBalances()
   const contracts = useContracts()
+  const isArbitrum = useIsArbitrum()
 
-  const approveUmami = React.useCallback(async () => {
-    try {
+  const { mutate: approveUmami } = useMutation(
+    async () => {
       if (!account) {
         notify('Please connect wallet to approve spend of UMAMI', 'error')
+        throw new Error('no account')
       }
+
+      if (!isArbitrum) {
+        notify('Please switch network to Arbitrum to approve UMAMI', 'error')
+        throw new Error('wrong network')
+      }
+
       const decimals = await contracts.umami.decimals()
       const approvalAmount = ethers.utils.parseUnits(
         String(Number(balances?.umami) + 1),
         decimals
       )
-      const { wait } = await contracts.umami.approve(TOKEN_ADDRESSES.mumami, approvalAmount)
-      notify('UMAMI Approval transaction initiated', 'info')
+      const { wait } = await contracts.umami.approve(
+        TOKEN_ADDRESSES.mumami,
+        approvalAmount
+      )
       await wait()
-      queryClient.invalidateQueries('allowances')
-      notify('UMAMI spend approved', 'success')
-    } catch (err) {
-      notify('Error approving UMAMI, please try again', 'error')
+    },
+    {
+      onMutate() {
+        notify('UMAMI Approval transaction initiated', 'info')
+      },
+      onError() {
+        notify('Error approving UMAMI, please try again', 'error')
+      },
+      onSuccess() {
+        notify('UMAMI spend approved', 'success')
+        queryClient.invalidateQueries('allowances')
+      },
     }
-  }, [account, notify, balances, contracts, queryClient])
+  )
 
-  const approveMumami = React.useCallback(async () => {
-    try {
+  const { mutate: approveMumami } = useMutation(
+    async () => {
       if (!account) {
         notify('Please connect wallet to approve spend of mUMAMI', 'error')
+        throw new Error('no account')
+      }
+      if (!isArbitrum) {
+        notify(
+          'Please switch network to Arbitrum to approve spend of mUMAMI',
+          'error'
+        )
+        throw new Error('wrong network')
       }
       const decimals = await contracts.mumami.decimals()
       const approvalAmount = ethers.utils.parseUnits(
@@ -50,34 +76,21 @@ export function useApprovals() {
         TOKEN_ADDRESSES.cmumami,
         approvalAmount
       )
-      notify('mUMAMI Approval transaction initiated', 'info')
       await wait()
-      queryClient.invalidateQueries('allowances')
-      notify('mUMAMI spend approved', 'success')
-    } catch (err) {
-      console.log(err)
-      notify('Error approving mUMAMI, please try again', 'error')
+    },
+    {
+      onMutate() {
+        notify('mUMAMI Approval transaction initiated', 'info')
+      },
+      onError() {
+        notify('Error approving mUMAMI, please try again', 'error')
+      },
+      onSuccess() {
+        notify('mUMAMI spend approved', 'success')
+        queryClient.invalidateQueries('allowances')
+      },
     }
-  }, [account, notify, balances, contracts, queryClient])
+  )
 
-  const approveCmumami = React.useCallback(async () => {
-    try {
-      if (!account) {
-        notify('Please connect wallet to approve spend of cmUMAMI', 'error')
-      }
-      const approvalAmount = ethers.utils.parseUnits(
-        String(Number(balances?.cmumami) + 1),
-        9
-      )
-      await contracts.cmumami.approve(
-        TOKEN_ADDRESSES.cmumamiBooster,
-        approvalAmount
-      )
-    } catch (err) {
-      console.log(err)
-      notify('Error approving cmUMAMI, please try again', 'error')
-    }
-  }, [account, notify, balances, contracts])
-
-  return { approveUmami, approveMumami, approveCmumami }
+  return { approveUmami, approveMumami }
 }

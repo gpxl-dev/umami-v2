@@ -25,7 +25,7 @@ export default function Navigation() {
   }, [isEarnOpen])
 
   const activeLinkClasses =
-    'bg-gradient-to-b from-umami-pink to-umami-purple bg-clip-text text-transparent'
+    'text-umami-pink'
 
   const earnLinks = React.useMemo(() => {
     return isEarnOpen ? (

@@ -24,33 +24,26 @@ export function useAllowances() {
   }, [])
 
   const fetchAllowances = React.useCallback(async () => {
-    try {
-      const address = account?.address
-      const [
-        umamiBalance,
-        mumamiBalance,
-        umamiAllowance,
-        mumamiAllowance,
-      ] = await Promise.all([
+    const address = account?.address
+    const [umamiBalance, mumamiBalance, umamiAllowance, mumamiAllowance] =
+      await Promise.all([
         contracts.umami.balanceOf(address),
         contracts.mumami.balanceOf(address),
         contracts.umami.allowance(address, TOKEN_ADDRESSES.mumami),
         contracts.mumami.allowance(address, TOKEN_ADDRESSES.cmumami),
       ])
 
-      return {
-        umami: umamiAllowance.gt(0) && umamiAllowance.gt(umamiBalance),
-        mumami: mumamiAllowance.gt(0) && mumamiAllowance.gt(mumamiBalance),
-      }
-    } catch (err) {
-      console.log(err)
-      notify('Unable to fetch token allowances', 'error')
-      return initialData
+    return {
+      umami: umamiAllowance.gt(0) && umamiAllowance.gt(umamiBalance),
+      mumami: mumamiAllowance.gt(0) && mumamiAllowance.gt(mumamiBalance),
     }
-  }, [contracts, initialData, account, notify])
+  }, [contracts, account])
 
   return useQuery('allowances', fetchAllowances, {
     initialData: queryClient.getQueryData('allowances') ?? initialData,
     enabled: !!account && isArbitrum,
+    onError() {
+      notify('Unable to fetch token allowances', 'error')
+    },
   })
 }

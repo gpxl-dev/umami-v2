@@ -1,14 +1,25 @@
 import React from 'react'
 import { createGlobalStyle } from 'styled-components'
-import { useLocation, Outlet } from 'react-router-dom'
+import { Outlet } from 'react-router-dom'
 
 import WagmiProvider from './WagmiProvider'
+import ThemeProvider from './ThemeProvider'
 import Notifications from './Notifications'
 import Navigation from './Navigation'
 import Footer from './Footer'
 import Disclaimer from './Disclaimer'
+import { useIsLandingPage } from '../hooks/useIsLandingPage'
 
 const GlobalStyle = createGlobalStyle`
+  :root {
+    --color-umami-pink: #C659D8;
+    --color-umami-purple: #60489D;
+    --color-umami-yellow: #FFC225;
+    --color-dark: #000;
+    --color-dark-alt: #2a2b2e;
+    --color-light: #ffffff;
+  }
+
   body {
     background-color: #000000;
     background-image: url('/assets/umami-finance-neotokyo-bg.png');
@@ -24,11 +35,7 @@ const GlobalStyle = createGlobalStyle`
 `
 
 export default function Layout() {
-  const appLocation = useLocation()
-
-  const isLandingPage = React.useMemo(() => {
-    return appLocation.pathname === '/'
-  }, [appLocation.pathname])
+  const isLandingPage = useIsLandingPage()
 
   const appNav = React.useMemo(() => {
     return !isLandingPage ? (
@@ -42,14 +49,16 @@ export default function Layout() {
   return (
     <>
       <GlobalStyle />
-      <WagmiProvider>
-        <Notifications />
-        <div className="fixed inset-0 bg-black bg-opacity-[75%] overflow-y-auto">
-          {appNav}
-          <Outlet />
-          <Footer />
-        </div>
-      </WagmiProvider>
+      <ThemeProvider>
+        <WagmiProvider>
+          <Notifications />
+          <div className="fixed inset-0 bg-black bg-opacity-[75%] overflow-y-auto">
+            {appNav}
+            <Outlet />
+            <Footer />
+          </div>
+        </WagmiProvider>
+      </ThemeProvider>
     </>
   )
 }

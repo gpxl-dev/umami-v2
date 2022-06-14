@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { Formik, Form } from 'formik'
 import { FaExternalLinkAlt } from 'react-icons/fa'
 
+import PageContent from '../components/PageContent'
 import FormCard from '../components/FormCard'
 import Button from '../components/Button'
 import { useBanxa } from '../hooks/useBanxa'
@@ -65,7 +66,7 @@ export default function Buy() {
   return (
     <main>
       <section>
-        <div className="bg-white mt-8 py-8 pb-16 w-full">
+        <PageContent className="mt-8 py-8 pb-16 w-full">
           <div className="m-auto max-w-lg px-4 w-full">
             <div className="font-semibold text-gray-600 uppercase">
               <Link to="/app" className="underline">
@@ -165,7 +166,7 @@ export default function Buy() {
                                   <input
                                     name="ethAmount"
                                     type="text"
-                                    className="rounded border mt-2 px-2 h-10 text-lg font-bold bg-white text-black w-full disabled:cursor-not-allowed"
+                                    className="rounded border mt-2 px-2 h-10 text-lg font-bold bg-white text-black w-full disabled:opacity-100 disabled:cursor-not-allowed"
                                     value={`${ethAmount} ETH`}
                                     disabled
                                   />
@@ -187,7 +188,7 @@ export default function Buy() {
               </div>
             </div>
           </div>
-        </div>
+        </PageContent>
       </section>
     </main>
   )
