@@ -10,6 +10,7 @@ import Earn from './pages/Earn'
 import Marinate from './pages/Marinate'
 import Compound from './pages/Compound'
 import Buy from './pages/Buy'
+import Vaults from './pages/Vaults'
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
             <Route path="app/marinate" element={<Marinate />} />
             <Route path="app/compound" element={<Compound />} />
             <Route path="app/buy" element={<Buy />} />
+            <Route path="app/vaults" element={<Vaults />} />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
