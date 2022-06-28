@@ -27,7 +27,7 @@ export default function Vaults() {
       </main>
 
       <section>
-        <PageContent>
+        <PageContent className="min-h-[50vh]">
           <div className="-translate-y-12 px-4 flex justify-center items-center">
             <VaultCard
               title="GLP/TCR USDC Pool"

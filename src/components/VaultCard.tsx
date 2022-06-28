@@ -1,7 +1,13 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import styled from 'styled-components'
 
 import Button from './Button'
+
+const CardContents = styled.div`
+  background-color: ${(props) => props.theme.backgroundAltDarkColor};
+  color: var(--color-light);
+`
 
 type Props = {
   title: string;
@@ -44,11 +50,10 @@ export default function VaultCard({
   const depositPercentage = React.useMemo(() => {
     return Math.floor((Math.floor(deposits.current) / deposits.capacity) * 100)
   }, [deposits])
-  console.log(depositPercentage)
 
   return (
-    <div className="bg-gradient-to-b from-umami-pink to-umami-purple p-[2px] hover:-translate-y-1 duration-200 rounded-md shadow w-full md:max-w-[50%]">
-      <div className="rounded bg-black w-full p-6">
+    <div className="bg-gradient-to-b from-umami-pink to-umami-purple p-[2px] hover:-translate-y-1 duration-200 rounded-md shadow w-full lg:max-w-[50%]">
+      <CardContents className="rounded w-full p-6">
         <div className="flex w-full items-center justify-between">
           <h2 className="font-bold text-2xl uppercase mr-4">{title}</h2>
 
@@ -59,8 +64,8 @@ export default function VaultCard({
           </Link>
         </div>
 
-        <ul className="grid grid-rows-4 md:grid-rows-1 md:grid-cols-4 gap-4 mt-4 border border-gray-500 rounded">
-          <li className="md:border-r md:border-gray-500 p-4">
+        <ul className="grid grid-rows-2 grid-cols-2 md:grid-rows-1 md:grid-cols-4 mt-4 border border-gray-500 rounded">
+          <li className="border-r border-gray-500 p-4">
             <div className="text-sm text-gray-500 md:w-24">
               <div className="flex items-center justify-center">
                 <div>Deposit</div>
@@ -82,7 +87,7 @@ export default function VaultCard({
             </div>
           </li>
 
-          <li className="md:border-r md:border-t-0 border-gray-500 border-t p-4">
+          <li className="md:border-r md:border-gray-500 p-4">
             <div className="flex flex-col items-center">
               <div className="text-sm text-center text-gray-500">
                 Receipt Token
@@ -92,7 +97,7 @@ export default function VaultCard({
           </li>
 
           {apr ? (
-            <li className="md:border-r md:border-t-0 border-gray-500 border-t p-4">
+            <li className="border-r md:border-t-0 border-gray-500 border-t p-4">
               <div className="flex flex-col items-center">
                 <div className="text-sm text-center text-gray-500">Est APR</div>
                 <div className="font-bold text-lg">{apr}%</div>
@@ -132,7 +137,7 @@ export default function VaultCard({
           <div>Total Deposits</div>
           <div>Vault Capactiy</div>
         </div>
-      </div>
+      </CardContents>
     </div>
   )
 }

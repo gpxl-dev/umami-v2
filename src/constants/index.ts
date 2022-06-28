@@ -108,11 +108,13 @@ export const THEMES = {
     color: 'var(--color-dark)',
     backgroundColor: 'var(--color-light)',
     backgroundAltColor: 'var(--color-light)',
+    backgroundAltDarkColor: 'var(--color-dark-alt)',
   },
   dark: {
     color: 'var(--color-light)',
     backgroundColor: 'var(--color-dark)',
     backgroundAltColor: 'var(--color-dark-alt)',
+    backgroundAltDarkColor: 'var(--color-dark)',
   },
 }
 
