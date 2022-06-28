@@ -12,7 +12,7 @@ export default function Vaults() {
       </Helmet>
 
       <main>
-        <header className="text-center mt-12 min-h-[300px]">
+        <header className="text-center mt-12 p-4 min-h-[300px]">
           <h1 className="font-bold text-5xl text-white tracking-widest uppercase md:text-6xl">
             Vaults
           </h1>
