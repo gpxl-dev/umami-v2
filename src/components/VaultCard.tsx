@@ -11,7 +11,7 @@ const CardContents = styled.div`
 
 type Props = {
   title: string;
-  url: string;
+  url?: string;
   tokens: {
     deposit: string;
     earn: string;
@@ -52,16 +52,18 @@ export default function VaultCard({
   }, [deposits])
 
   return (
-    <div className="bg-gradient-to-b from-umami-pink to-umami-purple p-[2px] hover:-translate-y-1 duration-200 rounded-md shadow w-full lg:max-w-[50%]">
+    <div className="bg-gradient-to-b from-umami-pink to-umami-purple p-[2px] hover:-translate-y-1 duration-200 rounded-md shadow w-full">
       <CardContents className="rounded w-full p-6">
         <div className="flex w-full items-center justify-between">
           <h2 className="font-bold text-2xl uppercase mr-4">{title}</h2>
 
-          <Link to={url}>
-            <Button className="text-xs min-w-[6rem] max-w-[8rem]">
-              view vault
-            </Button>
-          </Link>
+          {url ? (
+            <Link to={url}>
+              <Button className="text-xs min-w-[6rem] max-w-[8rem]">
+                view vault
+              </Button>
+            </Link>
+          ) : null}
         </div>
 
         <ul className="grid grid-rows-2 grid-cols-2 md:grid-rows-1 md:grid-cols-4 mt-4 border border-gray-500 rounded">
@@ -130,7 +132,10 @@ export default function VaultCard({
         </div>
 
         <div className="mt-2 relative bg-gray-300 rounded h-1 w-full">
-          <div className="bg-sky-500 h-1 absolute inset-0 rounded" style={{ width: `${depositPercentage}%` }} />
+          <div
+            className="bg-sky-500 h-1 absolute inset-0 rounded"
+            style={{ width: `${depositPercentage}%` }}
+          />
         </div>
 
         <div className="flex items-center justify-between text-gray-500 text-sm font-bold mt-2 w-full">

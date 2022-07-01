@@ -11,6 +11,7 @@ import Marinate from './pages/Marinate'
 import Compound from './pages/Compound'
 import Buy from './pages/Buy'
 import Vaults from './pages/Vaults'
+import GlpTcrUsdcPoolVault from './pages/GlpTcrUsdcPoolVault'
 
 function App() {
   return (
@@ -24,6 +25,10 @@ function App() {
             <Route path="app/compound" element={<Compound />} />
             <Route path="app/buy" element={<Buy />} />
             <Route path="app/vaults" element={<Vaults />} />
+            <Route
+              path="app/vaults/glp-tcr-usdc-pool"
+              element={<GlpTcrUsdcPoolVault />}
+            />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
