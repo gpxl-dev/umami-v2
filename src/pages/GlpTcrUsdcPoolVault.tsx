@@ -1,6 +1,7 @@
 import React from 'react'
 import Helmet from 'react-helmet'
 import { Link } from 'react-router-dom'
+import { Formik, Form } from 'formik'
 
 import PageContent from '../components/PageContent'
 import VaultCard from '../components/VaultCard'
@@ -55,7 +56,23 @@ export default function GlpTcrUsdcPoolVault() {
                   </VaultTransactionCard.Header>
 
                   <VaultTransactionCard.Content>
-                    <div>form goes here</div>
+                    <Formik
+                      initialValues={{ amount: 0 }}
+                      onSubmit={(vaules) => console.log(vaules)}
+                    >
+                      {({ values, setFieldValue }) => (
+                        <Form>
+                          <fieldset>
+                            <VaultTransactionCard.FormField
+                              name="amount"
+                              label="USDC"
+                              action={() => setFieldValue('amount', 100)}
+                              actionLabel="max"
+                            />
+                          </fieldset>
+                        </Form>
+                      )}
+                    </Formik>
 
                     <VaultTransactionCard.Action text="Preview Deposit" />
                   </VaultTransactionCard.Content>

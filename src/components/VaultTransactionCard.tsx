@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { Field } from 'formik'
 import type { ReactNode } from 'react'
 
 type RootComponentProps = {
@@ -24,8 +25,53 @@ type HeaderActionProps = {
   active?: boolean;
 };
 
+type FormFieldProps = {
+  label: ReactNode | string;
+  name: string;
+  type?: 'text' | 'number';
+  action?: () => void;
+  actionLabel?: string;
+  disabled?: boolean;
+};
+
+function FormField({
+  label,
+  disabled = false,
+  name,
+  type = 'number',
+  action,
+  actionLabel,
+}: FormFieldProps) {
+  return (
+    <label htmlFor={name} className="flex">
+      <div className="relative w-full">
+        <Field
+          name={name}
+          type={type}
+          className="bg-transparent border border-gray-500 rounded-md rounded-tr-none rounded-br-none px-4 py-2 w-full"
+        />
+        {action && actionLabel ? (
+          <div className="absolute right-0 top-0 bottom-0 flex justify-end items-center px-4">
+            <button
+              type="button"
+              onClick={action}
+              className="font-bold text-sm text-umami-pink"
+            >
+              {actionLabel}
+            </button>
+          </div>
+        ) : null}
+      </div>
+      <div className="border border-gray-500 rounded-md rounded-tl-none rounded-bl-none flex items-center px-4">
+        {label}
+      </div>
+    </label>
+  )
+}
+
 const HeaderStyles = styled.div`
-  background-color: ${(props) => props.theme.backgroundAltDarkColor};
+  background-color: ${(props) => props.theme.backgroundColor};
+  color: ${(props) => props.theme.color};
 `
 
 function Header({ children }: ContentProps) {
@@ -77,8 +123,8 @@ function Content({ children }: ContentProps) {
 }
 
 const RootContainer = styled.div`
-  background-color: ${(props) => props.theme.backgroundAltDarkColor};
-  color: var(--color-light);
+  background-color: ${(props) => props.theme.backgroundColor};
+  color: ${(props) => props.theme.color};
 `
 
 export default function VaultTransactionCard({
@@ -99,3 +145,4 @@ VaultTransactionCard.Header = Header
 VaultTransactionCard.Content = Content
 VaultTransactionCard.HeaderAction = HeaderAction
 VaultTransactionCard.HeaderActionDivider = HeaderActionDivider
+VaultTransactionCard.FormField = FormField

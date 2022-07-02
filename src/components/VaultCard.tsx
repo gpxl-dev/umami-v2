@@ -5,8 +5,8 @@ import styled from 'styled-components'
 import Button from './Button'
 
 const CardContents = styled.div`
-  background-color: ${(props) => props.theme.backgroundAltDarkColor};
-  color: var(--color-light);
+  background-color: ${(props) => props.theme.backgroundColor};
+  color: ${(props) => props.theme.color};
 `
 
 type Props = {
@@ -77,13 +77,11 @@ export default function VaultCard({
 
               <div className="flex items-center justify-center">
                 <div>
-                  <span className="sr-only">{tokens.deposit}</span>
-                  <img src="/assets/usdc.svg" alt="" />
+                  <span className="font-bold">{tokens.deposit}</span>
                 </div>
-                <div className="mx-2 text-white text-2xl"> | </div>
+                <div className="mx-2 text-2xl"> | </div>
                 <div>
-                  <span className="sr-only">{tokens.deposit}</span>
-                  <img src="/assets/usdc.svg" alt="" />
+                  <span className="font-bold">{tokens.earn}</span>
                 </div>
               </div>
             </div>
