@@ -57,7 +57,7 @@ export default function Compound() {
     return (
       compoundAPY ? (
         <Pill className="mt-8 m-auto text-xl min-w-[100%]">
-          ~${compoundAPY}% APY 
+          ~{compoundAPY}% APY
         </Pill>
       ) : null
     )

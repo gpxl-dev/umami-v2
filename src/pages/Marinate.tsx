@@ -40,7 +40,7 @@ export default function Marinate() {
   const aprPill = React.useMemo(() => {
     return marinateAPR ? (
       <Pill className="mt-8 m-auto text-xl min-w-full">
-        ~${marinateAPR}% APR
+        ~{marinateAPR}% APR
       </Pill>
     ) : null
   }, [marinateAPR])
