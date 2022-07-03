@@ -134,6 +134,15 @@ export default function MobileNavigation() {
 
                     <li className="mt-4">
                       <NavLink
+                        to="/app/vaults"
+                        activeClassName="bg-gradient-to-b from-umami-pink to-umami-purple bg-clip-text text-transparent"
+                      >
+                        Vaults
+                      </NavLink>
+                    </li>
+
+                    <li className="mt-4">
+                      <NavLink
                         to="/app/buy"
                         activeClassName="bg-gradient-to-b from-umami-pink to-umami-purple bg-clip-text text-transparent"
                       >

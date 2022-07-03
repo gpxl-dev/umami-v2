@@ -7,9 +7,12 @@ import PageContent from '../components/PageContent'
 import VaultCard from '../components/VaultCard'
 import VaultTransactionCard from '../components/VaultTransactionCard'
 import { useActions } from '../hooks/useActions'
+import { useGlpTcrUsdcPoolInfo } from '../hooks/useGlpTcrUsdcPoolInfo'
 
 export default function GlpTcrUsdcPoolVault() {
   const { action, selectDeposit, selectWithdraw } = useActions()
+  const thing = useGlpTcrUsdcPoolInfo()
+  console.log(thing)
 
   return (
     <>

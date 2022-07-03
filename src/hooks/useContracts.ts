@@ -1,12 +1,13 @@
 import React from 'react'
 import { ethers } from 'ethers'
-import { useProvider, useSigner } from 'wagmi'
+import { useProvider, useSigner, erc20ABI } from 'wagmi'
 
 import { useArb1Provider } from './useArb1Provider'
 
 import UmamiABI from '../abis/Umami.abi'
 import MarinateABI from '../abis/MarinatedUmami.abi'
 import CMUmamiABI from '../abis/CompoundedMarinatedUmami.abi'
+import GlpTcrUsdcPoolABI from '../abis/GlpTcrUsdcPool.abi'
 import { TOKEN_ADDRESSES } from '../constants'
 
 export function useContracts() {
@@ -31,6 +32,16 @@ export function useContracts() {
       cmumami: new ethers.Contract(
         TOKEN_ADDRESSES.cmumami,
         CMUmamiABI,
+        signer ?? provider
+      ),
+      glpTcrUsdcPool: new ethers.Contract(
+        TOKEN_ADDRESSES.glpTcrUsdcPool,
+        GlpTcrUsdcPoolABI,
+        signer ?? provider
+      ),
+      usdc: new ethers.Contract(
+        TOKEN_ADDRESSES.usdc,
+        erc20ABI,
         signer ?? provider
       ),
       providerType: wagmiProvider ? 'wagmi' : 'arb1',

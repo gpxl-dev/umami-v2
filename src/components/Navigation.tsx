@@ -96,6 +96,16 @@ export default function Navigation() {
 
               <li className="mr-4">
                 <NavLink
+                  to="/app/vaults"
+                  activeClassName={activeLinkClasses}
+                  className="hover:underline"
+                >
+                  Vaults
+                </NavLink>
+              </li>
+
+              <li className="mr-4">
+                <NavLink
                   to="/app/buy"
                   activeClassName={activeLinkClasses}
                   className="hover:underline"

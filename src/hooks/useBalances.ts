@@ -19,6 +19,7 @@ export function useBalances() {
       umami: 0,
       mumami: 0,
       cmumami: 0,
+      usdc: 0,
     }
   }, [])
 
@@ -29,15 +30,19 @@ export function useBalances() {
       mumamiBalance,
       cmumamiBalance,
       umamiDecimals,
+      usdcBalance,
       mumamiDecimals,
       cmumamiDecimals,
+      usdcDecimals,
     ] = await Promise.all([
       contracts.umami.balanceOf(address),
       contracts.mumami.balanceOf(address),
       contracts.cmumami.balanceOf(address),
+      contracts.usdc.balanceOf(address),
       contracts.umami.decimals(),
       contracts.mumami.decimals(),
       contracts.cmumami.decimals(),
+      contracts.usdc.decimals(),
     ])
 
     return {
@@ -46,6 +51,7 @@ export function useBalances() {
       cmumami: Number(
         ethers.utils.formatUnits(cmumamiBalance, cmumamiDecimals)
       ),
+      usdc: Number(ethers.utils.formatUnits(usdcBalance, usdcDecimals)),
     }
   }, [contracts, account])
 
