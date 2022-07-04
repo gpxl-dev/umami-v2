@@ -1,6 +1,6 @@
 import React from 'react'
 import { ethers } from 'ethers'
-import { useAccount } from 'wagmi'
+// import { useAccount } from 'wagmi'
 import { useQuery } from 'react-query'
 import { useNotifications } from 'reapop'
 
@@ -8,15 +8,17 @@ import { useContracts } from './useContracts'
 import { useIsArbitrum } from './useIsArbitrum'
 
 export function useGlpTcrUsdcPoolInfo() {
-  const { data: account } = useAccount()
+  // const { data: account } = useAccount()
   const { notify } = useNotifications()
 
   const isArbitrum = useIsArbitrum()
   const contracts = useContracts()
 
   const initialData: {
+    capacity: number;
+    totalDeposits: number;
     symbol: string;
-    balance: number;
+    /* balance: number;
     userShares: number;
     vaultState: {
       epochStart: number;
@@ -27,11 +29,13 @@ export function useGlpTcrUsdcPoolInfo() {
     withdrawals: {
       round: number;
       shares: number;
-    };
+    }; */
   } = React.useMemo(
     () => ({
+      capacity: 0,
+      totalDeposits: 0,
       symbol: '',
-      balance: 0,
+      /* balance: 0,
       userShares: 0,
       vaultState: {
         epochStart: 0,
@@ -42,31 +46,41 @@ export function useGlpTcrUsdcPoolInfo() {
       withdrawals: {
         round: 0,
         shares: 0,
-      },
+      }, */
     }),
     []
   )
 
   const getPoolInfo = React.useCallback(async () => {
-    console.log(contracts.glpTcrUsdcPool)
-    const [balance, vaultState, withdrawals, decimals, symbol] =
-      await Promise.all([
-        contracts.glpTcrUsdcPool.balanceOf(account?.address),
-        contracts.glpTcrUsdcPool.vaultState(),
-        contracts.glpTcrUsdcPool.withdrawals(account?.address),
-        contracts.glpTcrUsdcPool.decimals(),
-        contracts.glpTcrUsdcPool.symbol(),
-      ])
-    const balanceConverted = Number(
+    const [
+      // balance,
+      // vaultState,
+      // withdrawals,
+      decimals,
+      symbol,
+      capacity,
+      totalDeposits,
+    ] = await Promise.all([
+      // contracts.glpTcrUsdcPool.balanceOf(account?.address),
+      // contracts.glpTcrUsdcPool.vaultState(),
+      // contracts.glpTcrUsdcPool.withdrawals(account?.address),
+      contracts.usdc.decimals(),
+      contracts.glpTcrUsdcPool.symbol(),
+      contracts.glpTcrUsdcPool.cap(),
+      contracts.glpTcrUsdcPool.totalAssets(),
+    ])
+    /* const balanceConverted = Number(
       ethers.utils.formatUnits(balance, decimals)
     )
     const userShares = await contracts.glpTcrUsdcPool.convertToAssets(
       balanceConverted
-    )
+    ) */
 
     return {
+      capacity: Number(ethers.utils.formatUnits(capacity, decimals)),
+      totalDeposits: Number(ethers.utils.formatUnits(totalDeposits, decimals)),
       symbol,
-      balance: balanceConverted,
+      /* balance: balanceConverted,
       userShares: Number(ethers.utils.formatUnits(userShares, decimals)),
       vaultState: {
         epochStart: vaultState.epochStart.toNumber(),
@@ -77,12 +91,12 @@ export function useGlpTcrUsdcPoolInfo() {
       withdrawals: {
         round: withdrawals.round,
         shares: Number(ethers.utils.formatUnits(withdrawals.shares, decimals)),
-      },
+      }, */
     }
-  }, [contracts, account])
+  }, [contracts, /* account */])
 
   return useQuery('glpTcrPoolInfo', getPoolInfo, {
-    enabled: !!account && isArbitrum,
+    enabled: isArbitrum,
     initialData,
     onError() {
       notify('Error fetching GLP/TCR USDC Pool info', 'error')

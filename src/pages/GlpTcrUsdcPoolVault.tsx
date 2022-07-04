@@ -9,11 +9,13 @@ import VaultTransactionCard from '../components/VaultTransactionCard'
 import { useActions } from '../hooks/useActions'
 import { useBalances } from '../hooks/useBalances'
 import { useGlpTcrUsdcPoolInfo } from '../hooks/useGlpTcrUsdcPoolInfo'
+import { TOKEN_ADDRESSES } from '../constants'
 
 export default function GlpTcrUsdcPoolVault() {
   const { action, selectDeposit, selectWithdraw } = useActions()
   const { data: balances } = useBalances()
   const { data: poolInfo } = useGlpTcrUsdcPoolInfo()
+  console.log(poolInfo)
 
   const usdcBalance = React.useMemo(() => {
     return balances?.usdc.toFixed(2)
@@ -45,7 +47,11 @@ export default function GlpTcrUsdcPoolVault() {
                   tokens={{ deposit: 'USDC', earn: 'USDC', receipt: 'umUSDC' }}
                   apr="23.4"
                   fees="1-15-0"
-                  deposits={{ current: 4231000, capacity: 5000000 }}
+                  deposits={{
+                    current: poolInfo?.totalDeposits ?? 0,
+                    capacity: poolInfo?.capacity ?? 0,
+                  }}
+                  contractAddress={TOKEN_ADDRESSES.glpTcrUsdcPool}
                 />
               </div>
 

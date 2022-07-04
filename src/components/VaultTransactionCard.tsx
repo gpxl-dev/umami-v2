@@ -62,7 +62,7 @@ function FormField({
           </div>
         ) : null}
       </div>
-      <div className="border border-gray-500 rounded-md rounded-tl-none rounded-bl-none flex items-center px-4">
+      <div className="border border-gray-500 rounded-md rounded-tl-none rounded-bl-none flex items-center px-4 font-bold">
         {label}
       </div>
     </label>

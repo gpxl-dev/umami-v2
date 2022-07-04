@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
+import { FaExternalLinkAlt } from 'react-icons/fa'
 
 import Button from './Button'
 
@@ -12,6 +13,7 @@ const CardContents = styled.div`
 type Props = {
   title: string;
   url?: string;
+  contractAddress?: string;
   tokens: {
     deposit: string;
     earn: string;
@@ -34,6 +36,7 @@ export default function VaultCard({
   deposits,
   apr,
   apy,
+  contractAddress,
 }: Props) {
   const getFormattedNumber = React.useCallback((num: number) => {
     return new Intl.NumberFormat('en-us').format(num)
@@ -52,7 +55,7 @@ export default function VaultCard({
   }, [deposits])
 
   return (
-    <div className="bg-gradient-to-b from-umami-pink to-umami-purple p-[2px] hover:-translate-y-1 duration-200 rounded-md shadow w-full">
+    <div className="bg-gradient-to-b from-umami-pink to-umami-purple p-[2px] duration-200 rounded-md shadow w-full">
       <CardContents className="rounded w-full p-6">
         <div className="flex w-full items-center justify-between">
           <h2 className="font-bold text-2xl uppercase mr-4">{title}</h2>
@@ -63,6 +66,19 @@ export default function VaultCard({
                 view vault
               </Button>
             </Link>
+          ) : null}
+          {contractAddress ? (
+            <div className="flex">
+              <a
+                href={`https://arbiscan.io/address/${contractAddress}`}
+                target="_blank"
+                rel="noopner noreferrer"
+                className="flex items-center px-2 py-1 rounded bg-gray-700 text-gray-300 duration-100 hover:bg-gray-800 hover:-translate-y-[2px]"
+              >
+                <span className="mr-1">Contract </span>
+                <FaExternalLinkAlt className="inline pb-1" />
+              </a>
+            </div>
           ) : null}
         </div>
 
