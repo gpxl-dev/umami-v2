@@ -7,12 +7,21 @@ import PageContent from '../components/PageContent'
 import VaultCard from '../components/VaultCard'
 import VaultTransactionCard from '../components/VaultTransactionCard'
 import { useActions } from '../hooks/useActions'
+import { useBalances } from '../hooks/useBalances'
 import { useGlpTcrUsdcPoolInfo } from '../hooks/useGlpTcrUsdcPoolInfo'
 
 export default function GlpTcrUsdcPoolVault() {
   const { action, selectDeposit, selectWithdraw } = useActions()
-  const thing = useGlpTcrUsdcPoolInfo()
-  console.log(thing)
+  const { data: balances } = useBalances()
+  const { data: poolInfo } = useGlpTcrUsdcPoolInfo()
+
+  const usdcBalance = React.useMemo(() => {
+    return balances?.usdc.toFixed(2)
+  }, [balances])
+
+  const symbol = React.useMemo(() => {
+    return action === 'deposit' ? 'USDC' : poolInfo?.symbol
+  }, [action, poolInfo])
 
   return (
     <>
@@ -66,18 +75,27 @@ export default function GlpTcrUsdcPoolVault() {
                       {({ values, setFieldValue }) => (
                         <Form>
                           <fieldset>
-                            <VaultTransactionCard.FormField
-                              name="amount"
-                              label="USDC"
-                              action={() => setFieldValue('amount', 100)}
-                              actionLabel="max"
-                            />
+                            <div className="flex text-gray-500 font-bold items-center justify-between">
+                              <div>Balance</div>
+                              <div>{usdcBalance}</div>
+                            </div>
+
+                            <div className="mt-2">
+                              <VaultTransactionCard.FormField
+                                name="amount"
+                                label={symbol}
+                                action={() => setFieldValue('amount', 100)}
+                                actionLabel="max"
+                              />
+                            </div>
                           </fieldset>
+                          <VaultTransactionCard.Action
+                            text="Preview Deposit"
+                            disabled={!values.amount}
+                          />
                         </Form>
                       )}
                     </Formik>
-
-                    <VaultTransactionCard.Action text="Preview Deposit" />
                   </VaultTransactionCard.Content>
                 </VaultTransactionCard>
               </div>

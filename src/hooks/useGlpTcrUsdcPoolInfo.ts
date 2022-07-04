@@ -14,23 +14,49 @@ export function useGlpTcrUsdcPoolInfo() {
   const isArbitrum = useIsArbitrum()
   const contracts = useContracts()
 
-  const initialData = React.useMemo(
+  const initialData: {
+    symbol: string;
+    balance: number;
+    userShares: number;
+    vaultState: {
+      epochStart: number;
+      lastLockedAmount: number;
+      round: number;
+      totalPending: number;
+    };
+    withdrawals: {
+      round: number;
+      shares: number;
+    };
+  } = React.useMemo(
     () => ({
+      symbol: '',
       balance: 0,
       userShares: 0,
-      vaultState: null,
-      withdrawals: null,
+      vaultState: {
+        epochStart: 0,
+        lastLockedAmount: 0,
+        round: 0,
+        totalPending: 0,
+      },
+      withdrawals: {
+        round: 0,
+        shares: 0,
+      },
     }),
     []
   )
 
   const getPoolInfo = React.useCallback(async () => {
-    const [balance, vaultState, withdrawals, decimals] = await Promise.all([
-      contracts.glpTcrUsdcPool.balanceOf(account?.address),
-      contracts.glpTcrUsdcPool.vaultState(),
-      contracts.glpTcrUsdcPool.withdrawals(account?.address),
-      contracts.glpTcrUsdcPool.decimals(),
-    ])
+    console.log(contracts.glpTcrUsdcPool)
+    const [balance, vaultState, withdrawals, decimals, symbol] =
+      await Promise.all([
+        contracts.glpTcrUsdcPool.balanceOf(account?.address),
+        contracts.glpTcrUsdcPool.vaultState(),
+        contracts.glpTcrUsdcPool.withdrawals(account?.address),
+        contracts.glpTcrUsdcPool.decimals(),
+        contracts.glpTcrUsdcPool.symbol(),
+      ])
     const balanceConverted = Number(
       ethers.utils.formatUnits(balance, decimals)
     )
@@ -39,10 +65,19 @@ export function useGlpTcrUsdcPoolInfo() {
     )
 
     return {
+      symbol,
       balance: balanceConverted,
       userShares: Number(ethers.utils.formatUnits(userShares, decimals)),
-      vaultState,
-      withdrawals,
+      vaultState: {
+        epochStart: vaultState.epochStart.toNumber(),
+        lastLockedAmount: vaultState.lastLockedAmount.toNumber(),
+        round: vaultState.round.toNumber(),
+        totalPending: vaultState.totalPending.toNumber(),
+      },
+      withdrawals: {
+        round: withdrawals.round,
+        shares: Number(ethers.utils.formatUnits(withdrawals.shares, decimals)),
+      },
     }
   }, [contracts, account])
 

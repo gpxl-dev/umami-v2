@@ -48,7 +48,7 @@ function FormField({
         <Field
           name={name}
           type={type}
-          className="bg-transparent border border-gray-500 rounded-md rounded-tr-none rounded-br-none px-4 py-2 w-full"
+          className="bg-transparent border border-gray-500 rounded-md rounded-tr-none rounded-br-none px-4 py-2 w-full appearance-none"
         />
         {action && actionLabel ? (
           <div className="absolute right-0 top-0 bottom-0 flex justify-end items-center px-4">
@@ -110,7 +110,7 @@ function Action({
     <button
       type={type}
       disabled={disabled}
-      className="bg-umami-pink duration-100 font-bold h-10 mt-4 rounded-md text-white uppercase w-full hover:translate-y-[2px] hover:text-umami-yellow"
+      className="bg-umami-pink duration-100 font-bold h-10 mt-4 rounded-md text-white uppercase w-full hover:translate-y-[2px] hover:text-umami-yellow disabled:cursor-not-allowed disabled:opacity-50"
       onClick={onClick}
     >
       {text}

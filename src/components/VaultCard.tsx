@@ -75,13 +75,15 @@ export default function VaultCard({
                 <div>Earn</div>
               </div>
 
-              <div className="flex items-center justify-center">
-                <div>
-                  <span className="font-bold">{tokens.deposit}</span>
+              <div className="flex items-center justify-around">
+                <div className="flex-1">
+                  <span className="sr-only">{tokens.deposit}</span>
+                  <img src="/assets/usdc.svg" alt="" className="h-10 w-10" />
                 </div>
-                <div className="mx-2 text-2xl"> | </div>
-                <div>
-                  <span className="font-bold">{tokens.earn}</span>
+                <div className="text-2xl"> | </div>
+                <div className="flex-1">
+                  <span className="sr-only">{tokens.earn}</span>
+                  <img src="/assets/usdc.svg" alt="" className="h-10 w-10" />
                 </div>
               </div>
             </div>
