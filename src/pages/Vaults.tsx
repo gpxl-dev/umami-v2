@@ -7,7 +7,6 @@ import { useGlpTcrUsdcPoolInfo } from '../hooks/useGlpTcrUsdcPoolInfo'
 
 export default function Vaults() {
   const { data: poolInfo } = useGlpTcrUsdcPoolInfo()
-  console.log(poolInfo)
 
   return (
     <>
