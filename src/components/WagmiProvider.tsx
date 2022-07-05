@@ -5,6 +5,7 @@ import { publicProvider } from 'wagmi/providers/public'
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
+import { InjectedConnector } from 'wagmi/connectors/injected'
 
 import { INFURA_RPC_URL } from '../constants'
 
@@ -19,6 +20,7 @@ const { chains, provider } = configureChains(
       infuraId: process.env.REACT_PUBLIC_INFURA_ID,
       pollingInterval: 10000,
     }),
+    
   ],
   { stallTimeout: 30000 }
 )
@@ -41,6 +43,13 @@ const wagmiClient = createClient({
         rpc: {
           1: INFURA_RPC_URL,
         },
+      },
+    }),
+    new InjectedConnector({
+      chains,
+      options: {
+        name: 'Brave',
+        shimDisconnect: true,
       },
     }),
   ],

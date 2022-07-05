@@ -70,6 +70,8 @@ export default function AccountButton() {
         return '/assets/coinbase-wallet.svg'
       case 'WalletConnect':
         return '/assets/wallet-connect.svg'
+      case 'Brave':
+        return '/assets/brave_lion.svg'        
       default:
         return null
     }
