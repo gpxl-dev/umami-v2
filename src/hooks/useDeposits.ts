@@ -95,5 +95,29 @@ export function useDeposits() {
     }
   )
 
-  return { marinateUmami, compoundMumami }
+  const { mutate: previewUSDCDeposit } = useMutation(
+    async (amount: string) => {
+      if (!account || !isArbitrum) {
+        notify('Please connect wallet on Arbitrum to deposit USDC', 'error')
+        throw new Error('No account or wrong network')
+      }
+      const decimals = await contracts.glpTcrUsdcPool.decimals()
+      const depositAmount = ethers.utils.parseUnits(amount, decimals)
+      const previewAmount = await contracts.glpTcrUsdcPool.previewDeposit(
+        depositAmount
+      )
+
+      queryClient.setQueryData(
+        'udscDepositPreview',
+        ethers.utils.formatUnits(previewAmount, decimals)
+      )
+    },
+    {
+      onError() {
+        notify('Unable to preview USDC deposit at this time', 'error')
+      },
+    }
+  )
+
+  return { marinateUmami, compoundMumami, previewUSDCDeposit }
 }

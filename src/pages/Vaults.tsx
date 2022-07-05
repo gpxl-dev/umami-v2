@@ -3,8 +3,12 @@ import { Helmet } from 'react-helmet'
 
 import PageContent from '../components/PageContent'
 import VaultCard from '../components/VaultCard'
+import { useGlpTcrUsdcPoolInfo } from '../hooks/useGlpTcrUsdcPoolInfo'
 
 export default function Vaults() {
+  const { data: poolInfo } = useGlpTcrUsdcPoolInfo()
+  console.log(poolInfo)
+
   return (
     <>
       <Helmet>
@@ -32,10 +36,17 @@ export default function Vaults() {
             <VaultCard
               title="GLP/TCR USDC Pool"
               url="/app/vaults/glp-tcr-usdc-pool"
-              tokens={{ deposit: 'USDC', earn: 'USDC', receipt: 'umUSDC' }}
+              tokens={{
+                deposit: 'USDC',
+                earn: 'USDC',
+                receipt: poolInfo?.symbol ?? '...',
+              }}
               apr="23.4"
               fees="1-15-0"
-              deposits={{ current: 4231000, capacity: 5000000 }}
+              deposits={{
+                current: poolInfo?.totalDeposits ?? 0,
+                capacity: poolInfo?.capacity ?? 0,
+              }}
             />
           </div>
         </PageContent>

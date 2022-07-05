@@ -13,11 +13,13 @@ export function useGlpTcrUsdcPoolInfo() {
 
   const isArbitrum = useIsArbitrum()
   const contracts = useContracts()
+  console.log(contracts.glpTcrUsdcPool)
 
   const initialData: {
     capacity: number;
     totalDeposits: number;
     symbol: string;
+    asset: string;
     /* balance: number;
     userShares: number;
     vaultState: {
@@ -35,6 +37,7 @@ export function useGlpTcrUsdcPoolInfo() {
       capacity: 0,
       totalDeposits: 0,
       symbol: '',
+      asset: '',
       /* balance: 0,
       userShares: 0,
       vaultState: {
@@ -60,6 +63,7 @@ export function useGlpTcrUsdcPoolInfo() {
       symbol,
       capacity,
       totalDeposits,
+      asset,
     ] = await Promise.all([
       // contracts.glpTcrUsdcPool.balanceOf(account?.address),
       // contracts.glpTcrUsdcPool.vaultState(),
@@ -68,6 +72,7 @@ export function useGlpTcrUsdcPoolInfo() {
       contracts.glpTcrUsdcPool.symbol(),
       contracts.glpTcrUsdcPool.cap(),
       contracts.glpTcrUsdcPool.totalAssets(),
+      contracts.glpTcrUsdcPool.asset(),
     ])
     /* const balanceConverted = Number(
       ethers.utils.formatUnits(balance, decimals)
@@ -80,6 +85,7 @@ export function useGlpTcrUsdcPoolInfo() {
       capacity: Number(ethers.utils.formatUnits(capacity, decimals)),
       totalDeposits: Number(ethers.utils.formatUnits(totalDeposits, decimals)),
       symbol,
+      asset,
       /* balance: balanceConverted,
       userShares: Number(ethers.utils.formatUnits(userShares, decimals)),
       vaultState: {
