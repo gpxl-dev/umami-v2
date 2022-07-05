@@ -107,12 +107,13 @@ export function useDeposits() {
         depositAmount
       )
 
-      queryClient.setQueryData(
-        'udscDepositPreview',
-        ethers.utils.formatUnits(previewAmount, decimals)
-      )
+      return ethers.utils.formatUnits(previewAmount, decimals)
     },
     {
+      onSuccess(data) {
+        queryClient.setQueryData('usdcDepositPreview', data)
+        console.log(queryClient.getQueryData('usdcDepositPreview'))
+      },
       onError() {
         notify('Unable to preview USDC deposit at this time', 'error')
       },

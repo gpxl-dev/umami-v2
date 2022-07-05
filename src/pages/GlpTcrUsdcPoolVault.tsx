@@ -11,6 +11,7 @@ import { useActions } from '../hooks/useActions'
 import { useBalances } from '../hooks/useBalances'
 import { useGlpTcrUsdcPoolInfo } from '../hooks/useGlpTcrUsdcPoolInfo'
 import { useDeposits } from '../hooks/useDeposits'
+import { useUsdcDepositPreview } from '../hooks/useUsdcDepositPreview'
 import { TOKEN_ADDRESSES } from '../constants'
 
 export default function GlpTcrUsdcPoolVault() {
@@ -18,9 +19,8 @@ export default function GlpTcrUsdcPoolVault() {
   const { data: balances } = useBalances()
   const { data: poolInfo } = useGlpTcrUsdcPoolInfo()
   const { previewUSDCDeposit } = useDeposits()
+  const { data: usdcDepositPreview } = useUsdcDepositPreview()
   const queryClient = useQueryClient()
-  const usdcDepositPreview = queryClient.getQueryData('udscDepositPreview')
-  console.log(usdcDepositPreview)
 
   const usdcBalance = React.useMemo(() => {
     return balances?.usdc.toFixed(2)
@@ -39,8 +39,7 @@ export default function GlpTcrUsdcPoolVault() {
   }, [action, usdcDepositPreview])
 
   const clearUSDCDepositPreview = React.useCallback(() => {
-    queryClient.setQueryData('usdcDepositPreview', undefined)
-    console.log(queryClient.getQueryData('usdcDepositPreview'))
+    queryClient.setQueryData('usdcDepositPreview', 0)
   }, [queryClient])
 
   return (

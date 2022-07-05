@@ -73,7 +73,7 @@ export default function VaultCard({
                 href={`https://arbiscan.io/address/${contractAddress}`}
                 target="_blank"
                 rel="noopner noreferrer"
-                className="flex items-center font-bold px-2 py-1 rounded bg-slate-700 text-slate-300 text-sm duration-100 hover:bg-gray-800 hover:-translate-y-[2px]"
+                className="flex items-center px-2 py-1 rounded bg-gray-700 text-gray-300 text-xs duration-100 hover:bg-gray-800 hover:-translate-y-[2px]"
               >
                 <span className="mr-1">Contract </span>
                 <FaExternalLinkAlt className="inline pb-1" />

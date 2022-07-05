@@ -5,13 +5,11 @@ import { useQuery } from 'react-query'
 import { useNotifications } from 'reapop'
 
 import { useContracts } from './useContracts'
-import { useIsArbitrum } from './useIsArbitrum'
 
 export function useGlpTcrUsdcPoolInfo() {
   // const { data: account } = useAccount()
   const { notify } = useNotifications()
 
-  const isArbitrum = useIsArbitrum()
   const contracts = useContracts()
   console.log(contracts.glpTcrUsdcPool)
 
@@ -102,7 +100,6 @@ export function useGlpTcrUsdcPoolInfo() {
   }, [contracts, /* account */])
 
   return useQuery('glpTcrPoolInfo', getPoolInfo, {
-    enabled: isArbitrum,
     initialData,
     onError() {
       notify('Error fetching GLP/TCR USDC Pool info', 'error')
