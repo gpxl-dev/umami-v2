@@ -31,7 +31,7 @@ export function useApprovals() {
 
       const decimals = await contracts.umami.decimals()
       const approvalAmount = ethers.utils.parseUnits(
-        String(Number(balances?.umami) + 1),
+        String(Math.floor(Number(balances?.umami)) + 1),
         decimals
       )
       const { wait } = await contracts.umami.approve(
@@ -69,7 +69,7 @@ export function useApprovals() {
       }
       const decimals = await contracts.mumami.decimals()
       const approvalAmount = ethers.utils.parseUnits(
-        String(Number(balances?.mumami) + 1),
+        String(Math.floor(Number(balances?.mumami)) + 1),
         decimals
       )
       const { wait } = await contracts.mumami.approve(
