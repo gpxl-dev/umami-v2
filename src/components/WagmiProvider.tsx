@@ -28,7 +28,13 @@ const { chains, provider } = configureChains(
 const wagmiClient = createClient({
   autoConnect: true,
   connectors: [
-    new MetaMaskConnector({ chains }),
+    new InjectedConnector({
+      chains,
+      options: {
+        name: 'Browser Wallet',
+        shimDisconnect: true,
+      },
+    }),
     new CoinbaseWalletConnector({
       chains,
       options: {
@@ -43,13 +49,6 @@ const wagmiClient = createClient({
         rpc: {
           1: INFURA_RPC_URL,
         },
-      },
-    }),
-    new InjectedConnector({
-      chains,
-      options: {
-        name: 'Brave',
-        shimDisconnect: true,
       },
     }),
   ],

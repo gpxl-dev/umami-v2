@@ -64,14 +64,12 @@ export default function AccountButton() {
 
   const getConnectorLogo = React.useCallback((name: string) => {
     switch (name) {
-      case 'MetaMask':
-        return '/assets/metamask.svg'
+      case 'Browser Wallet':
+        return '/assets/browser_icon.svg'        
       case 'Coinbase Wallet':
         return '/assets/coinbase-wallet.svg'
       case 'WalletConnect':
         return '/assets/wallet-connect.svg'
-      case 'Brave':
-        return '/assets/brave_lion.svg'        
       default:
         return null
     }
