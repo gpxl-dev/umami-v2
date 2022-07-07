@@ -9,7 +9,5 @@ export function useUsdcDepositPreview() {
     [queryClient]
   )
 
-  return useQuery('usdcDepositPreview', getPreviewFromCache, {
-    initialData: 0,
-  })
+  return useQuery('usdcDepositPreview', getPreviewFromCache)
 }

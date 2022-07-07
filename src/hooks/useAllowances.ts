@@ -20,22 +20,26 @@ export function useAllowances() {
       umami: false,
       mumami: false,
       cmumami: false,
+      usdc: false,
     }
   }, [])
 
   const fetchAllowances = React.useCallback(async () => {
     const address = account?.address
-    const [umamiBalance, mumamiBalance, umamiAllowance, mumamiAllowance] =
+    const [umamiBalance, mumamiBalance, usdcBalance, umamiAllowance, mumamiAllowance, usdcAllowance] =
       await Promise.all([
         contracts.umami.balanceOf(address),
         contracts.mumami.balanceOf(address),
+        contracts.usdc.balanceOf(address),
         contracts.umami.allowance(address, TOKEN_ADDRESSES.mumami),
         contracts.mumami.allowance(address, TOKEN_ADDRESSES.cmumami),
+        contracts.usdc.allowance(address, TOKEN_ADDRESSES.glpTcrUsdcPool),
       ])
 
     return {
       umami: umamiAllowance.gt(0) && umamiAllowance.gt(umamiBalance),
       mumami: mumamiAllowance.gt(0) && mumamiAllowance.gt(mumamiBalance),
+      usdc: usdcAllowance.gt(0) && usdcAllowance.gt(usdcBalance),
     }
   }, [contracts, account])
 

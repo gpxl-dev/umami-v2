@@ -92,5 +92,43 @@ export function useApprovals() {
     }
   )
 
-  return { approveUmami, approveMumami }
+  const { mutate: approveUsdcForGlpTcrUsdcPool } = useMutation(
+    async () => {
+      if (!account) {
+        notify('Please connect wallet to approve spend of USDC', 'error')
+        throw new Error('no account')
+      }
+      if (!isArbitrum) {
+        notify(
+          'Please switch network to Arbitrum to approve spend of USDC',
+          'error'
+        )
+        throw new Error('wrong network')
+      }
+      const decimals = await contracts.usdc.decimals()
+      const approvalAmount = ethers.utils.parseUnits(
+        String(Math.floor(Number(balances?.usdc)) + 1),
+        decimals
+      )
+      const { wait } = await contracts.usdc.approve(
+        TOKEN_ADDRESSES.glpTcrUsdcPool,
+        approvalAmount
+      )
+      await wait()
+    },
+    {
+      onMutate() {
+        notify('USDC Approval transaction initiated', 'info')
+      },
+      onError() {
+        notify('Error approving USDC, please try again', 'error')
+      },
+      onSuccess() {
+        notify('USDC spend approved', 'success')
+        queryClient.invalidateQueries('allowances')
+      },
+    }
+  )
+
+  return { approveUmami, approveMumami, approveUsdcForGlpTcrUsdcPool }
 }

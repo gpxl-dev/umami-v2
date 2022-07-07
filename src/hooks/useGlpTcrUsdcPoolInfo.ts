@@ -11,7 +11,6 @@ export function useGlpTcrUsdcPoolInfo() {
   const { notify } = useNotifications()
 
   const contracts = useContracts()
-  console.log(contracts.glpTcrUsdcPool)
 
   const initialData: {
     capacity: number;

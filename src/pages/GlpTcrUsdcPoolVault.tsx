@@ -1,7 +1,7 @@
 import React from 'react'
 import Helmet from 'react-helmet'
 import { Link } from 'react-router-dom'
-import { Formik, Form } from 'formik'
+import { Formik, Form, FormikHelpers } from 'formik'
 import { useQueryClient } from 'react-query'
 
 import PageContent from '../components/PageContent'
@@ -12,14 +12,19 @@ import { useBalances } from '../hooks/useBalances'
 import { useGlpTcrUsdcPoolInfo } from '../hooks/useGlpTcrUsdcPoolInfo'
 import { useDeposits } from '../hooks/useDeposits'
 import { useUsdcDepositPreview } from '../hooks/useUsdcDepositPreview'
+import { useAllowances } from '../hooks/useAllowances'
+import { useApprovals } from '../hooks/useApprovals'
 import { TOKEN_ADDRESSES } from '../constants'
 
 export default function GlpTcrUsdcPoolVault() {
-  const { action, selectDeposit, selectWithdraw } = useActions()
   const { data: balances } = useBalances()
   const { data: poolInfo } = useGlpTcrUsdcPoolInfo()
-  const { previewUSDCDeposit } = useDeposits()
   const { data: usdcDepositPreview } = useUsdcDepositPreview()
+  const { data: allowances } = useAllowances()
+
+  const { action, selectDeposit, selectWithdraw } = useActions()
+  const { previewUSDCDeposit } = useDeposits()
+  const { approveUsdcForGlpTcrUsdcPool } = useApprovals()
   const queryClient = useQueryClient()
 
   const usdcBalance = React.useMemo(() => {
@@ -31,16 +36,44 @@ export default function GlpTcrUsdcPoolVault() {
   }, [action, poolInfo])
 
   const actionText = React.useMemo(() => {
+    if (!allowances?.usdc) {
+      return 'Approve'
+    }
+
     if (action === 'deposit') {
       return usdcDepositPreview ? 'confirm deposit' : 'preview deposit'
     } else {
       return 'withdraw'
     }
-  }, [action, usdcDepositPreview])
+  }, [action, usdcDepositPreview, allowances])
 
   const clearUSDCDepositPreview = React.useCallback(() => {
     queryClient.setQueryData('usdcDepositPreview', 0)
   }, [queryClient])
+
+  const handleSubmit = React.useCallback(
+    (
+      values: { amount: number },
+      { resetForm }: FormikHelpers<{ amount: number }>
+    ) => {
+      if (!allowances?.usdc) {
+        approveUsdcForGlpTcrUsdcPool()
+        resetForm()
+        return
+      }
+
+      usdcDepositPreview
+        ? console.log(values.amount)
+        : previewUSDCDeposit(String(values.amount))
+      resetForm()
+    },
+    [
+      usdcDepositPreview,
+      previewUSDCDeposit,
+      allowances,
+      approveUsdcForGlpTcrUsdcPool,
+    ]
+  )
 
   return (
     <>
@@ -92,12 +125,11 @@ export default function GlpTcrUsdcPoolVault() {
 
                   <VaultTransactionCard.Content>
                     <Formik
-                      initialValues={{ amount: 0 }}
-                      onSubmit={(values) => {
-                        usdcDepositPreview
-                          ? console.log(values.amount)
-                          : previewUSDCDeposit(String(values.amount))
+                      initialValues={{
+                        amount: 0,
                       }}
+                      onSubmit={handleSubmit}
+                      enableReinitialize
                     >
                       {({ values, setFieldValue }) => (
                         <Form>
