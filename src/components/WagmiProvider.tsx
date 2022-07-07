@@ -19,7 +19,6 @@ const { chains, provider } = configureChains(
       infuraId: process.env.REACT_PUBLIC_INFURA_ID,
       pollingInterval: 10000,
     }),
-    
   ],
   { stallTimeout: 30000 }
 )
