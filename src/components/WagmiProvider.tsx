@@ -2,9 +2,9 @@ import React from 'react'
 import { WagmiConfig, createClient, chain, configureChains } from 'wagmi'
 import { infuraProvider } from 'wagmi/providers/infura'
 import { publicProvider } from 'wagmi/providers/public'
-import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
+import { InjectedConnector } from 'wagmi/connectors/injected'
 
 import { INFURA_RPC_URL } from '../constants'
 
@@ -26,7 +26,13 @@ const { chains, provider } = configureChains(
 const wagmiClient = createClient({
   autoConnect: true,
   connectors: [
-    new MetaMaskConnector({ chains }),
+    new InjectedConnector({
+      chains,
+      options: {
+        name: 'Browser Wallet',
+        shimDisconnect: true,
+      },
+    }),
     new CoinbaseWalletConnector({
       chains,
       options: {
