@@ -13,6 +13,7 @@ export function useDeposits() {
 
   const contracts = useContracts()
   const isArbitrum = useIsArbitrum()
+  console.log(contracts.glpTcrUsdcPool)
 
   const { mutate: marinateUmami } = useMutation(
     async (amount: string) => {
@@ -86,7 +87,7 @@ export function useDeposits() {
         notify('Deposit transaction initiated', 'info')
       },
       onSuccess() {
-        notify('Deposited!', 'success')
+        notify('mUMAMI Deposited!', 'success')
         queryClient.invalidateQueries('balances')
       },
       onError() {
@@ -112,7 +113,6 @@ export function useDeposits() {
     {
       onSuccess(data) {
         queryClient.setQueryData('usdcDepositPreview', data)
-        console.log(queryClient.getQueryData('usdcDepositPreview'))
       },
       onError() {
         notify('Unable to preview USDC deposit at this time', 'error')
@@ -120,5 +120,35 @@ export function useDeposits() {
     }
   )
 
-  return { marinateUmami, compoundMumami, previewUSDCDeposit }
+  const { mutate: depositUsdcInGlpTcrPool } = useMutation(
+    async (amount: string) => {
+      if (!account || !isArbitrum) {
+        notify('Please connect wallet on Arbitrum to deposit USDC', 'error')
+        throw new Error('No account or wrong network')
+      }
+      const decimals = await contracts.glpTcrUsdcPool.decimals()
+      const depositAmount = ethers.utils.parseUnits(amount, decimals)
+      const { wait } = await contracts.glpTcrUsdcPool.deposit(depositAmount)
+      await wait()
+    },
+    {
+      onMutate() {
+        notify('Deposit transaction initiated', 'info')
+      },
+      onSuccess() {
+        notify('USDC Deposited!', 'success')
+        queryClient.invalidateQueries('balances')
+      },
+      onError() {
+        notify('Unable to deposit USDC at this time', 'error')
+      },
+    }
+  )
+
+  return {
+    marinateUmami,
+    compoundMumami,
+    previewUSDCDeposit,
+    depositUsdcInGlpTcrPool,
+  }
 }

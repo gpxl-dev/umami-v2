@@ -110,7 +110,7 @@ export default function VaultCard({
               <div className="text-sm text-center text-gray-500">
                 Receipt Token
               </div>
-              <div className="font-bold text-lg">{tokens.receipt}</div>
+              <div className="font-bold">{tokens.receipt}</div>
             </div>
           </li>
 
@@ -118,7 +118,7 @@ export default function VaultCard({
             <li className="border-r md:border-t-0 border-gray-500 border-t p-4">
               <div className="flex flex-col items-center">
                 <div className="text-sm text-center text-gray-500">Est APR</div>
-                <div className="font-bold text-lg">{apr}%</div>
+                <div className="font-bold">{apr}%</div>
               </div>
             </li>
           ) : null}
@@ -127,7 +127,7 @@ export default function VaultCard({
             <li className="md:border-r md:border-t-0 border-gray-500 border-t p-4">
               <div className="flex flex-col items-center">
                 <div className="text-sm text-center text-gray-500">Est APY</div>
-                <div className="font-bold text-lg">{apy}%</div>
+                <div className="font-bold">{apy}%</div>
               </div>
             </li>
           ) : null}
@@ -136,7 +136,7 @@ export default function VaultCard({
             <li className="md:border-r md:border-t-0 border-gray-500 border-t p-4">
               <div className="flex flex-col items-center">
                 <div className="text-sm text-center text-gray-500">Fees</div>
-                <div className="font-bold text-lg">{fees}</div>
+                <div className="font-bold">{fees}</div>
               </div>
             </li>
           ) : null}

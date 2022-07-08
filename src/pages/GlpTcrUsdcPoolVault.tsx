@@ -1,7 +1,7 @@
 import React from 'react'
 import Helmet from 'react-helmet'
 import { Link } from 'react-router-dom'
-import { Formik, Form, FormikHelpers } from 'formik'
+import { Formik, Form } from 'formik'
 import { useQueryClient } from 'react-query'
 
 import PageContent from '../components/PageContent'
@@ -23,7 +23,7 @@ export default function GlpTcrUsdcPoolVault() {
   const { data: allowances } = useAllowances()
 
   const { action, selectDeposit, selectWithdraw } = useActions()
-  const { previewUSDCDeposit } = useDeposits()
+  const { previewUSDCDeposit, depositUsdcInGlpTcrPool } = useDeposits()
   const { approveUsdcForGlpTcrUsdcPool } = useApprovals()
   const queryClient = useQueryClient()
 
@@ -52,26 +52,22 @@ export default function GlpTcrUsdcPoolVault() {
   }, [queryClient])
 
   const handleSubmit = React.useCallback(
-    (
-      values: { amount: number },
-      { resetForm }: FormikHelpers<{ amount: number }>
-    ) => {
+    (values: { amount: number }) => {
       if (!allowances?.usdc) {
         approveUsdcForGlpTcrUsdcPool()
-        resetForm()
         return
       }
 
       usdcDepositPreview
-        ? console.log(values.amount)
+        ? depositUsdcInGlpTcrPool(String(values.amount))
         : previewUSDCDeposit(String(values.amount))
-      resetForm()
     },
     [
       usdcDepositPreview,
       previewUSDCDeposit,
       allowances,
       approveUsdcForGlpTcrUsdcPool,
+      depositUsdcInGlpTcrPool,
     ]
   )
 
@@ -180,8 +176,10 @@ export default function GlpTcrUsdcPoolVault() {
                                 <li className="flex justify-between">
                                   <div>You Receive:</div>
                                   <div>
-                                    {Number(usdcDepositPreview).toFixed(2)}{' '}
-                                    {poolInfo?.symbol}
+                                    <span>
+                                      {Number(usdcDepositPreview).toFixed(2)}
+                                    </span>
+                                    <span> {poolInfo?.symbol} </span>
                                   </div>
                                 </li>
                               </ul>
@@ -189,7 +187,7 @@ export default function GlpTcrUsdcPoolVault() {
 
                             <VaultTransactionCard.Action
                               text={actionText}
-                              disabled={!values.amount}
+                              disabled={!values.amount && !usdcDepositPreview}
                               type="submit"
                             />
 

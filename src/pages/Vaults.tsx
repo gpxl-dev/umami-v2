@@ -31,7 +31,7 @@ export default function Vaults() {
 
       <section>
         <PageContent className="min-h-[50vh]">
-          <div className="-translate-y-12 px-4 max-w-4xl m-auto">
+          <div className="-translate-y-12 px-4 max-w-2xl m-auto">
             <VaultCard
               title="GLP/TCR USDC Pool"
               url="/app/vaults/glp-tcr-usdc-pool"
