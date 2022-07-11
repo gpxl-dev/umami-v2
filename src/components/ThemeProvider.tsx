@@ -57,7 +57,7 @@ export default function ThemeProvider({ children }: Props) {
     <StyledThemeProvider theme={theme}>
       {children}
 
-      {!isLandingPage ? (
+      {!isLandingPage && false ? (
         <ThemeSwitcherStyles>
           <div className="flex items-center">
             <div className="mr-2 text-umami-yellow">{icon}</div>

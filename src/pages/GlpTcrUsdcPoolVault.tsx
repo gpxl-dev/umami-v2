@@ -14,6 +14,7 @@ import { useDeposits } from '../hooks/useDeposits'
 import { useUsdcDepositPreview } from '../hooks/useUsdcDepositPreview'
 import { useAllowances } from '../hooks/useAllowances'
 import { useApprovals } from '../hooks/useApprovals'
+import { useGlpTcrUsdcPoolUserInfo } from '../hooks/useGlpTcrUsdcPoolUserInfo'
 import { TOKEN_ADDRESSES } from '../constants'
 
 export default function GlpTcrUsdcPoolVault() {
@@ -21,6 +22,8 @@ export default function GlpTcrUsdcPoolVault() {
   const { data: poolInfo } = useGlpTcrUsdcPoolInfo()
   const { data: usdcDepositPreview } = useUsdcDepositPreview()
   const { data: allowances } = useAllowances()
+  const { data: glpTcrUsdcPoolUserInfo } = useGlpTcrUsdcPoolUserInfo()
+  console.log(glpTcrUsdcPoolUserInfo)
 
   const { action, selectDeposit, selectWithdraw } = useActions()
   const { previewUSDCDeposit, depositUsdcInGlpTcrPool } = useDeposits()
@@ -46,6 +49,14 @@ export default function GlpTcrUsdcPoolVault() {
       return 'withdraw'
     }
   }, [action, usdcDepositPreview, allowances])
+
+  const maxValue = React.useMemo(() => {
+    if (action === 'deposit') {
+      return balances?.usdc ?? 0
+    }
+
+    return 0
+  }, [action, balances])
 
   const clearUSDCDepositPreview = React.useCallback(() => {
     queryClient.setQueryData('usdcDepositPreview', 0)
@@ -141,7 +152,7 @@ export default function GlpTcrUsdcPoolVault() {
                                   name="amount"
                                   label={symbol}
                                   action={() =>
-                                    setFieldValue('amount', balances?.usdc ?? 0)
+                                    setFieldValue('amount', maxValue)
                                   }
                                   actionLabel="max"
                                 />

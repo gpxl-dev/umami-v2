@@ -126,9 +126,11 @@ export function useDeposits() {
         notify('Please connect wallet on Arbitrum to deposit USDC', 'error')
         throw new Error('No account or wrong network')
       }
-      const decimals = await contracts.glpTcrUsdcPool.decimals()
+      const decimals = await contracts.usdc.decimals()
       const depositAmount = ethers.utils.parseUnits(amount, decimals)
-      const { wait } = await contracts.glpTcrUsdcPool.deposit(depositAmount)
+      const { wait } = await contracts.glpTcrUsdcPool['deposit(uint256)'](
+        depositAmount
+      )
       await wait()
     },
     {
@@ -137,7 +139,7 @@ export function useDeposits() {
       },
       onSuccess() {
         notify('USDC Deposited!', 'success')
-        queryClient.invalidateQueries('balances')
+        queryClient.invalidateQueries(['balances', 'glpTcrUsdcPoolUserInfo'])
       },
       onError() {
         notify('Unable to deposit USDC at this time', 'error')
