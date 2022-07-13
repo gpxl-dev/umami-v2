@@ -13,7 +13,6 @@ export function useDeposits() {
 
   const contracts = useContracts()
   const isArbitrum = useIsArbitrum()
-  console.log(contracts.glpTcrUsdcPool)
 
   const { mutate: marinateUmami } = useMutation(
     async (amount: string) => {
@@ -120,7 +119,7 @@ export function useDeposits() {
     }
   )
 
-  const { mutate: depositUsdcInGlpTcrPool } = useMutation(
+  const depositUsdcInGlpTcrPool = useMutation(
     async (amount: string) => {
       if (!account || !isArbitrum) {
         notify('Please connect wallet on Arbitrum to deposit USDC', 'error')

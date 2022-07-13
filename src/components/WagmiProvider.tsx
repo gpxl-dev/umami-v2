@@ -13,19 +13,18 @@ const providers = []
 if (process.env.NODE_ENV === 'development') {
   providers.push(
     infuraProvider({
-      infuraId: process.env.REACT_PUBLIC_INFURA_ID,
+      infuraId: process.env.REACT_APP_INFURA_ID,
       pollingInterval: 10000,
     })
   )
 } else {
   providers.push(
     infuraProvider({
-      infuraId: process.env.REACT_PUBLIC_PROD_ID,
+      infuraId: process.env.REACT_APP_PROD_ID,
       pollingInterval: 10000,
     })
   )
 }
-console.log(providers)
 
 const { chains, provider } = configureChains(
   [chain.arbitrum],

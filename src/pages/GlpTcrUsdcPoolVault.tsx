@@ -23,12 +23,19 @@ export default function GlpTcrUsdcPoolVault() {
   const { data: usdcDepositPreview } = useUsdcDepositPreview()
   const { data: allowances } = useAllowances()
   const { data: glpTcrUsdcPoolUserInfo } = useGlpTcrUsdcPoolUserInfo()
-  console.log(glpTcrUsdcPoolUserInfo)
 
   const { action, selectDeposit, selectWithdraw } = useActions()
   const { previewUSDCDeposit, depositUsdcInGlpTcrPool } = useDeposits()
   const { approveUsdcForGlpTcrUsdcPool } = useApprovals()
   const queryClient = useQueryClient()
+
+  const {
+    mutate: deposit,
+    isLoading: isDepositing,
+    isSuccess: isDepositSuccess,
+    isError: isDepositError,
+    reset: resetDeposit,
+  } = depositUsdcInGlpTcrPool
 
   const usdcBalance = React.useMemo(() => {
     return balances?.usdc.toFixed(2)
@@ -70,7 +77,7 @@ export default function GlpTcrUsdcPoolVault() {
       }
 
       usdcDepositPreview
-        ? depositUsdcInGlpTcrPool(String(values.amount))
+        ? deposit(String(values.amount))
         : previewUSDCDeposit(String(values.amount))
     },
     [
@@ -78,9 +85,168 @@ export default function GlpTcrUsdcPoolVault() {
       previewUSDCDeposit,
       allowances,
       approveUsdcForGlpTcrUsdcPool,
-      depositUsdcInGlpTcrPool,
+      deposit,
     ]
   )
+
+  const clearDeposit = React.useCallback(() => {
+    clearUSDCDepositPreview()
+    resetDeposit()
+  }, [resetDeposit, clearUSDCDepositPreview])
+
+  const vaultContent = React.useMemo(() => {
+    if (isDepositing) {
+      return (
+        <VaultTransactionCard.Content>
+          <div className="text-center w-full">
+            <strong className="text-lg uppercase">Transaction Pending</strong>
+
+            <hr className="mt-4" />
+
+            <strong className="block font-bold mt-4 text-sm">
+              The Magic of Your New {poolInfo?.symbol} Receipt Token
+            </strong>
+
+            <p className="text-sm text-gray-500 mt-4">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+              enim ad minim veniam, quis nostrud exercitation ullamco laboris
+              nisi ut aliquip ex ea commodo consequat.
+            </p>
+          </div>
+        </VaultTransactionCard.Content>
+      )
+    }
+
+    if (isDepositSuccess) {
+      return (
+        <VaultTransactionCard.Content>
+          <div className="text-center w-full">
+            <strong className="uppercase text-green-400">
+              Deposit Complete
+            </strong>
+
+            <hr className="mt-4" />
+
+            <strong className="block font-bold mt-4 text-sm">
+              The Magic of Your New {poolInfo?.symbol} Receipt Token
+            </strong>
+
+            <p className="text-sm text-gray-500 mt-4">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+              enim ad minim veniam, quis nostrud exercitation ullamco laboris
+              nisi ut aliquip ex ea commodo consequat.
+            </p>
+
+            <button
+              type="button"
+              className="duration-100 mt-4 text-sm hover:underline"
+              onClick={clearDeposit}
+            >
+              Deposit Again
+            </button>
+          </div>
+        </VaultTransactionCard.Content>
+      )
+    }
+
+    return (
+      <VaultTransactionCard.Content>
+        <Formik
+          initialValues={{
+            amount: 0,
+          }}
+          onSubmit={handleSubmit}
+          enableReinitialize
+        >
+          {({ values, setFieldValue }) => (
+            <Form>
+              <fieldset>
+                <div className={usdcDepositPreview ? 'hidden' : ''}>
+                  <div className="flex text-gray-500 font-bold items-center justify-between">
+                    <div>Balance</div>
+                    <div>{usdcBalance}</div>
+                  </div>
+
+                  <div className="mt-2">
+                    <VaultTransactionCard.FormField
+                      name="amount"
+                      label={symbol}
+                      action={() => setFieldValue('amount', maxValue)}
+                      actionLabel="max"
+                    />
+                  </div>
+                </div>
+
+                <div className={usdcDepositPreview ? 'block' : 'hidden'}>
+                  <h3 className="font-bold text-lg">Deposit Preview</h3>
+
+                  <ul className="grid grid-rows-3 gap-1 mt-4 text-gray-500 text-sm uppercase">
+                    <li className="flex justify-between">
+                      <div>Amount:</div>
+                      <div>
+                        {values.amount ? values.amount.toFixed(2) : '0'} USDC
+                      </div>
+                    </li>
+
+                    <li className="flex justify-between">
+                      <div>Current APY:</div>
+                      <div>~20%</div>
+                    </li>
+
+                    <li className="flex justify-between">
+                      <div>You Receive:</div>
+                      <div>
+                        <span>{Number(usdcDepositPreview).toFixed(2)}</span>
+                        <span> {poolInfo?.symbol} </span>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+
+                <VaultTransactionCard.Action
+                  text={actionText}
+                  disabled={!values.amount && !usdcDepositPreview}
+                  type="submit"
+                />
+
+                {usdcDepositPreview ? (
+                  <div className="flex items-center justify-center w-full">
+                    <button
+                      type="button"
+                      className="duration-100 mt-4 text-sm underline hover:text-umami-yellow"
+                      onClick={clearUSDCDepositPreview}
+                    >
+                      Cancel Deposit
+                    </button>
+                  </div>
+                ) : null}
+              </fieldset>
+            </Form>
+          )}
+        </Formik>
+      </VaultTransactionCard.Content>
+    )
+  }, [
+    usdcDepositPreview,
+    usdcBalance,
+    symbol,
+    poolInfo,
+    maxValue,
+    handleSubmit,
+    clearUSDCDepositPreview,
+    actionText,
+    isDepositing,
+    isDepositSuccess,
+    clearDeposit,
+  ])
+
+  React.useEffect(() => {
+    if (isDepositError) {
+      clearDeposit()
+    }
+  }, [isDepositError, clearDeposit])
 
   return (
     <>
@@ -130,94 +296,7 @@ export default function GlpTcrUsdcPoolVault() {
                     />
                   </VaultTransactionCard.Header>
 
-                  <VaultTransactionCard.Content>
-                    <Formik
-                      initialValues={{
-                        amount: 0,
-                      }}
-                      onSubmit={handleSubmit}
-                      enableReinitialize
-                    >
-                      {({ values, setFieldValue }) => (
-                        <Form>
-                          <fieldset>
-                            <div className={usdcDepositPreview ? 'hidden' : ''}>
-                              <div className="flex text-gray-500 font-bold items-center justify-between">
-                                <div>Balance</div>
-                                <div>{usdcBalance}</div>
-                              </div>
-
-                              <div className="mt-2">
-                                <VaultTransactionCard.FormField
-                                  name="amount"
-                                  label={symbol}
-                                  action={() =>
-                                    setFieldValue('amount', maxValue)
-                                  }
-                                  actionLabel="max"
-                                />
-                              </div>
-                            </div>
-
-                            <div
-                              className={
-                                usdcDepositPreview ? 'block' : 'hidden'
-                              }
-                            >
-                              <h3 className="font-bold text-lg">
-                                Deposit Preview
-                              </h3>
-
-                              <ul className="grid grid-rows-3 gap-1 mt-4 text-gray-500 text-sm uppercase">
-                                <li className="flex justify-between">
-                                  <div>Amount:</div>
-                                  <div>
-                                    {values.amount
-                                      ? values.amount.toFixed(2)
-                                      : '0'}{' '}
-                                    USDC
-                                  </div>
-                                </li>
-
-                                <li className="flex justify-between">
-                                  <div>Current APY:</div>
-                                  <div>~20%</div>
-                                </li>
-
-                                <li className="flex justify-between">
-                                  <div>You Receive:</div>
-                                  <div>
-                                    <span>
-                                      {Number(usdcDepositPreview).toFixed(2)}
-                                    </span>
-                                    <span> {poolInfo?.symbol} </span>
-                                  </div>
-                                </li>
-                              </ul>
-                            </div>
-
-                            <VaultTransactionCard.Action
-                              text={actionText}
-                              disabled={!values.amount && !usdcDepositPreview}
-                              type="submit"
-                            />
-
-                            {usdcDepositPreview ? (
-                              <div className="flex items-center justify-center w-full">
-                                <button
-                                  type="button"
-                                  className="duration-100 mt-4 text-sm underline hover:text-umami-yellow"
-                                  onClick={clearUSDCDepositPreview}
-                                >
-                                  Cancel Deposit
-                                </button>
-                              </div>
-                            ) : null}
-                          </fieldset>
-                        </Form>
-                      )}
-                    </Formik>
-                  </VaultTransactionCard.Content>
+                  {vaultContent}
                 </VaultTransactionCard>
               </div>
             </div>
