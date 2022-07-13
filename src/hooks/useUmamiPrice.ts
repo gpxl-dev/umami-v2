@@ -18,7 +18,7 @@ export function useUmamiPrice() {
   const arb1Provider = useArb1Provider()
 
   const provider = React.useMemo(() => {
-    return wagmiProvider ?? arb1Provider
+    return arb1Provider ?? wagmiProvider
   }, [arb1Provider, wagmiProvider])
 
   const getUmamiEthPrice = React.useCallback(async () => {
