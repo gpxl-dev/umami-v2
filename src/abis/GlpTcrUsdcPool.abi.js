@@ -199,6 +199,12 @@ module.exports = [
       {
         indexed: false,
         internalType: "uint256",
+        name: "_timestamp",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
         name: "_profitAmount",
         type: "uint256",
       },
@@ -303,6 +309,25 @@ module.exports = [
     anonymous: false,
     inputs: [
       {
+        indexed: false,
+        internalType: "uint256",
+        name: "_timestamp",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "_migrationActiveTimestamp",
+        type: "uint256",
+      },
+    ],
+    name: "InitiateVaultMigration",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
         indexed: true,
         internalType: "address",
         name: "account",
@@ -347,19 +372,13 @@ module.exports = [
     anonymous: false,
     inputs: [
       {
-        indexed: true,
+        indexed: false,
         internalType: "address",
-        name: "previousOwner",
-        type: "address",
-      },
-      {
-        indexed: true,
-        internalType: "address",
-        name: "newOwner",
+        name: "account",
         type: "address",
       },
     ],
-    name: "OwnershipTransferred",
+    name: "Paused",
     type: "event",
   },
   {
@@ -543,6 +562,19 @@ module.exports = [
     inputs: [
       {
         indexed: false,
+        internalType: "address",
+        name: "account",
+        type: "address",
+      },
+    ],
+    name: "Unpaused",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
         internalType: "uint104",
         name: "_round",
         type: "uint104",
@@ -580,6 +612,25 @@ module.exports = [
       },
     ],
     name: "Withdraw",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "withdrawalFee",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "newWithdrawalFee",
+        type: "uint256",
+      },
+    ],
+    name: "WithdrawalFeeSet",
     type: "event",
   },
   {
@@ -662,6 +713,19 @@ module.exports = [
   },
   {
     inputs: [],
+    name: "MAX_INT",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "SCALE",
     outputs: [
       {
@@ -676,6 +740,19 @@ module.exports = [
   {
     inputs: [],
     name: "TCR",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "WETH",
     outputs: [
       {
         internalType: "address",
@@ -829,6 +906,19 @@ module.exports = [
   },
   {
     inputs: [],
+    name: "chainlinkOracle",
+    outputs: [
+      {
+        internalType: "contract IChainlinkWrapper",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "checkpointTotalBalance",
     outputs: [
       {
@@ -845,19 +935,6 @@ module.exports = [
     name: "claimShorts",
     outputs: [],
     stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "cmUMAMI",
-    outputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-    ],
-    stateMutability: "view",
     type: "function",
   },
   {
@@ -1039,6 +1116,19 @@ module.exports = [
         internalType: "contract L2Encoder",
         name: "",
         type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "epochDuration",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
       },
     ],
     stateMutability: "view",
@@ -1242,6 +1332,13 @@ module.exports = [
     type: "function",
   },
   {
+    inputs: [],
+    name: "initiateMigration",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
     inputs: [
       {
         internalType: "uint256",
@@ -1252,25 +1349,6 @@ module.exports = [
     name: "initiateWithdraw",
     outputs: [],
     stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-    ],
-    name: "isWhitelisted",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "",
-        type: "bool",
-      },
-    ],
-    stateMutability: "view",
     type: "function",
   },
   {
@@ -1301,12 +1379,12 @@ module.exports = [
   },
   {
     inputs: [],
-    name: "lockedInStrategy",
+    name: "lateWithdrawPeriod",
     outputs: [
       {
-        internalType: "uint256",
+        internalType: "bool",
         name: "",
-        type: "uint256",
+        type: "bool",
       },
     ],
     stateMutability: "view",
@@ -1314,12 +1392,12 @@ module.exports = [
   },
   {
     inputs: [],
-    name: "mUMAMI",
+    name: "lockedInStrategy",
     outputs: [
       {
-        internalType: "address",
+        internalType: "uint256",
         name: "",
-        type: "address",
+        type: "uint256",
       },
     ],
     stateMutability: "view",
@@ -1376,7 +1454,7 @@ module.exports = [
   },
   {
     inputs: [],
-    name: "minUmami",
+    name: "migrationTimestamp",
     outputs: [
       {
         internalType: "uint256",
@@ -1433,12 +1511,19 @@ module.exports = [
   },
   {
     inputs: [],
-    name: "owner",
+    name: "pauseDeposits",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "paused",
     outputs: [
       {
-        internalType: "address",
+        internalType: "bool",
         name: "",
-        type: "address",
+        type: "bool",
       },
     ],
     stateMutability: "view",
@@ -1541,7 +1626,12 @@ module.exports = [
       },
       {
         internalType: "enum TracerGMXVault.HedgeAction",
-        name: "action",
+        name: "sethAction",
+        type: "uint8",
+      },
+      {
+        internalType: "enum TracerGMXVault.HedgeAction",
+        name: "sbtcAction",
         type: "uint8",
       },
     ],
@@ -1594,13 +1684,6 @@ module.exports = [
     type: "function",
   },
   {
-    inputs: [],
-    name: "renounceOwnership",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
     inputs: [
       {
         internalType: "bytes32",
@@ -1614,6 +1697,13 @@ module.exports = [
       },
     ],
     name: "renounceRole",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "revokeAllowances",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -1832,19 +1922,6 @@ module.exports = [
     inputs: [
       {
         internalType: "uint256",
-        name: "_newMin",
-        type: "uint256",
-      },
-    ],
-    name: "setMinUmami",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
         name: "newPerformanceFee",
         type: "uint256",
       },
@@ -1871,16 +1948,24 @@ module.exports = [
     inputs: [
       {
         internalType: "address",
-        name: "_user",
+        name: "_newWhitelistLibrary",
         type: "address",
       },
+    ],
+    name: "setWhitelistLibrary",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
       {
-        internalType: "bool",
-        name: "_isWhitelisted",
-        type: "bool",
+        internalType: "uint256",
+        name: "newWithdrawalFee",
+        type: "uint256",
       },
     ],
-    name: "setWhitelisted",
+    name: "setWithdrawalFee",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -1899,6 +1984,32 @@ module.exports = [
         internalType: "uint256",
         name: "",
         type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "shortBurn",
+    outputs: [
+      {
+        internalType: "enum IPoolCommitter.CommitType",
+        name: "",
+        type: "uint8",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "shortMint",
+    outputs: [
+      {
+        internalType: "enum IPoolCommitter.CommitType",
+        name: "",
+        type: "uint8",
       },
     ],
     stateMutability: "view",
@@ -1966,6 +2077,19 @@ module.exports = [
         internalType: "bool",
         name: "",
         type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "swapSlippage",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
       },
     ],
     stateMutability: "view",
@@ -2116,14 +2240,21 @@ module.exports = [
     type: "function",
   },
   {
+    inputs: [],
+    name: "unpauseDeposits",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
     inputs: [
       {
         internalType: "address",
-        name: "newOwner",
+        name: "_chainlinkWrapper",
         type: "address",
       },
     ],
-    name: "transferOwnership",
+    name: "updateChainlinkWrapper",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -2176,6 +2307,19 @@ module.exports = [
       },
     ],
     name: "updateSethStaking",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_newSlippage",
+        type: "uint256",
+      },
+    ],
+    name: "updateSwapSlippage",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -2272,18 +2416,36 @@ module.exports = [
         name: "epochStart",
         type: "uint256",
       },
+      {
+        internalType: "uint256",
+        name: "epochEnd",
+        type: "uint256",
+      },
     ],
     stateMutability: "view",
     type: "function",
   },
   {
     inputs: [],
-    name: "weth",
+    name: "whitelistLibrary",
     outputs: [
       {
         internalType: "address",
         name: "",
         type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "withdrawalFee",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
       },
     ],
     stateMutability: "view",

@@ -34,6 +34,10 @@ type FormFieldProps = {
   disabled?: boolean;
 };
 
+type WarningProps = {
+  text: string;
+};
+
 function FormField({
   label,
   disabled = false,
@@ -118,6 +122,14 @@ function Action({
   )
 }
 
+function Warning({ text }: WarningProps) {
+  return (
+    <div className="bg-yellow-200 border-yellow-800 text-black italic mt-4 rounded-lg p-4 leading-snug text-xs">
+      {text}
+    </div>
+  )
+}
+
 function Content({ children }: ContentProps) {
   return <div className="p-4">{children}</div>
 }
@@ -143,6 +155,7 @@ export default function VaultTransactionCard({
 VaultTransactionCard.Action = Action
 VaultTransactionCard.Header = Header
 VaultTransactionCard.Content = Content
+VaultTransactionCard.Warning = Warning
 VaultTransactionCard.HeaderAction = HeaderAction
 VaultTransactionCard.HeaderActionDivider = HeaderActionDivider
 VaultTransactionCard.FormField = FormField

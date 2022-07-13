@@ -14,6 +14,7 @@ type Props = {
   title: string;
   url?: string;
   contractAddress?: string;
+  tag?: string;
   tokens: {
     deposit: string;
     earn: string;
@@ -37,6 +38,7 @@ export default function VaultCard({
   apr,
   apy,
   contractAddress,
+  tag,
 }: Props) {
   const getFormattedNumber = React.useCallback((num: number) => {
     return new Intl.NumberFormat('en-us').format(num)
@@ -58,7 +60,14 @@ export default function VaultCard({
     <div className="bg-gradient-to-b from-umami-pink to-umami-purple p-[2px] duration-200 rounded-md shadow w-full">
       <CardContents className="rounded w-full p-6">
         <div className="flex w-full items-center justify-between">
-          <h2 className="font-bold text-2xl uppercase mr-4">{title}</h2>
+          <div className="flex items-center">
+            <h2 className="font-bold text-2xl uppercase mr-4 lg:text-3xl">{title}</h2>
+            {tag ? (
+              <div className="items-center px-2 rounded bg-gray-700 h-6 text-sky-500 text-xs mr-4 hidden lg:flex">
+                {tag}
+              </div>
+            ) : null}
+          </div>
 
           {url ? (
             <Link to={url}>
@@ -84,7 +93,7 @@ export default function VaultCard({
 
         <ul className="grid grid-rows-2 grid-cols-2 md:grid-rows-1 md:grid-cols-4 mt-4 border border-gray-500 rounded">
           <li className="border-r border-gray-500 p-4">
-            <div className="text-sm text-gray-500 md:w-24">
+            <div className="text-sm text-gray-500 md:w-24 text-center m-auto">
               <div className="flex items-center justify-center">
                 <div>Deposit</div>
                 <div className="mx-1"> | </div>

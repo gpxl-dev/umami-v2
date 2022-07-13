@@ -22,10 +22,11 @@ export function useGlpTcrUsdcPoolUserInfo() {
     ])
 
     return {
-      balance: ethers.utils.formatUnits(balance, decimals),
+      balance: Number(ethers.utils.formatUnits(balance, decimals)),
       vaultState: {
         round: vaultState.round.toNumber(),
         epochStart: vaultState.epochStart.toNumber(),
+        epochEnd: vaultState.epochEnd.toNumber(),
         lastLockedAmount: vaultState.lastLockedAmount.toNumber(),
         lockedAmount: vaultState.lockedAmount.toNumber(),
         queuedWithdrawShares: vaultState.queuedWithdrawShares.toNumber(),
@@ -40,5 +41,21 @@ export function useGlpTcrUsdcPoolUserInfo() {
 
   return useQuery('glpTcrUsdcPoolUserInfo', getUserInfo, {
     enabled: isArbitrum,
+    initialData: {
+      balance: 0,
+      vaultState: {
+        round: 0,
+        epochStart: 0,
+        epochEnd: 0,
+        lastLockedAmount: 0,
+        lockedAmount: 0,
+        queuedWithdrawShares: 0,
+        totalPending: 0,
+      },
+      withdrawals: {
+        round: 0,
+        shares: 0,
+      },
+    },
   })
 }

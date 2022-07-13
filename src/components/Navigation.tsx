@@ -53,7 +53,7 @@ export default function Navigation() {
 
   return (
     <div className="w-full px-4">
-      <div className="w-full max-w-6xl m-auto flex items-center justify-between h-[80px]">
+      <div className="w-full max-w-[1920px] m-auto flex items-center justify-between h-[80px]">
         <strong className="font-display text-4xl text-white drop-shadow-[1px_1px_rgb(0,0,0,1)] uppercase tracking-[1rem]">
           Umami
         </strong>
