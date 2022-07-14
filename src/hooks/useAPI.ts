@@ -9,7 +9,7 @@ export function useAPI() {
 
   const fetchData = React.useCallback(async () => {
     try {
-      const { data } = await axios('https://horseysauce.xyz')
+      const { data } = await axios('https://api.umami.finance/api/v1/marinate')
 
       return data
     } catch (err) {

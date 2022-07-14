@@ -36,7 +36,7 @@ export default function Earn() {
     return (
       <header>
         <ul className="flex flex-col items-center justify-center text-center text-white">
-          {apiData?.tvl ? (
+          {apiData?.marinate?.marinateTVL ? (
             <li className="mt-6">
               <div className="font-bold text-2xl">TVL:</div>
               <div className="text-lg">
