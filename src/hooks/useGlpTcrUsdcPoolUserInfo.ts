@@ -14,27 +14,42 @@ export function useGlpTcrUsdcPoolUserInfo() {
   const isArbitrum = useIsArbitrum()
 
   const getUserInfo = React.useCallback(async () => {
-    const [balance, withdrawals, vaultState, decimals] = await Promise.all([
-      contracts.glpTcrUsdcPool.balanceOf(account?.address),
-      contracts.glpTcrUsdcPool.withdrawals(account?.address),
-      contracts.glpTcrUsdcPool.vaultState(),
-      contracts.glpTcrUsdcPool.decimals(),
-    ])
+    const [balance, withdrawals, vaultState, decimals, usdcDecimals] =
+      await Promise.all([
+        contracts.glpTcrUsdcPool.balanceOf(account?.address),
+        contracts.glpTcrUsdcPool.withdrawals(account?.address),
+        contracts.glpTcrUsdcPool.vaultState(),
+        contracts.glpTcrUsdcPool.decimals(),
+        contracts.usdc.decimals(),
+      ])
+
+    const queuedWithdrawShares = Number(
+      ethers.utils.formatUnits(vaultState.queuedWithdrawShares, usdcDecimals)
+    )
+    const isWithdrawalActive = withdrawals.round <= vaultState.round
 
     return {
       balance: Number(ethers.utils.formatUnits(balance, decimals)),
+      isWithdrawalActive,
+      isWithdrawalReady: withdrawals.round > vaultState.round,
       vaultState: {
         round: vaultState.round.toNumber(),
-        epochStart: vaultState.epochStart.toNumber(),
-        epochEnd: vaultState.epochEnd.toNumber(),
-        lastLockedAmount: vaultState.lastLockedAmount.toNumber(),
-        lockedAmount: vaultState.lockedAmount.toNumber(),
-        queuedWithdrawShares: vaultState.queuedWithdrawShares.toNumber(),
+        epochStart: vaultState.epochStart.toNumber() * 1000,
+        epochEnd: vaultState.epochEnd.toNumber() * 1000,
+        lastLockedAmount: Number(
+          ethers.utils.formatUnits(vaultState.lastLockedAmount, usdcDecimals)
+        ),
+        lockedAmount: Number(
+          ethers.utils.formatUnits(vaultState.lockedAmount, usdcDecimals)
+        ),
+        queuedWithdrawShares,
         totalPending: vaultState.totalPending.toNumber(),
       },
       withdrawals: {
         round: withdrawals.round,
-        shares: withdrawals['shares'].toNumber(),
+        shares: Number(
+          ethers.utils.formatUnits(withdrawals['shares'], usdcDecimals)
+        ),
       },
     }
   }, [account, contracts])
@@ -43,6 +58,8 @@ export function useGlpTcrUsdcPoolUserInfo() {
     enabled: isArbitrum,
     initialData: {
       balance: 0,
+      isWithdrawalActive: false,
+      isWithdrawalReady: false,
       vaultState: {
         round: 0,
         epochStart: 0,

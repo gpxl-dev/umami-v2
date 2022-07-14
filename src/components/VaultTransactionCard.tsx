@@ -34,8 +34,9 @@ type FormFieldProps = {
   disabled?: boolean;
 };
 
-type WarningProps = {
-  text: string;
+type NotificationProps = {
+  text?: string;
+  children?: ReactNode;
 };
 
 function FormField({
@@ -121,11 +122,18 @@ function Action({
     </button>
   )
 }
+function Success({ text }: NotificationProps) {
+  return (
+    <div className="bg-green-200 border-green-800 text-black italic mt-4 rounded-lg p-4 leading-snug text-xs">
+      {text}
+    </div>
+  )
+}
 
-function Warning({ text }: WarningProps) {
+function Warning({ text, children }: NotificationProps) {
   return (
     <div className="bg-yellow-200 border-yellow-800 text-black italic mt-4 rounded-lg p-4 leading-snug text-xs">
-      {text}
+      {text || children}
     </div>
   )
 }
@@ -156,6 +164,7 @@ VaultTransactionCard.Action = Action
 VaultTransactionCard.Header = Header
 VaultTransactionCard.Content = Content
 VaultTransactionCard.Warning = Warning
+VaultTransactionCard.Success = Success
 VaultTransactionCard.HeaderAction = HeaderAction
 VaultTransactionCard.HeaderActionDivider = HeaderActionDivider
 VaultTransactionCard.FormField = FormField

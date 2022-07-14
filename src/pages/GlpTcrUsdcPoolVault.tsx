@@ -7,6 +7,7 @@ import { useQueryClient } from 'react-query'
 import PageContent from '../components/PageContent'
 import VaultCard from '../components/VaultCard'
 import VaultTransactionCard from '../components/VaultTransactionCard'
+import CountdownTimer from '../components/CountdownTimer'
 import { useActions } from '../hooks/useActions'
 import { useBalances } from '../hooks/useBalances'
 import { useGlpTcrUsdcPoolInfo } from '../hooks/useGlpTcrUsdcPoolInfo'
@@ -27,9 +28,13 @@ export default function GlpTcrUsdcPoolVault() {
 
   const { action, selectDeposit, selectWithdraw } = useActions()
   const { previewUSDCDeposit, depositUsdcInGlpTcrPool } = useDeposits()
-  const { initiateUsdcWithdrawFromGlpTcrPool } = useWithdraws()
+  const {
+    initiateUsdcWithdrawFromGlpTcrPool,
+    completeUsdcWithdrawFromGlpTcrPool,
+  } = useWithdraws()
   const { approveUsdcForGlpTcrUsdcPool } = useApprovals()
   const queryClient = useQueryClient()
+  console.log(userInfo)
 
   const {
     mutate: deposit,
@@ -46,6 +51,9 @@ export default function GlpTcrUsdcPoolVault() {
     isError: isWithdrawInitiatingError,
     reset: resetInitiateWithdrawal,
   } = initiateUsdcWithdrawFromGlpTcrPool
+
+  const { mutate: completeWithdraw, isLoading: isWithdrawCompleting } =
+    completeUsdcWithdrawFromGlpTcrPool
 
   const usdcBalance = React.useMemo(() => {
     return balances?.usdc.toFixed(2)
@@ -67,9 +75,9 @@ export default function GlpTcrUsdcPoolVault() {
     if (action === 'deposit') {
       return usdcDepositPreview ? 'confirm deposit' : 'preview deposit'
     } else {
-      return 'queue withdrawal'
+      return userInfo?.isWithdrawalReady ? 'claim assets' : 'queue withdrawal'
     }
-  }, [action, usdcDepositPreview, allowances])
+  }, [action, usdcDepositPreview, allowances, userInfo])
 
   const maxValue = React.useMemo(() => {
     return action === 'deposit' ? balances?.usdc : userInfo?.balance
@@ -86,7 +94,9 @@ export default function GlpTcrUsdcPoolVault() {
   const handleSubmit = React.useCallback(
     (values: { amount: number }) => {
       if (action === 'withdraw') {
-        initiateWithdraw(String(values.amount))
+        userInfo?.isWithdrawalReady
+          ? completeWithdraw()
+          : initiateWithdraw(String(values.amount))
       } else {
         if (!allowances?.usdc) {
           approveUsdcForGlpTcrUsdcPool()
@@ -106,6 +116,8 @@ export default function GlpTcrUsdcPoolVault() {
       deposit,
       initiateWithdraw,
       action,
+      userInfo,
+      completeWithdraw,
     ]
   )
 
@@ -115,10 +127,12 @@ export default function GlpTcrUsdcPoolVault() {
   }, [resetDeposit, clearUSDCDepositPreview])
 
   const withdrawalWarning = React.useMemo(() => {
-    return action === 'withdraw' ? (
+    return action === 'withdraw' &&
+      !userInfo?.isWithdrawalReady &&
+      !userInfo?.isWithdrawalActive ? (
       <VaultTransactionCard.Warning text="This vault processes withdrawals in 8 hour cycles. If you queue your withdrawal now, your funds will be available to claim in 1:23:15 — you will continue to earn rewards until then. Claims are not done automatically, you need to return here to claim." />
     ) : null
-  }, [action])
+  }, [action, userInfo])
 
   /* const withdrawalStats = React.useMemo(() => {
     return action === 'withdraw' ? (
@@ -130,6 +144,12 @@ export default function GlpTcrUsdcPoolVault() {
       </ul>
     ) : null
   }, [action, poolInfo]) */
+
+  const withdrawalReadyNotice = React.useMemo(() => {
+    return action === 'withdraw' && userInfo?.isWithdrawalReady ? (
+      <VaultTransactionCard.Success text="Your assets are now available to claim! You are no longer earning rewards. Claim at any time." />
+    ) : null
+  }, [action, userInfo])
 
   const vaultContent = React.useMemo(() => {
     if (isDepositing) {
@@ -192,9 +212,7 @@ export default function GlpTcrUsdcPoolVault() {
       return (
         <VaultTransactionCard.Content>
           <div className="text-center w-full">
-            <strong className="uppercase">
-              Transaction Pending
-            </strong>
+            <strong className="uppercase">Transaction Pending</strong>
 
             <hr className="mt-4" />
 
@@ -229,9 +247,10 @@ export default function GlpTcrUsdcPoolVault() {
 
             <p className="text-sm text-gray-500 mt-4">
               You have queued your withdrawal which means it will be available
-              in [COUNTDOWN], which is when the current cycle ends. The funds
-              will not be automatically deposited into your wallet, you need to
-              return here to claim them. Learn More
+              in <CountdownTimer to={Number(userInfo?.vaultState.epochEnd)} />,
+              which is when the current cycle ends. The funds will not be
+              automatically deposited into your wallet, you need to return here
+              to claim them. Learn More
             </p>
 
             <button
@@ -242,6 +261,22 @@ export default function GlpTcrUsdcPoolVault() {
               Dismiss
             </button>
           </div>
+        </VaultTransactionCard.Content>
+      )
+    }
+
+    if (action === 'withdraw' && userInfo?.isWithdrawalActive) {
+      return (
+        <VaultTransactionCard.Content>
+          <VaultTransactionCard.Warning>
+            <span>
+              Your withdrawal has been queued. You can return here to claim your
+              assets and rewards in
+            </span>
+            &nbsp;
+            <CountdownTimer to={userInfo?.vaultState.epochEnd} />. You will
+            <span> continue earning rewards until that time. </span>
+          </VaultTransactionCard.Warning>
         </VaultTransactionCard.Content>
       )
     }
@@ -261,19 +296,25 @@ export default function GlpTcrUsdcPoolVault() {
                 <div className={usdcDepositPreview ? 'hidden' : ''}>
                   {withdrawalWarning}
 
-                  <div className="flex text-gray-500 font-bold items-center mt-4 justify-between">
-                    <div>Balance</div>
-                    <div>{displayBalance}</div>
-                  </div>
+                  {withdrawalReadyNotice}
 
-                  <div className="mt-2">
-                    <VaultTransactionCard.FormField
-                      name="amount"
-                      label={symbol}
-                      action={() => setFieldValue('amount', maxValue)}
-                      actionLabel="max"
-                    />
-                  </div>
+                  {action === 'deposit' || !userInfo?.isWithdrawalReady ? (
+                    <>
+                      <div className="flex text-gray-500 font-bold items-center mt-4 justify-between">
+                        <div>Balance</div>
+                        <div>{displayBalance}</div>
+                      </div>
+
+                      <div className="mt-2">
+                        <VaultTransactionCard.FormField
+                          name="amount"
+                          label={symbol}
+                          action={() => setFieldValue('amount', maxValue)}
+                          actionLabel="max"
+                        />
+                      </div>
+                    </>
+                  ) : null}
                 </div>
 
                 <div className={usdcDepositPreview ? 'block' : 'hidden'}>
@@ -301,12 +342,17 @@ export default function GlpTcrUsdcPoolVault() {
                     </li>
                   </ul>
 
-                  <VaultTransactionCard.Warning text="This vault processes withdrawals in 8 hour cycles. This means you will need to wait a maximum of 8 hours to withdraw your deposited funds." />
+                  <VaultTransactionCard.Warning text="This vault processes withdrawals in 24 hour cycles. This means you will need to wait a maximum of 24 hours to withdraw your deposited funds." />
                 </div>
 
                 <VaultTransactionCard.Action
                   text={actionText}
-                  disabled={!values.amount && !usdcDepositPreview}
+                  disabled={
+                    (!values.amount &&
+                      !usdcDepositPreview &&
+                      !userInfo?.isWithdrawalReady) ||
+                    isWithdrawCompleting
+                  }
                   type="submit"
                 />
 
@@ -343,6 +389,10 @@ export default function GlpTcrUsdcPoolVault() {
     isWithdrawInitiating,
     isWithdrawInitiated,
     resetInitiateWithdrawal,
+    withdrawalReadyNotice,
+    userInfo,
+    action,
+    isWithdrawCompleting,
   ])
 
   React.useEffect(() => {

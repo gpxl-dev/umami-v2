@@ -147,10 +147,38 @@ export function useWithdraws() {
     }
   )
 
+  const completeUsdcWithdrawFromGlpTcrPool = useMutation(
+    async () => {
+      if (!account || !isArbitrum) {
+        notify(
+          'Please connect wallet on Arbitrum to complete USDC withdrawal',
+          'error'
+        )
+        throw new Error('No account or wrong network')
+      }
+
+      const { wait } = await contracts.glpTcrUsdcPool.completeWithdraw()
+      await wait()
+    },
+    {
+      onMutate() {
+        notify('Complete withdrawal transaction initiated', 'info')
+      },
+      onSuccess() {
+        notify('USDC Withdrawal Completed!', 'success')
+        queryClient.invalidateQueries(['balances', 'glpTcrUsdcPoolUserInfo'])
+      },
+      onError() {
+        notify('Unable to complete USDC withdrawal at this time', 'error')
+      },
+    }
+  )
+
   return {
     withdrawMarinatedUmami,
     withdrawCompoundingMumami,
     previewUSDCWithdraw,
     initiateUsdcWithdrawFromGlpTcrPool,
+    completeUsdcWithdrawFromGlpTcrPool,
   }
 }
