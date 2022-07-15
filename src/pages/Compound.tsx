@@ -77,7 +77,7 @@ export default function Compound() {
   const tokensPerSharePill = React.useMemo(() => {
     return tokensPerShare ? (
       <Pill className="mt-8 text-xl m-auto uppercase min-w-[100%]">
-        1 UMAMI : {Number(tokensPerShare).toFixed(3)} cMUMAMI
+        1 cmUMAMI : {Number(tokensPerShare).toFixed(3)} UMAMI
       </Pill>
     ) : null
   }, [tokensPerShare])
