@@ -3,8 +3,8 @@ import { QueryClient, QueryClientProvider } from 'react-query'
 import type { ReactNode } from 'react'
 
 type Props = {
-  children: ReactNode;
-};
+  children: ReactNode
+}
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -14,6 +14,7 @@ const queryClient = new QueryClient({
       refetchInterval: false,
       refetchOnReconnect: false,
       notifyOnChangeProps: ['data', 'error'],
+      staleTime: 20 * 1000,
     },
   },
 })

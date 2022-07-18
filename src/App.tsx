@@ -1,6 +1,7 @@
 import React from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { NotificationsProvider } from 'reapop'
+import { ReactQueryDevtools } from 'react-query/devtools'
 
 import QueryProvider from './components/QueryProvider'
 import Layout from './components/Layout'
@@ -12,10 +13,12 @@ import Compound from './pages/Compound'
 import Buy from './pages/Buy'
 import Vaults from './pages/Vaults'
 import GlpTcrUsdcPoolVault from './pages/GlpTcrUsdcPoolVault'
+import Vault from './pages/Vault'
 
 function App() {
   return (
     <QueryProvider>
+      <ReactQueryDevtools initialIsOpen={false} />
       <NotificationsProvider>
         <Routes>
           <Route path="/" element={<Layout />}>
@@ -29,6 +32,7 @@ function App() {
               path="app/vaults/glp-tcr-usdc-pool"
               element={<GlpTcrUsdcPoolVault />}
             />
+            <Route path="app/vaults/:vaultName" element={<Vault />} />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
