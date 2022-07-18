@@ -14,13 +14,16 @@ const useTokenInfo = (tokenContractAddress?: string) => {
   const fetchTokenInfoByAddress = async () => {
     // NOTE: safe to assert non-empty address here due to `enabled` condition for `useQuery`
     const contract = new Contract(_address!, erc20ABI, provider)
-    const [symbol, decimals]: [string, number] = await Promise.all([
-      contract.symbol(),
-      contract.decimals(),
-    ])
+    const [symbol, decimals, name]: [string, number, string] =
+      await Promise.all([
+        contract.symbol(),
+        contract.decimals(),
+        contract.name(),
+      ])
     return {
       decimals,
       symbol,
+      name,
     }
   }
 
