@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet'
 import PageContent from '../components/PageContent'
 import VaultCard from '../components/VaultCard'
 import { useGlpTcrUsdcPoolInfo } from '../hooks/useGlpTcrUsdcPoolInfo'
+import { useVaultList } from '../hooks/useVaultList'
 
 export default function Vaults() {
   const { data: poolInfo } = useGlpTcrUsdcPoolInfo()
