@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { erc20ABI, useContractRead } from 'wagmi'
 
 const useAllowance = (
@@ -8,7 +9,10 @@ const useAllowance = (
   const _tokenAddress = tokenAddress?.toLowerCase()
   const _ownerAddress = ownerAddress?.toLowerCase()
   const _spenderAddress = spenderAddress?.toLowerCase()
-  return useContractRead(
+
+  const enabled = !!(_tokenAddress && _ownerAddress && _spenderAddress)
+
+  const contractRead = useContractRead(
     {
       addressOrName: _tokenAddress?.toLowerCase() || '',
       contractInterface: erc20ABI,
@@ -21,6 +25,18 @@ const useAllowance = (
       staleTime: 5000,
     }
   )
+
+  useEffect(() => {
+    let interval: any
+    if (enabled) {
+      interval = setInterval(contractRead.refetch, 10 * 1000)
+    }
+    return () => {
+      clearInterval(interval)
+    }
+  }, [contractRead.refetch, enabled])
+
+  return contractRead
 }
 
 export default useAllowance
