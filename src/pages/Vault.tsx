@@ -57,6 +57,10 @@ const Vault: FC<{}> = () => {
                   current: vaultBalanceNumber,
                 }}
               />
+              <h2 className="font-bold text-2xl uppercase mt-9 mb-3">
+                Strategy details
+              </h2>
+              <div>{vaultDetails?.details}</div>
             </div>
             {vaultName && (
               <div className="lg:col-span-2">
