@@ -4,40 +4,40 @@ import { Field } from 'formik'
 import type { ReactNode } from 'react'
 
 type RootComponentProps = {
-  children: ReactNode;
-  className?: string;
-};
+  children: ReactNode
+  className?: string
+}
 
 type ActionProps = {
-  text: string;
-  type?: 'submit' | 'button';
-  disabled?: boolean;
-  onClick?: () => void;
-};
+  text: string
+  type?: 'submit' | 'button'
+  disabled?: boolean
+  onClick?: () => void
+}
 
 type ContentProps = {
-  children: ReactNode;
-};
+  children: ReactNode
+}
 
 type HeaderActionProps = {
-  text: string;
-  onClick?: () => void;
-  active?: boolean;
-};
+  text: string
+  onClick?: () => void
+  active?: boolean
+}
 
 type FormFieldProps = {
-  label: ReactNode | string;
-  name: string;
-  type?: 'text' | 'number';
-  action?: () => void;
-  actionLabel?: string;
-  disabled?: boolean;
-};
+  label: ReactNode | string
+  name: string
+  type?: 'text' | 'number'
+  action?: () => void
+  actionLabel?: string
+  disabled?: boolean
+}
 
 type NotificationProps = {
-  text?: string;
-  children?: ReactNode;
-};
+  text?: string
+  children?: ReactNode
+}
 
 function FormField({
   label,
@@ -153,7 +153,7 @@ export default function VaultTransactionCard({
 }: RootComponentProps) {
   return (
     <RootContainer
-      className={`border border-umami-pink border-2 rounded-md bg-black ${className}`}
+      className={`border-umami-pink border-2 rounded-md bg-black ${className}`}
     >
       {children}
     </RootContainer>
