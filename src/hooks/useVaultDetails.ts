@@ -2,13 +2,12 @@ import { useQuery } from 'react-query'
 import { VaultDetails } from '../types'
 
 export function useVaultDetails(vaultName?: string) {
-  const fetchVaultDetails: () => null | Promise<VaultDetails> = () => {
-    if (!vaultName) return null
+  const fetchVaultDetails: () => Promise<VaultDetails> = () => {
     // TODO: this is just a mock for now - should request from server.
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         resolve({
-          name: vaultName,
+          name: vaultName!,
           rToken: 'umWETH-WBTC-USDC',
           aToken: '0x64541216bAFFFEec8ea535BB71Fbc927831d0595',
           type: 'Autocompounder',
@@ -22,11 +21,12 @@ export function useVaultDetails(vaultName?: string) {
     })
   }
 
-  return useQuery<VaultDetails | null, Error>(
+  return useQuery<VaultDetails, Error>(
     ['vaults', vaultName],
     fetchVaultDetails,
     {
       staleTime: 10 * 60 * 1000, // Vault info shouldn't change.
+      enabled: !!vaultName,
     }
   )
 }
